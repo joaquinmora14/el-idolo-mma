@@ -1,0 +1,16 @@
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Node (por si más adelante agregás herramientas)
+node_modules/
+package-lock.json
+
+# Archivos temporales
+*.log
+*.tmp

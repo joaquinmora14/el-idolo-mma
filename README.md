@@ -1,8 +1,8 @@
-# 🥊 El Ídolo: MMA
+# El Ídolo: MMA
 
-**Tenés 5 minutos para ser leyenda.** Armá la carrera de un peleador de MMA desde el gimnasio de tu
-barrio hasta el cinturón de la UFC: cartas de mejora, decisiones sin vuelta atrás y peleas que se
-definen con minijuegos.
+**Del gimnasio del barrio al cinturón de la UFC en cinco minutos.** Armá la carrera de un peleador
+de MMA: una carta de mejora por año, decisiones sin vuelta atrás y peleas que se ganan jugando
+minijuegos.
 
 Inspirado en el modo carrera **El Ídolo** de [Potrero](https://www.potrerofutbol.ar/el-idolo),
 llevado a las artes marciales mixtas.
@@ -11,99 +11,133 @@ llevado a las artes marciales mixtas.
 
 ---
 
-## ▶️ Cómo jugar
+## Cómo jugar
 
-Abrí `index.html` en cualquier navegador (en el celular se juega de diez). Nada más.
+Abrí `index.html` en cualquier navegador (en el celular se juega de diez).
 
-Una carrera completa dura **entre 5 y 7 minutos** (unas 13-16 temporadas, de los 21 años al retiro).
+- **Arrancar mi carrera**: armás tu peleador (país, categoría, estilo y personalidad).
+- **Desafío del día**: todos arrancan con el mismo peleador y la misma suerte. Al final copiás tu
+  resultado en cuadraditos, como en Wordle, y lo comparás con tus amigos.
+
+Una carrera completa dura **unos 5 minutos**: de los 22 años al retiro, entre 12 y 15 temporadas. A los 33 te preguntan si seguís; a los 38 se termina.
 
 ---
 
-## 🔎 Qué hace divertido a un juego de este estilo
+## Qué hace divertido a un juego así (y qué decidimos)
 
-Antes de rediseñarlo investigué El Ídolo (Potrero), Copero y los "simuladores de carrera" que se
-hicieron virales en 2026, y lo que se sabe de juegos por partidas cortas:
+Investigué El Ídolo (Potrero), Copero, 7-0 y los juegos diarios tipo Wordle:
 
 | Lo que funciona | Cómo lo aplica este juego |
 |---|---|
-| **Partidas cortas** (Copero: una carrera en menos de 2 minutos; El Ídolo: "5 minutos para ser leyenda") | ~20-25 s por temporada, carrera completa en 5-7 min. Un toque por paso. |
-| **Decisiones simples con consecuencias** (más de 300 eventos en El Ídolo; cada elección suma o resta prestigio y cambia la relación con los hinchas) | 49 eventos + 6 momentos especiales (ofertas de contrato que no vuelven, Serie de Contendientes, título con dos semanas de aviso, doble cinturón, corte de contrato). Mostramos *qué* se juega (💰⭐❤️🥊) pero no el signo. |
-| **Minijuegos sólo en los momentos grandes** (las finales se definen jugando: ta-te-ti, zona verde que se mueve, penales) | Una sola **pelea del año** interactiva por temporada; el resto se simula. Los títulos de la UFC, al mejor de 3. |
-| **Identidad desde el arranque** (El Ídolo 2.1: *cabulero* o *habilidoso* cambia cómo se juegan todas tus finales) | 4 personalidades que cambian las reglas de toda la carrera. |
-| **Resultados impredecibles**: cada carrera es una historia distinta | Rival de toda la carrera, lesiones, clásicos, la Serie de Contendientes, cortes de contrato, campeones que cambian. |
-| **Final compartible** (resumen, comparación con un ídolo histórico, logros y puntaje) | "Tu carrera se parece a la de…", 16 logros, puntaje, salón de la fama y botón para compartir. |
-| **Un comodín escaso** (la arenga de El Ídolo: ganás una fase, pero no la final) | 📣 La arenga: ganás una pelea sí o sí, pero no vale en peleas por el título. |
-| **Ganas de "una más"** | Rangos por hito (de *Sparring de lujo* a *Leyenda del MMA*), personalidades para probar y "otra carrera con el mismo peleador" en un toque. |
+| **Partidas cortas e impredecibles**, fáciles de compartir. Copero: una carrera en menos de 2 minutos; El Ídolo: unos 5. | Apuntamos a **5 minutos**, como El Ídolo: menos que eso y la carrera pierde historia (rival, ofertas, retiro); más, y deja de dar ganas de jugar "una más". Se sacaron pantallas intermedias: el resultado del evento y las peleas simuladas se muestran arriba de la previa, y el nocaut, el round y el cara a cara avanzan solos. Son 4 toques por temporada más el minijuego (unos 20 segundos). |
+| **Decisiones simples con consecuencias** (El Ídolo tiene más de 300 eventos). | 49 eventos y 6 momentos especiales (ofertas que no vuelven, Serie de Contendientes, título con dos semanas de aviso, doble cinturón, corte de contrato). Se muestra *qué* se juega con íconos, pero no el signo. |
+| **Los momentos grandes se juegan.** En El Ídolo las finales se definen con minijuegos y antes elegís si ir con instinto o con técnica. | Una **pelea del año** jugable por temporada; los títulos de la UFC, al mejor de tres. El bocón y el guerrero eligen antes de cada pelea grande **con técnica** (habilidad) o **al instinto** (suerte). |
+| **Identidad desde el arranque** (El Ídolo 2.1: elegís qué clase de jugador sos y cambia toda la carrera). | 4 personalidades que cambian las reglas. |
+| **Un rival de toda la carrera.** | Tu rival sube, gana títulos, se cruza con vos en clásicos y al final se compara tu carrera con la suya. |
+| **Un motivo para volver mañana** (Wordle: un desafío por día y un resultado que se comparte sin spoilers). | Desafío del día con semilla fija y resultado en cuadraditos: verde ganaste, rojo perdiste, amarillo título. |
+| **Que cada golpe se sienta** ("juice": congelar un instante el golpe, sacudir la pantalla, onomatopeyas). | Hit-stop en los golpes buenos, sacudón, flash, onomatopeyas de historieta (¡PAF!, ¡CRAC!) y la cara del rival que reacciona a cada golpe. |
 
 ---
 
-## 🎮 Cómo es una temporada
+## Diseño: menos "hecho por IA"
 
-1. **Pretemporada** — elegís **1 de 3 cartas de mejora** (comunes, raras, épicas y legendarias).
-2. **Evento** — una decisión rápida: un influencer te desafía, tu abuela te pide que dejes, te ofrecen el
-   documental, la oferta de la UFC… (y algunos eventos son propios de tu personalidad).
-3. **Temporada** — se simulan tus peleas del año según tu OVR y el de cada rival.
-4. **La pelea del año** — cara a cara con el rival y se define con **minijuegos**.
-5. **Cierre** — titular del diario, ranking, plata y qué hizo tu rival.
+Las páginas generadas por IA se parecen entre sí: degradé violeta, la fuente Inter, modo oscuro con
+brillos neón, tarjetas redondeadas con sombra difusa, emojis en lugar de íconos, rayas largas (—) en
+todo el texto y títulos en mayúsculas con letra de máquina.
+([925 Studios](https://www.925studios.co/blog/ai-slop-design-tells),
+[TeneX](https://tenex.studio/en/blog/ai-slop-ui-8-signes/),
+[10 tells of a slop UI](https://hereticpleb.vercel.app/blog/10-tells-of-slop/))
+
+Este juego va en contra de eso con una dirección de arte concreta: **afiche de velada de barrio + diario deportivo**.
+
+- Papel y tinta: fondo crema con grano, tinta negra, un rojo y un mostaza. Sin degradés ni brillos;
+  las sombras son duras, como de imprenta.
+- Tipografías con carácter: Alfa Slab One (titulares), Big Shoulders (carteles), Archivo (texto) y
+  Courier Prime (letra de máquina).
+- Íconos dibujados a mano en SVG en lugar de emojis.
+- **Retratos generados en tinta** con semitono para cada peleador, entrenador, periodista, abuela o
+  influencer. Tu rival te pone cara de enojado, le duele cuando le pegás y queda noqueado si lo terminás.
+- El menú es un afiche con entradas; las cartas son figuritas; el cierre de año es la tapa de un diario;
+  el final es una placa.
+- Hay un script de auditoría que recorre todas las pantallas y busca brillos, degradés, emojis, rayas
+  largas y botones píldora.
+
+---
+
+## Cómo es una temporada
+
+1. **Pretemporada**: elegís **1 de 3 cartas** de mejora (comunes, raras, épicas y legendarias).
+2. **Evento** (a veces): una decisión rápida. Un influencer te desafía, tu abuela te pide que dejes, la UFC te llama…
+3. **La previa**: ves qué pasó con tu decisión, cómo te fue en las peleas simuladas del año y el cartel de la pelea grande.
+4. **La pelea del año**: se define con **minijuegos**.
+5. **El diario**: titular, foto, resultado, ranking, plata y qué hizo tu rival.
 
 Del circuito regional (LUX, LFA, Cage Warriors, FFC) al nivel mundial (PFL, Bellator, ONE) y a la
-**UFC**, con atajo opcional por la **Serie de Contendientes**. Si perdés tres seguidas te cortan el contrato.
+**UFC**, con atajo opcional por la **Serie de Contendientes**. Si perdés tres seguidas, te cortan el contrato.
 
 ### Las 4 personalidades
 
 | | Cómo cambia el juego |
 |---|---|
-| 🍀 **Cabulero** | Tus peleas grandes se juegan con **suerte**: ruleta, dados, cartas y mano a mano. Tus stats deciden el tamaño de tus chances. Tenés **amuletos** para volver a tirar un round (y ganás más al subir de liga o salir campeón). |
-| 🎯 **Habilidoso** | Minijuegos de **habilidad** y elegís entre **4 cartas** por pretemporada. |
-| 🎤 **Bocón** | Antes de cada pelea grande hay **cara a cara de bardeo**: una respuesta picante te da ventaja; un papelón, desventaja. Plata y fama x1,5, pero las derrotas te destrozan en redes. |
-| 🛡️ **Guerrero** | Mentón de hierro: en los minijuegos **nunca te finalizan** y cuando vas abajo en la pelea **te agrandás**. La hinchada te ama, pero el cuerpo declina antes. |
+| **Cabulero** | Siempre al instinto: ruleta, dados, cartas y mano a mano. Tus stats deciden el tamaño de tus chances. Tenés **amuletos** para volver a jugar un round (y ganás más al subir de liga o salir campeón). |
+| **Habilidoso** | Siempre con técnica, y elegís entre **4 cartas** por pretemporada. |
+| **Bocón** | **Cara a cara** antes de cada pelea grande: una respuesta picante te da ventaja; un papelón, desventaja. Plata y fama x1,5, pero las derrotas te destrozan en redes. |
+| **Guerrero** | Mentón de hierro: en los minijuegos **nunca te finalizan** y cuando vas abajo **te agrandás**. La hinchada te ama, pero el cuerpo declina antes. |
 
-### Los 10 minijuegos
+### Los 13 minijuegos
 
-**De habilidad** (dependen de tu stat contra la del rival):
+**Con técnica** (dependen de tu stat contra la del rival):
 
-| | Juego | Qué hacés |
-|---|---|---|
-| 🎯 | **La Zona** | Una luz gira alrededor del rival: tocá cuando pasa por lo verde (lo dorado es perfecto). 3 golpes. |
-| 🦵 | **Patada a la cabeza** | La mira va y viene sobre un rival que se mueve: tocá en el centro del blanco. 3 patadas. |
-| 🛡️ | **Bloqueá** | Golpes por 3 carriles: tocá el del guante rojo antes de que llegue. Los grises son amagues. |
-| 🐍 | **Cerrá la llave** | Mantené apretado y soltá cuando la aguja esté en lo verde. Si te pasás al rojo, se escapa. |
-| 🤼 | **Cadena de lucha** | Memorizá la secuencia de movimientos y repetila (también con flechas del teclado). |
-| ♟️ | **Ta-te-ti de la jaula** | Tres en línea contra un rival que juega mejor o peor según su nivel. Empate: deciden los jueces. |
+| Juego | Qué hacés |
+|---|---|
+| **La Zona** | La bola gira alrededor del rival: tocá cuando pase por lo amarillo (el rojo es perfecto). |
+| **Patada a la cabeza** | La mira va y viene sobre un rival que se mueve: tocá en el centro del blanco. |
+| **Bloqueá** | Golpes por tres carriles: tocá el del guante rojo. Los rayados son amagues. |
+| **Cerrá la llave** | Mantené apretado y soltá cuando la aguja esté en lo amarillo. Si llegás a lo rayado, se escapa. |
+| **Cadena de lucha** | Memorizá la cadena de movimientos y repetila. |
+| **Ta-te-ti de la jaula** | Tres en línea contra un rival que juega mejor o peor según su nivel. |
+| **El duelo** *(nuevo)* | Cara a cara y quietos: cuando aparece ¡YA!, pegá antes que él. Si te adelantás en un amague, perdés el cruce. |
+| **Combo** *(nuevo)* | De ritmo: jab, cross y gancho bajan por tres carriles; tocá cada uno cuando cruza la línea roja. |
+| **Ground & pound** *(nuevo)* | Lo tenés en el piso: pegale a los huecos rojos de su guardia, no a la guardia rayada. |
 
-**De suerte** (Cabulero):
+**Al instinto** (suerte; tus stats deciden el tamaño de tus chances):
 
-| | Juego | Qué hacés |
-|---|---|---|
-| 🎡 | **La Ruleta** | Porciones de KO / ganás / perdés / te noquean, del tamaño de tus chances. |
-| 🥊 | **Mano a mano** | Los penales del MMA: elegís dónde pegar y qué cubrir. Sus ojos a veces te avisan… y a veces te engañan. |
-| 🃏 | **Las Cartas** | Mirá las cartas, se dan vuelta y se mezclan: elegí 2. Seguirlas con la vista ayuda. |
-| 🎲 | **Los Dados** | Sacá el número marcado o más. Doble 6 es nocaut; doble 1, mejor no saberlo. |
+| Juego | Qué hacés |
+|---|---|
+| **La ruleta** | Porciones de nocaut, ganás, perdés y te duermen, del tamaño de tus chances. |
+| **Mano a mano** | Los penales del MMA: elegís dónde pegar y qué cubrir. Sus ojos a veces te avisan… y a veces te engañan. |
+| **Las cartas** | Mirá las cartas, se dan vuelta y se mezclan: elegí dos. |
+| **Los dados** | Sacá el número marcado o más. Doble seis es nocaut; doble uno, mejor no saberlo. |
 
-Un minijuego **perfecto** termina la pelea por KO, sumisión o TKO. La dificultad se explica antes de
-cada round ("NIVEL DIFÍCIL · TU GOL 64 · SU GOL 70") y tus primeras peleas grandes son más amables.
+Un minijuego **perfecto** termina la pelea por nocaut, sumisión o TKO. Antes de cada round se
+explica la dificultad ("Nivel difícil · Tu golpe: 64 · el suyo: 70") y tus primeras peleas grandes
+son más amables.
 
 ---
 
-## ⚖️ Cómo se probó y balanceó
+## Cómo se probó y balanceó
 
 - **Bot de carrera** (`index.html?bot=0.6`): juega carreras enteras al instante. Con cientos de
-  carreras se ajustaron crecimiento, ranking, ofertas y puntaje. Resultado aproximado según lo bien
-  que se juegue (flojo / promedio / muy bueno): cinturón de la UFC **0% / ~20% / ~40-55%**.
+  carreras se ajustaron crecimiento, ranking, ofertas y puntaje.
 - **Humano simulado**: un script que *mira la pantalla* y toca con errores de timing reales
-  (±30/55/90 ms) y tiempos de reacción de 340-530 ms, para medir cada minijuego:
-  en dificultad pareja un jugador promedio gana ~50-70% de los rounds; en "muy difícil", ~15-50%.
-- **Partidas completas por la interfaz real**: ~6 minutos por carrera, sin errores de consola.
+  (±30/55/90 ms) y tiempos de reacción de 340-530 ms para medir cada minijuego. En dificultad pareja,
+  un jugador promedio gana 6 o 7 de cada 10 rounds; en "difícil", 3 o 4.
+- **Partidas completas por la interfaz**, con tiempos de lectura de una persona real, para medir la
+  duración y sacar capturas de cada pantalla: 4,9 minutos con el guerrero (13 temporadas) y 5,4 con
+  el habilidoso (15 temporadas), sin errores de consola.
+- **Bot por personalidad**: con un jugador promedio, cinturón de la UFC en 1 de cada 4 o 5 carreras;
+  con uno muy bueno, en la mitad.
 
 Parámetros útiles para probar: `?bot=0.8&persona=cabulero&retire=34` (el bot también acepta
-`style`, `wc` y `cc`).
+`style`, `wc`, `cc` y `daily=1`).
 
 ---
 
-## 📁 Estructura y cómo modificarlo
+## Estructura y cómo modificarlo
 
-Todo está en `index.html`, en cinco bloques comentados: **datos**, **herramientas** (azar, sonido
-sintetizado con WebAudio, efectos), **motor de carrera**, **motor de pelea + minijuegos** y **pantallas**.
+Todo está en `index.html`, en bloques comentados: **estilos**, **datos**, **herramientas** (azar con
+semilla, sonido sintetizado con WebAudio, efectos), **arte** (íconos, retratos, onomatopeyas),
+**motor de carrera**, **motor de pelea + minijuegos** y **pantallas**.
 
 | Qué querés cambiar | Buscá en el archivo |
 |---|---|
@@ -115,14 +149,15 @@ sintetizado con WebAudio, efectos), **motor de carrera**, **motor de pelea + min
 | Eventos de decisión | `const EVENTS = [` |
 | Frases del cara a cara | `const TRASH = [` |
 | Leyendas de la comparación final | `const LEGENDS = [` |
-| Un minijuego | `MG.zona = `, `MG.llave = `, etc. |
-| Paleta de colores | `:root{` (arriba de todo) |
+| Un minijuego | `MG.zona = `, `MG.duelo = `, etc. |
+| Íconos y retratos | `const ICONS = {`, `function portrait(` |
+| Paleta y tipografías | `:root{` (arriba de todo) |
 
 La partida se guarda sola en el navegador (`localStorage`) y el salón de la fama guarda tus 10 mejores carreras.
 
 ---
 
-## ⚠️ Nota sobre nombres y marcas
+## Nota sobre nombres y marcas
 
 - Los nombres de organizaciones (**UFC, Bellator, PFL, ONE, Cage Warriors, LFA, LUX**) son
   **marcas registradas de sus dueños**. Este proyecto no está afiliado ni autorizado por ninguna,
@@ -135,7 +170,7 @@ La partida se guarda sola en el navegador (`localStorage`) y el salón de la fam
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Código bajo licencia MIT (ver `LICENSE`). La licencia cubre el código, no las marcas ni los nombres
 de terceros mencionados arriba.

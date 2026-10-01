@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="El Ídolo: MMA. Armá la carrera de un peleador en cinco minutos: cartas de mejora, decisiones sin vuelta atrás y peleas que se definen con minijuegos.">
+<meta name="description" content="El Ídolo: MMA. Armá la carrera de un peleador en seis minutos: cartas de mejora, decisiones sin vuelta atrás y peleas que se definen con minijuegos.">
 <meta name="theme-color" content="#efe5cf">
+<script>try{var t=localStorage.getItem('idolo_mma_theme');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.querySelector('meta[name=theme-color]').setAttribute('content','#14110d');}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>El Ídolo: MMA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,6 +24,7 @@
     --f-cond:'Big Shoulders Display', 'Oswald', 'Arial Narrow', 'Roboto Condensed', sans-serif-condensed, Impact, sans-serif;
     --f-body:'Archivo', 'Helvetica Neue', Arial, sans-serif;
     --f-type:'Courier Prime', 'Courier New', Courier, monospace;
+    --on-red:#faf5e9; --shadow:#1c1915; --photo:#e7dbbf; --veil:rgba(239,229,207,.9); --hl:rgba(227,169,44,.7); --flash-y:rgba(250,245,233,.75);
     --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .09 0 0 0 0 .07 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -54,9 +56,9 @@
 
   /* ---------- botones (tinta sobre papel, se hunden al tocar) ---------- */
   .btn{display:block;width:100%;font-family:var(--f-cond);font-weight:900;font-size:24px;line-height:1;letter-spacing:.02em;text-transform:uppercase;
-    padding:14px 12px 13px;background:var(--red);color:var(--white);border:2.5px solid var(--ink);border-radius:3px;box-shadow:0 4px 0 var(--ink);
+    padding:14px 12px 13px;background:var(--red);color:var(--on-red);border:2.5px solid var(--ink);border-radius:3px;box-shadow:0 4px 0 var(--shadow);
     transition:transform .06s ease, box-shadow .06s ease;}
-  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink);}
+  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shadow);}
   .btn.ink{background:var(--ink);color:var(--paper);box-shadow:0 4px 0 var(--red-2);}
   .btn.paper{background:var(--white);color:var(--ink);}
   .btn.gold{background:var(--mustard);color:var(--ink);}
@@ -71,28 +73,28 @@
   .poster::after{content:'';position:absolute;inset:6px;border:1.5px solid var(--ink);pointer-events:none;}
   .poster-top{display:flex;justify-content:space-between;font-family:var(--f-type);font-size:12px;border-bottom:1.5px solid var(--ink);padding:2px 4px 7px;margin:2px 2px 10px;}
   .poster-title{font-family:var(--f-slab);font-size:64px;line-height:.86;letter-spacing:-.01em;text-align:center;margin-top:6px;}
-  .poster-mma{display:block;width:max-content;margin:8px auto 4px;font-family:var(--f-cond);font-weight:900;font-size:58px;line-height:.8;color:var(--white);background:var(--red);padding:6px 16px 2px;transform:rotate(-3deg);
-    text-shadow:3px 3px 0 var(--ink);box-shadow:5px 5px 0 var(--ink);}
+  .poster-mma{display:block;width:max-content;margin:8px auto 4px;font-family:var(--f-cond);font-weight:900;font-size:58px;line-height:.8;color:var(--on-red);background:var(--red);padding:6px 16px 2px;transform:rotate(-3deg);
+    text-shadow:3px 3px 0 var(--shadow);box-shadow:5px 5px 0 var(--shadow);}
   .poster-faces{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:4px;margin:14px 6px 0;}
-  .poster-faces .portrait{width:100%;display:block;border:2px solid var(--ink);background:var(--paper-2);}
+  .poster-faces .portrait{width:100%;display:block;border:2px solid var(--ink);background:var(--photo);}
   .poster-faces .vs{font-family:var(--f-slab);font-size:30px;color:var(--red);padding-bottom:22px;}
   .poster-faces .lab{font-family:var(--f-cond);font-weight:800;font-size:16px;text-align:center;margin-top:4px;line-height:1;}
   .poster-sub{text-align:center;font-size:15px;line-height:1.45;margin:14px 10px 4px;}
   .poster-sub b{font-weight:800;}
-  .ticket{position:relative;display:flex;align-items:stretch;width:100%;margin-top:16px;background:var(--red);color:var(--white);border:2.5px solid var(--ink);box-shadow:0 4px 0 var(--ink);text-align:left;
+  .ticket{position:relative;display:flex;align-items:stretch;width:100%;margin-top:16px;background:var(--red);color:var(--on-red);border:2.5px solid var(--ink);box-shadow:0 4px 0 var(--shadow);text-align:left;
     transition:transform .06s ease, box-shadow .06s ease;}
-  .ticket:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink);}
+  .ticket:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shadow);}
   .ticket .main{flex:1;padding:12px 14px 11px;}
   .ticket .main b{display:block;font-family:var(--f-cond);font-weight:900;font-size:28px;line-height:1;letter-spacing:.01em;}
   .ticket .main span{font-family:var(--f-type);font-size:12px;opacity:.9;}
-  .ticket .stub{width:86px;border-left:2.5px dashed var(--white);padding:10px 8px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:var(--f-type);font-size:11px;line-height:1.2;text-align:center;}
+  .ticket .stub{width:86px;border-left:2.5px dashed var(--on-red);padding:10px 8px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:var(--f-type);font-size:11px;line-height:1.2;text-align:center;}
   .ticket .stub b{font-family:var(--f-cond);font-weight:900;font-size:22px;}
   .ticket.alt{background:var(--mustard);color:var(--ink);} .ticket.alt .stub{border-left-color:var(--ink);}
   .ticket.ink{background:var(--ink);color:var(--paper);box-shadow:0 4px 0 var(--red-2);} .ticket.ink .stub{border-left-color:var(--paper);}
   .poster-fine{font-family:var(--f-type);font-size:11px;line-height:1.5;text-align:center;color:var(--ink-3);margin:16px 6px 0;}
   .menu-links{display:flex;justify-content:center;gap:4px;margin-top:6px;}
   .daily-who{display:flex;gap:10px;align-items:center;margin:12px 2px 0;padding:10px;border:2px dashed var(--ink);background:var(--paper);}
-  .daily-who .portrait{width:54px;border:2px solid var(--ink);background:var(--paper-2);flex-shrink:0;}
+  .daily-who .portrait{width:54px;border:2px solid var(--ink);background:var(--photo);flex-shrink:0;}
   .daily-who p{margin:0;font-size:13px;line-height:1.35;}
 
   /* ---------- CREAR ---------- */
@@ -109,7 +111,7 @@
   .flags{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
   .flag-opt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 2px 6px;border:2px solid transparent;font-size:11px;font-weight:600;color:var(--ink-2);border-radius:2px;}
   .flag-opt .flag{width:32px;height:21px;}
-  .flag-opt.on{border-color:var(--ink);background:var(--white);color:var(--ink);box-shadow:3px 3px 0 var(--ink);}
+  .flag-opt.on{border-color:var(--ink);background:var(--white);color:var(--ink);box-shadow:3px 3px 0 var(--shadow);}
   .wcs{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);}
   .wc-opt{padding:8px 2px 7px;text-align:center;border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);margin:0 -1.5px -1.5px 0;}
   .wc-opt .n{font-family:var(--f-cond);font-weight:800;font-size:18px;line-height:1;}
@@ -123,19 +125,19 @@
   .opt .nm{font-family:var(--f-cond);font-weight:900;font-size:22px;line-height:1;}
   .opt .tg{font-size:11.5px;font-weight:700;color:var(--red-2);margin:3px 0 4px;}
   .opt .ds{font-size:12.5px;line-height:1.38;color:var(--ink-2);}
-  .opt.on{background:var(--mustard);box-shadow:4px 4px 0 var(--ink);transform:translate(-2px,-2px);}
-  .opt.on::after{content:'ELEGIDO';position:absolute;top:8px;right:-4px;font-family:var(--f-cond);font-weight:900;font-size:12px;letter-spacing:.06em;color:var(--white);background:var(--ink);padding:2px 6px;transform:rotate(6deg);}
+  .opt.on{background:var(--mustard);box-shadow:4px 4px 0 var(--shadow);transform:translate(-2px,-2px);}
+  .opt.on::after{content:'ELEGIDO';position:absolute;top:8px;right:-4px;font-family:var(--f-cond);font-weight:900;font-size:12px;letter-spacing:.06em;color:var(--paper);background:var(--ink);padding:2px 6px;transform:rotate(6deg);}
   .create-cta{position:sticky;bottom:0;padding:10px 16px 14px;background:var(--paper);border-top:2px solid var(--ink);z-index:5;}
   .err{color:var(--red-2);font-weight:700;font-size:13px;text-align:center;min-height:18px;margin-bottom:6px;}
 
   /* ---------- CARRERA: la ficha del peleador ---------- */
   .ficha{display:grid;grid-template-columns:96px 1fr;gap:20px;margin:10px 16px 0;}
-  .ficha-photo{position:relative;border:2.5px solid var(--ink);background:var(--paper-2);}
+  .ficha-photo{position:relative;border:2.5px solid var(--ink);background:var(--photo);}
   .ficha-photo .portrait{display:block;width:100%;}
   .ovr-stamp{position:absolute;right:-12px;bottom:-12px;width:52px;height:52px;border-radius:50%;background:var(--white);border:2.5px solid var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-8deg);}
   .ovr-stamp b{font-family:var(--f-cond);font-weight:900;font-size:25px;line-height:.8;}
   .ovr-stamp span{font-family:var(--f-type);font-size:9px;line-height:1;}
-  .ovr-stamp.t1{background:var(--silver);} .ovr-stamp.t2{background:var(--mustard);} .ovr-stamp.t3{background:var(--red);color:var(--white);} .ovr-stamp.t4{background:var(--ink);color:var(--mustard);}
+  .ovr-stamp.t1{background:var(--silver);} .ovr-stamp.t2{background:var(--mustard);} .ovr-stamp.t3{background:var(--red);color:var(--on-red);} .ovr-stamp.t4{background:var(--ink);color:var(--mustard);}
   .ficha-name{font-family:var(--f-slab);font-size:22px;line-height:1.02;display:flex;align-items:flex-start;gap:7px;overflow-wrap:anywhere;}
   .ficha-name .flag{margin-top:3px;}
   .ficha-meta{font-family:var(--f-type);font-size:12.5px;line-height:1.4;margin-top:4px;color:var(--ink-2);}
@@ -154,7 +156,7 @@
   .bar i{background:var(--paper-3);}
   .bar i.f{background:var(--ink);} .st.me .bar i.f{background:var(--red);}
   .up{position:absolute;right:38px;top:-2px;font-family:var(--f-cond);font-weight:900;font-size:15px;background:var(--mustard);border:1.5px solid var(--ink);padding:0 4px;animation:stampIn .45s cubic-bezier(.2,.9,.3,1.4);}
-  .up.dn{background:var(--red);color:var(--white);}
+  .up.dn{background:var(--red);color:var(--on-red);}
 
   /* ---------- paso de la temporada ---------- */
   .step{margin:16px 16px 0;border-top:3px solid var(--ink);padding-top:10px;animation:rise .3s ease-out;}
@@ -169,7 +171,7 @@
   .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
   .cards.c4{grid-template-columns:repeat(2,1fr);}
   .figu{position:relative;display:flex;flex-direction:column;background:var(--white);border:2.5px solid var(--ink);border-radius:4px;overflow:hidden;min-height:184px;text-align:center;
-    box-shadow:3px 3px 0 var(--ink);animation:deal .45s cubic-bezier(.2,.8,.25,1.15) backwards;transition:transform .12s ease;}
+    box-shadow:3px 3px 0 var(--shadow);animation:deal .45s cubic-bezier(.2,.8,.25,1.15) backwards;transition:transform .12s ease;}
   .cards.c4 .figu{min-height:156px;}
   .figu:nth-child(2){animation-delay:.07s;} .figu:nth-child(3){animation-delay:.14s;} .figu:nth-child(4){animation-delay:.21s;}
   @keyframes deal{0%{transform:translateY(24px) rotate(-6deg);opacity:0;}100%{transform:none;opacity:1;}}
@@ -180,32 +182,32 @@
   .figu .fx{font-family:var(--f-type);font-weight:700;font-size:12px;line-height:1.35;padding:0 5px 8px;}
   .figu .fx .neg{color:var(--red-2);}
   .figu .cost{margin-top:auto;font-family:var(--f-type);font-size:11px;font-weight:700;padding:4px;background:var(--paper-2);border-top:1.5px solid var(--ink);}
-  .figu.r-r .band{background:var(--blue);color:var(--white);}
-  .figu.r-e .band{background:var(--red);color:var(--white);}
+  .figu.r-r .band{background:var(--blue);color:var(--on-red);}
+  .figu.r-e .band{background:var(--red);color:var(--on-red);}
   .figu.r-l .band{background:var(--mustard);}
   .figu.r-l .art::before, .figu.r-e .art::before{content:'';position:absolute;inset:4px;background-image:radial-gradient(var(--mustard) 1.4px, transparent 1.6px);background-size:7px 7px;opacity:.9;}
   .figu.r-e .art::before{background-image:radial-gradient(rgba(207,58,31,.55) 1.3px, transparent 1.5px);}
-  .figu.on{transform:translateY(-6px) rotate(-2deg);box-shadow:5px 7px 0 var(--ink);}
-  .figu.on::after{content:'ELEGIDA';position:absolute;top:42%;left:50%;transform:translate(-50%,-50%) rotate(-14deg);font-family:var(--f-cond);font-weight:900;font-size:22px;color:var(--red);border:3px solid var(--red);padding:2px 8px;background:rgba(250,245,233,.85);animation:stampIn .35s cubic-bezier(.2,.9,.3,1.4);}
+  .figu.on{transform:translateY(-6px) rotate(-2deg);box-shadow:5px 7px 0 var(--shadow);}
+  .figu.on::after{content:'ELEGIDA';position:absolute;top:42%;left:50%;transform:translate(-50%,-50%) rotate(-14deg);font-family:var(--f-cond);font-weight:900;font-size:22px;color:var(--red);border:3px solid var(--red);padding:2px 8px;background:var(--white);animation:stampIn .35s cubic-bezier(.2,.9,.3,1.4);}
   .figu.off{opacity:.35;filter:grayscale(1);}
   .figu:disabled:not(.on):not(.off){opacity:.45;}
   @keyframes stampIn{0%{transform:translate(-50%,-50%) rotate(-14deg) scale(2.2);opacity:0;}100%{opacity:1;}}
 
   /* evento */
   .ev{display:grid;grid-template-columns:84px 1fr;gap:12px;align-items:start;margin-bottom:12px;}
-  .ev .portrait{width:84px;display:block;border:2.5px solid var(--ink);background:var(--paper-2);}
+  .ev .portrait{width:84px;display:block;border:2.5px solid var(--ink);background:var(--photo);}
   .ev-who{font-family:var(--f-slab);font-size:19px;line-height:1.05;}
   .ev-role{font-family:var(--f-type);font-size:12px;color:var(--ink-3);margin-top:2px;}
   .ev-text{font-size:16px;line-height:1.5;margin-top:8px;}
   .ev-text::before{content:'«';color:var(--red);font-family:var(--f-slab);margin-right:2px;}
   .ev-text::after{content:'»';color:var(--red);font-family:var(--f-slab);margin-left:2px;}
   .choice{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;background:var(--white);border:2.5px solid var(--ink);border-radius:2px;
-    padding:11px 10px;margin-bottom:9px;font-size:15px;font-weight:700;box-shadow:0 3px 0 var(--ink);transition:transform .06s, box-shadow .06s;}
-  .choice:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink);}
+    padding:11px 10px;margin-bottom:9px;font-size:15px;font-weight:700;box-shadow:0 3px 0 var(--shadow);transition:transform .06s, box-shadow .06s;}
+  .choice:active{transform:translateY(2px);box-shadow:0 1px 0 var(--shadow);}
   .choice .n{width:28px;height:28px;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--f-cond);font-weight:900;font-size:17px;background:var(--paper-2);}
   .choice .h{display:flex;gap:3px;color:var(--ink-3);}
   .choice .h .ico{width:17px;height:17px;}
-  .tag-imp{display:inline-block;font-family:var(--f-cond);font-weight:900;font-size:13px;letter-spacing:.04em;background:var(--red);color:var(--white);padding:2px 6px;transform:rotate(-3deg);margin-bottom:6px;}
+  .tag-imp{display:inline-block;font-family:var(--f-cond);font-weight:900;font-size:13px;letter-spacing:.04em;background:var(--red);color:var(--on-red);padding:2px 6px;transform:rotate(-3deg);margin-bottom:6px;}
 
   /* consecuencia del evento + resultados de la temporada */
   .conseq{background:var(--white);border:2px solid var(--ink);padding:10px 12px;margin-bottom:12px;font-size:14px;line-height:1.45;position:relative;}
@@ -228,15 +230,15 @@
   .cartel{border:3px solid var(--ink);background:var(--white);padding:10px 10px 12px;position:relative;}
   .cartel-tag{text-align:center;font-family:var(--f-cond);font-weight:900;font-size:16px;letter-spacing:.05em;border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:10px;}
   .cartel-tag.title{background:var(--mustard);margin:-10px -10px 10px;padding:7px;}
-  .cartel-tag.hot{background:var(--red);color:var(--white);margin:-10px -10px 10px;padding:7px;}
+  .cartel-tag.hot{background:var(--red);color:var(--on-red);margin:-10px -10px 10px;padding:7px;}
   .vsrow{display:grid;grid-template-columns:1fr 40px 1fr;align-items:start;gap:4px;}
   .vside{text-align:center;min-width:0;}
-  .vside .portrait{width:100%;max-width:130px;display:block;margin:0 auto;border:2.5px solid var(--ink);background:var(--paper-2);}
+  .vside .portrait{width:100%;max-width:130px;display:block;margin:0 auto;border:2.5px solid var(--ink);background:var(--photo);}
   .vside.op .portrait{transform:scaleX(-1);}
   .vside .nm{font-family:var(--f-slab);font-size:17px;line-height:1.05;margin-top:6px;overflow-wrap:anywhere;}
   .vside .mt{font-family:var(--f-type);font-size:11.5px;color:var(--ink-2);margin-top:2px;}
   .vside .o{display:inline-block;margin-top:5px;font-family:var(--f-cond);font-weight:900;font-size:26px;line-height:1;border:2px solid var(--ink);padding:2px 8px 1px;}
-  .vside.me .o{background:var(--ink);color:var(--paper);} .vside.op .o{background:var(--red);color:var(--white);}
+  .vside.me .o{background:var(--ink);color:var(--paper);} .vside.op .o{background:var(--red);color:var(--on-red);}
   .vsx{font-family:var(--f-slab);font-size:28px;color:var(--red);text-align:center;padding-top:44px;}
   .tape{margin-top:12px;border-top:2px solid var(--ink);padding-top:6px;}
   .tape-row{display:grid;grid-template-columns:30px 1fr 60px 1fr 30px;align-items:center;gap:6px;font-family:var(--f-type);font-size:12.5px;padding:2px 0;}
@@ -254,7 +256,7 @@
   .fhead{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:10px 16px 6px;}
   .fside{display:flex;align-items:center;gap:8px;min-width:0;}
   .fside.op{flex-direction:row-reverse;text-align:right;}
-  .fside .portrait{width:42px;border:2px solid var(--ink);background:var(--paper-2);flex-shrink:0;}
+  .fside .portrait{width:42px;border:2px solid var(--ink);background:var(--photo);flex-shrink:0;}
   .fside.op .portrait{transform:scaleX(-1);}
   .fside .n{font-family:var(--f-cond);font-weight:900;font-size:19px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .fside .o{font-family:var(--f-type);font-size:11px;color:var(--ink-3);}
@@ -262,7 +264,7 @@
   .rdot{width:15px;height:15px;border:2px solid var(--ink);background:var(--white);}
   .rdot.w{background:var(--ink);} .rdot.l{background:var(--red);border-color:var(--red-2);}
   .ftag{margin:0 16px;text-align:center;font-family:var(--f-cond);font-weight:900;font-size:14px;letter-spacing:.05em;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:3px 0 2px;}
-  .ftag.title{background:var(--mustard);} .ftag.hot{background:var(--red);color:var(--white);}
+  .ftag.title{background:var(--mustard);} .ftag.hot{background:var(--red);color:var(--on-red);}
   .fbody{padding:8px 16px 0;}
   .round-k{text-align:center;font-family:var(--f-type);font-size:13px;color:var(--ink-2);margin:4px 0;}
   .intro{border:3px solid var(--ink);background:var(--white);padding:18px 16px 16px;text-align:center;margin-top:6px;animation:rise .3s ease-out;}
@@ -284,17 +286,17 @@
   .pip{width:17px;height:17px;border:2px solid var(--ink);background:var(--white);display:inline-block;}
   .pip.gold{background:var(--mustard);} .pip.ok{background:var(--ink);} .pip.bad{background:var(--red);border-color:var(--red-2);}
   .act{margin-top:6px;}
-  .tapbtn{display:block;width:100%;font-family:var(--f-cond);font-weight:900;font-size:34px;letter-spacing:.03em;padding:16px;background:var(--red);color:var(--white);border:3px solid var(--ink);border-radius:3px;
-    box-shadow:0 5px 0 var(--ink);user-select:none;-webkit-user-select:none;touch-action:none;}
-  .tapbtn:active,.tapbtn.on{transform:translateY(4px);box-shadow:0 1px 0 var(--ink);}
+  .tapbtn{display:block;width:100%;font-family:var(--f-cond);font-weight:900;font-size:34px;letter-spacing:.03em;padding:16px;background:var(--red);color:var(--on-red);border:3px solid var(--ink);border-radius:3px;
+    box-shadow:0 5px 0 var(--shadow);user-select:none;-webkit-user-select:none;touch-action:none;}
+  .tapbtn:active,.tapbtn.on{transform:translateY(4px);box-shadow:0 1px 0 var(--shadow);}
   .tapbtn.ink{background:var(--ink);color:var(--paper);box-shadow:0 5px 0 var(--red-2);}
   .tapbtn.gold{background:var(--mustard);color:var(--ink);}
   .tapbtn:disabled{opacity:.6;}
   .lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-  .lanes button{font-family:var(--f-cond);font-weight:900;font-size:24px;line-height:1;padding:12px 4px 10px;background:var(--white);border:2.5px solid var(--ink);border-radius:2px;box-shadow:0 4px 0 var(--ink);}
+  .lanes button{font-family:var(--f-cond);font-weight:900;font-size:24px;line-height:1;padding:12px 4px 10px;background:var(--white);border:2.5px solid var(--ink);border-radius:2px;box-shadow:0 4px 0 var(--shadow);}
   .lanes button .tri{display:block;margin:0 auto;}
   .lanes button small{display:block;font-family:var(--f-type);font-weight:700;font-size:11px;margin-top:3px;}
-  .lanes button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink);background:var(--mustard);}
+  .lanes button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shadow);background:var(--mustard);}
   .timer{height:8px;border:2px solid var(--ink);background:var(--white);margin:8px auto 0;max-width:380px;}
   .timer i{display:block;height:100%;width:100%;background:var(--ink);transform-origin:left;}
   @keyframes drain{from{transform:scaleX(1);}to{transform:scaleX(0);}}
@@ -310,15 +312,15 @@
   #flash{position:fixed;inset:0;pointer-events:none;z-index:90;opacity:0;}
   #flash.g{background:rgba(227,169,44,.28);animation:flashA .25s steps(2);}
   #flash.r{background:rgba(207,58,31,.32);animation:flashA .3s steps(2);}
-  #flash.y{background:rgba(250,245,233,.75);animation:flashA .22s steps(2);}
+  #flash.y{background:var(--flash-y);animation:flashA .22s steps(2);}
   @keyframes flashA{0%{opacity:1;}100%{opacity:0;}}
   .confetti{position:fixed;top:-20px;width:8px;height:13px;z-index:95;pointer-events:none;border:1px solid var(--ink);animation:fall linear forwards;}
   @keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--rot));}}
   .round-res{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;
-    background:rgba(239,229,207,.9);animation:fadeIn .15s ease;}
+    background:var(--veil);animation:fadeIn .15s ease;}
   @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
   .round-res .big{font-family:var(--f-slab);font-size:44px;line-height:.95;padding:6px 14px 4px;border:3px solid var(--ink);background:var(--white);transform:rotate(-4deg);animation:stamp2 .35s cubic-bezier(.2,.9,.3,1.4);}
-  .round-res .big.ok{background:var(--ink);color:var(--paper);} .round-res .big.gold{background:var(--mustard);} .round-res .big.bad{background:var(--red);color:var(--white);}
+  .round-res .big.ok{background:var(--ink);color:var(--paper);} .round-res .big.gold{background:var(--mustard);} .round-res .big.bad{background:var(--red);color:var(--on-red);}
   @keyframes stamp2{0%{transform:rotate(-4deg) scale(2);opacity:0;}100%{transform:rotate(-4deg) scale(1);opacity:1;}}
   .round-res .sm{font-size:14px;margin-top:14px;max-width:270px;line-height:1.4;}
   .round-res .btns{margin-top:14px;width:100%;max-width:270px;}
@@ -328,18 +330,18 @@
   .bubble::after{content:'';position:absolute;left:26px;bottom:-12px;width:18px;height:18px;background:var(--white);border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:skewX(-30deg) rotate(45deg);}
 
   /* ---------- KO ---------- */
-  .ko{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--red);color:var(--white);animation:shake .45s ease;}
-  .ko.lost{background:var(--ink);}
+  .ko{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#cf3a1f;color:#faf5e9;animation:shake .45s ease;}
+  .ko.lost{background:#1c1915;}
   .ko::before{content:'';position:absolute;inset:-20%;background-image:radial-gradient(rgba(28,25,21,.5) 2px, transparent 2.4px);background-size:11px 11px;transform:rotate(15deg);
     -webkit-mask-image:radial-gradient(circle at 50% 45%, #000 20%, transparent 70%);mask-image:radial-gradient(circle at 50% 45%, #000 20%, transparent 70%);}
   .ko.lost::before{background-image:radial-gradient(rgba(207,58,31,.55) 2px, transparent 2.4px);}
   .ko-in{position:relative;z-index:2;text-align:center;padding:0 20px;}
   .ko-m{font-family:var(--f-type);font-weight:700;font-size:14px;letter-spacing:.06em;}
-  .ko-big{font-family:var(--f-slab);font-size:118px;line-height:.85;margin:10px 0 6px;color:var(--white);text-shadow:6px 6px 0 var(--ink);animation:koPop .45s cubic-bezier(.2,.9,.3,1.3);}
-  .ko.lost .ko-big{text-shadow:6px 6px 0 var(--red);}
+  .ko-big{font-family:var(--f-slab);font-size:118px;line-height:.85;margin:10px 0 6px;color:#faf5e9;text-shadow:6px 6px 0 #1c1915;animation:koPop .45s cubic-bezier(.2,.9,.3,1.3);}
+  .ko.lost .ko-big{text-shadow:6px 6px 0 #cf3a1f;}
   .ko-big.long{font-size:66px;}
   @keyframes koPop{0%{transform:scale(.4) rotate(-8deg);opacity:0;}100%{transform:none;opacity:1;}}
-  .ko-por{width:120px;margin:0 auto;border:3px solid var(--ink);background:var(--paper-2);transform:rotate(4deg);}
+  .ko-por{width:120px;margin:0 auto;border:3px solid #1c1915;background:var(--photo);transform:rotate(4deg);}
   .ko-por .portrait{display:block;width:100%;}
   .ko-s{font-size:15px;margin-top:12px;}
   .ko-skip{margin-top:18px;font-family:var(--f-type);font-size:12px;opacity:.8;}
@@ -351,7 +353,7 @@
   .d-mast span{font-family:var(--f-type);font-size:11px;color:var(--ink-2);display:flex;justify-content:space-between;margin-top:4px;}
   .d-head{font-family:var(--f-cond);font-weight:900;font-size:33px;line-height:.95;margin:10px 0 8px;}
   .d-grid{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:start;}
-  .d-photo{border:2px solid var(--ink);background:var(--paper-2);position:relative;}
+  .d-photo{border:2px solid var(--ink);background:var(--photo);position:relative;}
   .d-photo .portrait{display:block;width:100%;filter:grayscale(1) contrast(1.15);}
   .d-photo figcaption{font-family:var(--f-type);font-size:10px;line-height:1.2;padding:3px;border-top:1.5px solid var(--ink);}
   .d-body{font-size:13.5px;line-height:1.45;}
@@ -377,21 +379,24 @@
   .arow .y small{display:block;font-family:var(--f-type);font-weight:400;font-size:10px;color:var(--ink-3);}
   .arow .o{font-family:var(--f-type);font-size:11px;color:var(--ink-3);}
   .arow .r{font-family:var(--f-cond);font-weight:900;font-size:17px;}
-  .arow.gold .t{background:linear-gradient(transparent 55%, rgba(227,169,44,.7) 55%);}
+  .arow.gold .t{background:linear-gradient(transparent 55%, var(--hl) 55%);}
 
   /* ---------- FINAL ---------- */
   .plaque{margin:14px 16px 0;border:3px solid var(--ink);background:var(--white);padding:14px 14px 16px;text-align:center;position:relative;}
   .plaque::after{content:'';position:absolute;inset:6px;border:1.5px solid var(--ink);pointer-events:none;}
   .pl-k{font-family:var(--f-type);font-size:12px;color:var(--ink-2);}
-  .pl-por{width:120px;margin:10px auto 0;border:2.5px solid var(--ink);background:var(--paper-2);}
+  .pl-por{width:120px;margin:10px auto 0;border:2.5px solid var(--ink);background:var(--photo);}
   .pl-por .portrait{display:block;width:100%;}
   .pl-name{font-family:var(--f-slab);font-size:26px;line-height:1.05;margin-top:10px;display:flex;justify-content:center;align-items:center;gap:8px;}
   .pl-sub{font-family:var(--f-type);font-size:12px;color:var(--ink-2);margin-top:3px;}
   .pl-rank{display:inline-block;font-family:var(--f-cond);font-weight:900;font-size:34px;line-height:1;margin:12px 0 4px;padding:6px 12px 4px;background:var(--ink);color:var(--paper);transform:rotate(-2deg);}
-  .pl-rank.l5{background:var(--mustard);color:var(--ink);border:2.5px solid var(--ink);} .pl-rank.l6{background:var(--red);color:var(--white);border:2.5px solid var(--ink);}
+  .pl-rank.l5{background:var(--mustard);color:var(--ink);border:2.5px solid var(--ink);} .pl-rank.l6{background:var(--red);color:var(--on-red);border:2.5px solid var(--ink);}
   .pl-score{font-family:var(--f-cond);font-weight:900;font-size:60px;line-height:1;}
   .pl-score small{font-family:var(--f-type);font-weight:400;font-size:13px;}
   .legend{margin:12px 4px 0;text-align:left;border-top:2px solid var(--ink);padding-top:10px;}
+  .legend.has-por{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:start;}
+  .lg-por{border:2px solid var(--ink);background:var(--photo);}
+  .lg-por .portrait{display:block;width:100%;}
   .legend .k{font-family:var(--f-type);font-size:12px;color:var(--ink-2);}
   .legend .n{font-family:var(--f-slab);font-size:24px;line-height:1.05;margin-top:2px;}
   .legend .d{font-size:14px;color:var(--ink-2);margin-top:4px;line-height:1.45;}
@@ -408,7 +413,7 @@
   .medal{text-align:center;padding:8px 3px 7px;border:2px dashed var(--ink-3);color:var(--ink-3);}
   .medal .ico{width:26px;height:26px;display:block;margin:0 auto 4px;}
   .medal .t{font-size:11px;line-height:1.2;font-weight:600;}
-  .medal.on{border:2.5px solid var(--ink);background:var(--mustard);color:var(--ink);box-shadow:2px 2px 0 var(--ink);}
+  .medal.on{border:2.5px solid var(--ink);background:var(--mustard);color:var(--ink);box-shadow:2px 2px 0 var(--shadow);}
   .marks{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:2px 0 14px;}
   .marks i{display:block;width:24px;height:24px;border:2px solid var(--ink);}
   .marks i.w{background:var(--green);} .marks i.l{background:var(--red);} .marks i.t{background:var(--mustard);}
@@ -423,13 +428,99 @@
   .hof-row.me{background:var(--mustard);padding-left:6px;padding-right:6px;}
 
   .modal-bg{position:fixed;inset:0;z-index:80;background:rgba(28,25,21,.62);display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .15s ease;}
-  .modal{width:100%;max-width:400px;background:var(--paper);border:3px solid var(--ink);padding:16px;max-height:88vh;overflow:auto;box-shadow:6px 6px 0 var(--ink);}
+  .modal{width:100%;max-width:400px;background:var(--paper);border:3px solid var(--ink);padding:16px;max-height:88vh;overflow:auto;box-shadow:6px 6px 0 var(--shadow);}
   .modal h3{font-family:var(--f-slab);font-size:26px;margin-bottom:8px;}
   .modal p{font-size:14px;line-height:1.5;margin:0 0 12px;}
 
   .flag{width:22px;height:15px;vertical-align:-3px;display:inline-block;flex-shrink:0;outline:1.5px solid var(--ink);outline-offset:-0.5px;}
   .flag.lg{width:30px;height:20px;vertical-align:-5px;}
   .flag-fb{font-family:var(--f-type);font-size:10px;border:1.5px solid var(--ink);padding:0 3px;}
+
+
+  /* ---------- EDICIÓN NOCTURNA (modo oscuro): carbón y tinta crema, mismas sombras duras ---------- */
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --paper:#14110d; --paper-2:#27221c; --paper-3:#3b342a; --white:#1e1a15;
+    --ink:#eee3cb; --ink-2:#cdbfa3; --ink-3:#9a8e78;
+    --red:#d4462a; --red-2:#ff8c6e; --mustard:#e6ae45; --green:#5fae7e; --blue:#7397de; --silver:#a4a9ab;
+    --on-red:#fbf3e2; --shadow:#000; --photo:#cdbf9f; --veil:rgba(16,14,11,.9); --hl:rgba(230,174,69,.4); --flash-y:rgba(250,245,233,.3);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .93 0 0 0 0 .89 0 0 0 0 .8 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* sobre mostaza o plata, siempre tinta oscura */
+  :root[data-theme="dark"] :is(.btn.gold,.ticket.alt,.opt.on,.figu.r-l .band,.ficha-org .champ,.ovr-stamp.t1,.ovr-stamp.t2,.up:not(.dn),.intro .nv,.cartel-tag.title,.ftag.title,.tape-row .hi,.round-res .big.gold,.mail,.belts-line b,.medal.on,.hof-row.me,.pl-rank.l5,.deltas .o,b.y,.tapbtn.gold,.pip.gold){color:#1c1915;}
+  :root[data-theme="dark"] :is(.opt.on .ds,.opt.on .tg,.hof-row.me .d,.ticket.alt .main span){color:#3d362e;}
+  :root[data-theme="dark"] .ticket.alt .stub{border-left-color:#1c1915;}
+  :root[data-theme="dark"] .ovr-stamp.t4{background:#1c1915;color:var(--mustard);}
+  :root[data-theme="dark"] .d-photo .portrait{filter:grayscale(1) contrast(1.05);}
+
+  /* piezas que sólo aparecen en la compu */
+  .f-side{display:none;}
+  .stats.m-hide{display:none;}
+
+  /* ---------- COMPU: pantalla ancha, en columnas ---------- */
+  @media (min-width:900px){
+    body{font-size:16px;}
+    #app{max-width:1240px;padding:0 20px 56px;}
+    .mast{padding:16px 16px 12px;}
+    .brand{font-size:26px;}
+    /* menú: el afiche apaisado */
+    .poster{margin:22px 16px 0;padding:26px 30px 28px;}
+    .poster-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;}
+    .poster-title{font-size:112px;}
+    .poster-mma{font-size:88px;}
+    .poster-faces{max-width:520px;margin:20px auto 0;}
+    .poster-sub{text-align:left;font-size:18px;margin:0 0 6px;}
+    .menu-links{margin-top:12px;}
+    /* crear: dos columnas */
+    .create-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;align-items:start;}
+    .create-cta{display:flex;align-items:center;justify-content:flex-end;gap:16px;}
+    .create-cta .err{margin:0;}
+    .create-cta .btn{width:auto;min-width:340px;}
+    /* carrera: la ficha a la izquierda, la temporada a la derecha */
+    .career{display:grid;grid-template-columns:400px minmax(0,1fr);grid-template-areas:"ficha main" "arch main";gap:0 28px;align-items:start;}
+    .c-ficha{grid-area:ficha;} .c-main{grid-area:main;} .c-arch{grid-area:arch;}
+    .c-ficha .ficha{grid-template-columns:120px 1fr;}
+    .stats.m-hide{display:block;}
+    .c-main .step:first-child{margin-top:10px;}
+    .step-t{font-size:50px;}
+    .cards.c4{grid-template-columns:repeat(4,1fr);}
+    .figu{min-height:236px;}
+    .figu .art{height:96px;} .figu .art .ico{width:58px;height:58px;}
+    .figu .nm{font-size:21px;}
+    .ev{grid-template-columns:120px 1fr;} .ev .portrait{width:120px;}
+    .ev-text{font-size:18px;}
+    .vside .portrait{max-width:170px;}
+    .vside .nm{font-size:22px;}
+    .vsx{font-size:40px;padding-top:62px;}
+    .tape-row{padding:1px 0;}
+    .c-main .conseq{margin-bottom:10px;}
+    .diario{padding:16px 20px 18px;}
+    .d-head{font-size:46px;}
+    .d-grid{grid-template-columns:170px 1fr;gap:16px;}
+    .d-body{font-size:15px;}
+    .after-diario .btn:not(.txt){max-width:460px;}
+    /* pelea: las caras grandes a los costados del minijuego */
+    .fight{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,640px) minmax(0,1fr);gap:24px;align-items:start;}
+    .f-side{display:block;text-align:center;margin-top:118px;}
+    .f-side .portrait{width:100%;max-width:230px;display:block;margin:0 auto;border:3px solid var(--ink);background:var(--photo);}
+    .f-side.op .portrait{transform:scaleX(-1);}
+    .f-side .nm{font-family:var(--f-slab);font-size:24px;line-height:1.05;margin-top:10px;}
+    .f-side .mt{font-family:var(--f-type);font-size:13px;color:var(--ink-2);margin-top:4px;}
+    .f-side .o{display:inline-block;margin-top:8px;font-family:var(--f-cond);font-weight:900;font-size:34px;line-height:1;border:2.5px solid var(--ink);padding:3px 10px 1px;}
+    .f-side.me .o{background:var(--ink);color:var(--paper);} .f-side.op .o{background:var(--red);color:var(--on-red);}
+    .fight .fhead .portrait{display:none;}
+    .stage{max-width:min(600px, calc(100vh - 330px));min-width:360px;}
+    .timer{max-width:min(600px, calc(100vh - 330px));min-width:360px;}
+    .act{max-width:600px;margin-left:auto;margin-right:auto;}
+    .intro{padding:26px 30px 24px;}
+    .intro .nm{font-size:40px;}
+    /* final: la placa a la izquierda, el resto a la derecha */
+    .end{display:grid;grid-template-columns:minmax(0,460px) minmax(0,1fr);gap:0 24px;align-items:start;}
+    .medals{grid-template-columns:repeat(4,1fr);}
+    .e-r .stack{display:grid;grid-template-columns:1fr 1fr;gap:10px;} .e-r .stack>*+*{margin-top:0;} .e-r .stack .btn.txt{grid-column:1/-1;}
+    .modal{max-width:520px;}
+  }
+  @media (min-width:900px) and (max-height:760px){ .f-side{margin-top:70px;} .f-side .portrait{max-width:170px;} }
 
   @media (max-width:370px){
     .poster-title{font-size:54px;} .poster-mma{font-size:48px;} .step-t{font-size:32px;} .figu .nm{font-size:16px;} .ko-big{font-size:96px;} .d-head{font-size:28px;}
@@ -486,8 +577,8 @@ const ORGS = {
 };
 /* Niveles: el OVR de los rivales según ranking, las bolsas y la fama por pelea */
 const TIERS = [
-  {label:'Circuito regional', unr:[39,45], r15:45, r1:60, champ:[63,66], sims:2, purse:[900,2200], big:[3500,7000], money:1,  fame:1.0},
-  {label:'Nivel mundial',     unr:[57,62], r15:62, r1:76, champ:[79,82], sims:2, purse:[12000,26000], big:[35000,70000], money:9, fame:1.3},
+  {label:'Circuito regional', unr:[39,45], r15:45, r1:60, champ:[63,66], sims:1, purse:[900,2200], big:[3500,7000], money:1,  fame:1.0},
+  {label:'Nivel mundial',     unr:[57,62], r15:62, r1:76, champ:[79,82], sims:1, purse:[12000,26000], big:[35000,70000], money:9, fame:1.3},
   {label:'UFC',               unr:[73,77], r15:77, r1:89, champ:[89,92], sims:1, purse:[60000,120000], big:[180000,350000], money:55, fame:1.6},
 ];
 const WEIGHT_CLASSES = [
@@ -1036,6 +1127,10 @@ const ICONS = {
   arriba:'<path d="M12 19V5M6 11l6-6 6 6"/>',
   abajo:'<path d="M12 5v14M6 13l6 6 6-6"/>',
   sobre:'<rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="m3.5 7 8.5 6.5L20.5 7"/>',
+  sol:'<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
+  luna:'<path d="M19.5 14.6A7.8 7.8 0 0 1 9.4 4.5a7.8 7.8 0 1 0 10.1 10.1Z"/>',
+  expandir:'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+  contraer:'<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>',
   calendario:'<rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
 };
 function ico(name, cls){ return `<svg class="ico ${cls||''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]||ICONS.estrella}</svg>`; }
@@ -1046,6 +1141,51 @@ const STAT_ICON = {striking:'guante', wrestling:'lucha', sumision:'piso', cardio
 const SKINS = ['#f2d0aa','#e4b183','#cb905f','#a06a43','#71472b'];
 const HAIRS = ['#1c1915','#3a2a1d','#6b4527','#b98a35','#9c3d1f'];
 let PORTRAIT_N = 0;
+/* ---------- parecidos: los peleadores reales del plantel y las leyendas ----------
+   "piel peinado colorDePelo barba extras…"
+   piel 0 (más clara) a 4 (más oscura) · peinado: bald buzz fade side slick curly long bun mohawk dreads balding shaggy spiky
+   pelo: 0-4 o blond red gray teal brown · barba: none stubble goatee mustache chin (sin bigote) full big
+   extras: tat (tatuajes) scar nose (nariz rota) ears (orejas de luchador) wide (cara ancha) papakha cowboy */
+const LOOKS = {
+  'Alexandre Pantója':'2 buzz 0 full tat', 'Tatsuro Taíra':'0 fade 0 none', 'Brandon Roival':'0 shaggy 2 stubble tat', 'Manel Kapé':'4 fade 0 goatee tat',
+  'Muhammad Mokáev':'1 buzz 0 stubble', 'Steve Ersec':'0 side 2 stubble', 'Joshua Vann':'1 spiky 0 none', 'Brandon Morena':'2 slick 0 mustache',
+  'Matheus Nicolao':'1 buzz 0 stubble', 'Tagir Ulanbékov':'1 buzz 0 chin ears', 'Asu Almabáyev':'1 buzz 0 none', 'Amir Alí':'2 fade 0 full',
+  'Bruno Silveira':'2 buzz 0 stubble', 'Tim Eliot':'0 mohawk 2 stubble', 'Charles Johnsson':'4 buzz 0 goatee',
+  'Merab Dvalishvíli':'1 balding 0 full ears', 'Umar Nurmagomédov':'1 buzz 0 chin ears', "Sean O'Molley":'0 slick teal mustache tat', 'Cory Sandhágen':'0 side 1 stubble',
+  'Petr Yann':'1 buzz 0 none', 'Payton Talbott':'0 shaggy blond none', 'Song Yadóng':'0 fade 0 none', 'Marlon Verra':'2 bald 0 big',
+  'Deiveson Figueiredo':'2 slick 0 goatee', 'Mario Bautista':'2 buzz 0 stubble', 'José Aldo':'2 buzz 0 none scar', 'Rob Fonte':'1 buzz 0 full',
+  'Kyler Filipes':'3 dreads 0 none', 'Aiemann Zahabi':'1 buzz 0 full', 'Pedro Munhóz':'1 bald 0 none',
+  'Ilya Topurián':'1 fade 0 stubble', 'Movsar Evloyev':'1 buzz 0 full ears', 'Alexander Volkanóvsky':'0 buzz 2 stubble', 'Diego Lopes':'1 side 0 stubble tat',
+  'Max Hollowey':'2 fade 0 stubble', 'Lerone Murphi':'3 buzz 0 goatee', 'Yair Rodrígues':'1 bun 0 goatee', 'Brian Ortéga':'1 buzz 0 full tat',
+  'Jean Silva':'2 mohawk 0 stubble tat', 'Kevin Vallejo':'1 side 0 none', 'Arnold Alliende':'0 buzz 1 stubble', 'Steve Garcia':'1 buzz 0 full',
+  'Bryce Mitchel':'0 long 2 mustache', 'Dan Ige':'2 buzz 0 full', 'Josh Emmet':'0 buzz 1 full',
+  'Islam Makhachov':'1 buzz 0 chin ears', 'Arman Tsarukián':'1 fade 0 stubble', 'Charles Olivéira':'1 fade 0 stubble tat', 'Justin Gaethjee':'0 buzz 2 stubble nose',
+  'Dustin Poirié':'0 buzz 1 full', 'Mateusz Gamrot':'0 buzz 1 stubble', 'Paddy Pimblet':'0 side blond none', 'Benoît Saint Denís':'0 buzz 1 full',
+  'Rafael Fiziev':'1 buzz 0 stubble', 'Renato Moicano':'1 bald 0 full', 'Grant Dawsson':'0 side 2 full', 'Dan Hooke':'1 shaggy 1 stubble',
+  'Nasrat Haqparast':'1 fade 0 full', 'Michael Chandlér':'0 side 1 none', 'Terrance McKinnie':'3 fade 0 goatee',
+  'Shavkat Rakhmónov':'1 buzz 0 stubble', 'Jack Della Maddalena':'0 side 2 stubble tat', 'Belal Muhamad':'2 buzz 0 big', 'Leon Edwars':'4 buzz 0 goatee',
+  'Michael Morales':'2 fade 0 none', 'Sean Brady':'0 buzz 1 stubble', 'Kamaru Usmann':'4 bald 0 stubble', 'Ian Machado Garri':'0 slick blond none',
+  'Joaquin Buckley':'4 buzz 0 goatee', 'Carlos Prates':'1 buzz 0 stubble tat', 'Gilbert Burnes':'2 bald 0 full', 'Geoff Neal':'4 dreads 0 goatee',
+  'Randy Brown':'4 fade 0 none', 'Colby Covingtón':'0 side blond stubble', 'Kevin Holand':'3 buzz 0 goatee',
+  'Khamzat Chimáev':'1 buzz brown big ears', 'Dricus du Plessi':'0 buzz 1 full', 'Sean Strikland':'0 buzz 1 stubble', 'Robert Whitaker':'1 buzz 0 stubble',
+  'Israel Adesánya':'4 dreads 0 none', 'Nassourdine Imávov':'1 buzz 0 full', 'Caio Borralho':'1 fade 0 full', 'Bo Nickel':'0 side 1 none ears',
+  'Anthony Hernándes':'1 curly 0 full', 'Reinier de Ridder':'0 balding blond full', 'Jared Cannonié':'4 bald 0 goatee', 'Brendan Allén':'0 buzz red full',
+  'Michel Pereyra':'2 long 0 none', 'Roman Dolidze':'1 buzz 0 full', 'Marvin Vettóri':'0 buzz 1 full',
+  'Magomed Ankaláev':'1 buzz 0 chin', 'Alex Pereyra':'2 buzz 0 none tat', 'Jiri Prochazká':'0 bun 1 stubble', 'Carlos Ulberg':'2 fade 0 none tat',
+  'Jamahal Hil':'4 buzz 0 goatee', 'Azamat Murzakanov':'1 buzz 0 full', 'Zhang Mingyáng':'0 buzz 0 none', 'Khalil Rountre':'4 dreads 0 goatee tat',
+  'Bogdan Guskov':'0 buzz 1 stubble', 'Nikita Krylóv':'0 buzz 1 full', 'Aleksandar Rakic':'0 buzz 1 full', 'Dominick Reyés':'1 side 0 stubble',
+  'Volkan Oezdemír':'1 bald 0 full', 'Modestas Bukauskas':'0 buzz 1 stubble', 'Ryan Spann':'4 buzz 0 full',
+  'Tom Aspinal':'0 buzz 1 stubble wide', 'Jon Jonés':'4 buzz 0 stubble', 'Ciryl Gané':'4 bald 0 goatee', 'Sergei Pavlóvich':'0 buzz 1 full wide',
+  'Curtis Blaides':'4 buzz 0 full wide', 'Alexander Volkóv':'0 buzz 1 stubble', 'Jailton Almeidha':'3 buzz 0 goatee', 'Waldo Cortes-Acosta':'3 buzz 0 full wide',
+  'Mick Parkin':'0 buzz 1 full wide', 'Serghei Spivac':'0 buzz 1 full wide', 'Shamil Gaziev':'1 buzz 0 full wide', 'Tallison Teixeira':'2 fade 0 none',
+  'Ante Delija':'0 buzz 1 full wide', 'Marcin Tybura':'0 bald 0 stubble wide', 'Derrick Lewiss':'4 bald 0 big wide',
+  /* leyendas de la comparación final */
+  'Conor McGrégor':'0 slick red big tat', 'Khabib Nurmagomédov':'1 buzz 0 chin papakha', 'Anderson Silvá':'3 bald 0 goatee', 'Georges St-Pierré':'0 buzz 1 none',
+  'Fedor Emelianénko':'0 buzz 2 none wide', 'Randi Cutur':'0 balding 2 none ears', 'Demian Maía':'1 balding 0 stubble', 'Diego Sánches':'1 long 0 full',
+  'Donald Cerróne':'0 buzz 2 stubble cowboy', 'Patrício Pitból':'1 buzz 0 goatee tat', 'Kimbo Slíce':'4 bald 0 big', 'Robert Whitáker':'1 buzz 0 stubble',
+};
+const HAIR_NAMED = {blond:'#c9a046', red:'#9c3d1f', gray:'#8f8a80', teal:'#2f8f8f', brown:'#6b4527'};
+function parseLook(s){ if(!s) return null; const [sk, hs, hc, bd, ...ex] = s.split(' '); return {sk:+sk, hs, hc:HAIR_NAMED[hc] || HAIRS[+hc] || HAIRS[0], bd, ex}; }
 const ROLE_OF = {'🧔':'coach','🩺':'doctor','👵':'grandma','📱':'influencer','🎬':'producer','🏟️':'suit','🥤':'shades','🧓':'veteran','🍕':'doctor','⚖️':'suit',
   '🤝':'fighter','🎙️':'journalist','💼':'suit','🧪':'coach','📰':'journalist','⚽':'fan','🥋':'veteran','🥊':'suit','🧒':'kid','🕵️':'anon','🧊':'shades',
   '🦷':'doctor','⚫':'veteran','🗳️':'politician','😵‍💫':'analyst','🎓':'suit','🐶':'dog','🏎️':'shades','🏠':'grandma','📉':'journalist','🧑‍💼':'dana',
@@ -1059,12 +1199,13 @@ function portrait(seed, role, expr, opt){
   const uid = 'pt'+(++PORTRAIT_N);
   if(role==='dog') return dogPortrait(uid, expr);
   const fighterish = ['fighter','rival','veteran','me'].includes(role);
+  const L = fighterish ? parseLook(opt.look || LOOKS[seed]) : null, X = k=>!!(L && L.ex.includes(k));
   const SK = {SA:[0,1,1,2,2,3,4], AF:[2,3,4,4,4], AS:[0,0,1,1,2], EU:[0,0,0,1,2], NA:[0,1,2,3,4], OC:[0,0,1,2,3]}[opt.cont];
-  const skin = opt.skin || (SK ? SKINS[pick(SK)] : pick(SKINS));
+  const skin = opt.skin || (L ? SKINS[L.sk] : SK ? SKINS[pick(SK)] : pick(SKINS));
   const old = ['grandma','veteran','dana','politician'].includes(role) || opt.old;
-  const hairC = old ? (role==='veteran' ? '#8f8a80' : '#b9b3a6') : pick(HAIRS);
+  const hairC = L ? L.hc : old ? (role==='veteran' ? '#8f8a80' : '#b9b3a6') : pick(HAIRS);
   const kid = role==='kid';
-  const cx = 50, cy = kid ? 50 : 46, rx = kid ? 19 : 20 + r()*4, ry = kid ? 21 : 25 + r()*3.5;
+  const cx = 50, cy = kid ? 50 : 46, rx = kid ? 19 : X('wide') ? 24 + r()*1.5 : 20 + r()*4, ry = kid ? 21 : 25 + r()*3.5;
   const jw = fighterish ? .86 + r()*.1 : .7 + r()*.14;
   const head = `M${cx-rx} ${cy} Q${cx-rx} ${cy-ry*1.12} ${cx} ${cy-ry} Q${cx+rx} ${cy-ry*1.12} ${cx+rx} ${cy} L${cx+rx*jw} ${cy+ry*.72} Q${cx} ${cy+ry*1.12} ${cx-rx*jw} ${cy+ry*.72} Z`;
   const shirt = {coach:'#2a5297', doctor:'#f7f3ea', suit:'#2b2723', politician:'#2b2723', dana:'#1c1915', journalist:'#8a7a5c', influencer:'#cf3a1f',
@@ -1073,29 +1214,38 @@ function portrait(seed, role, expr, opt){
   /* hombros */
   if(fighterish) s += `<path d="M10 100 C14 82 28 76 40 74 L60 74 C72 76 86 82 90 100 Z" fill="${skin}" stroke="${INK}" stroke-width="2.2"/><path d="M33 80 C38 84 44 85 50 85" stroke="${INK}" stroke-width="1.3" fill="none" opacity=".5"/><path d="M67 80 C62 84 56 85 50 85" stroke="${INK}" stroke-width="1.3" fill="none" opacity=".5"/>`;
   else s += `<path d="M8 100 C12 84 26 78 40 76 L60 76 C74 78 88 84 92 100 Z" fill="${shirt}" stroke="${INK}" stroke-width="2.2"/>`;
+  if(X('tat')) s += `<g fill="none" stroke="${INK}" stroke-width="1.4" opacity=".75"><path d="M17 92 q5 -9 13 -7 q-3 5 -9 5 q4 3 9 1"/><path d="M83 92 q-5 -9 -13 -7 q3 5 9 5 q-4 3 -9 1"/><path d="M62 88 l4 5 l4 -5 l-4 -4 Z"/></g>`;
   if(['suit','politician','dana'].includes(role)) s += `<path d="M44 76 L50 92 L56 76" fill="#f7f3ea" stroke="${INK}" stroke-width="1.6"/><path d="M50 80 L47.5 84 L50 97 L52.5 84 Z" fill="${role==='politician'?'#2a5297':'#cf3a1f'}" stroke="${INK}" stroke-width="1.2"/>`;
   if(role==='doctor') s += `<path d="M38 78 C36 88 42 92 46 90" stroke="${INK}" stroke-width="1.8" fill="none"/><circle cx="46" cy="90" r="2.4" fill="#9aa0a0" stroke="${INK}" stroke-width="1.2"/>`;
   if(role==='fan') s += `<path d="M30 80 L70 80 L66 88 L34 88 Z" fill="#f7f3ea" stroke="${INK}" stroke-width="1.4"/><path d="M38 80 v8 M46 80 v8 M54 80 v8 M62 80 v8" stroke="#2a5297" stroke-width="2.6"/>`;
   /* cuello */
   s += `<path d="M42 ${cy+ry*.55} L42 76 Q50 80 58 76 L58 ${cy+ry*.55} Z" fill="${skin}" stroke="${INK}" stroke-width="2"/>`;
   /* pelo de atrás (largo) */
-  const hatted = ['coach','seer','anon','doctor'].includes(role);
-  const style = hatted ? 'buzz' : old && role==='grandma' ? 'bun' : kid ? pick(['buzz','curly','side']) : role==='dana' ? 'bald' : fighterish ? pick(['bald','buzz','buzz','mohawk','bun','curly','side','slick']) : pick(['side','slick','curly','buzz','bald','long']);
+  const hatted = ['coach','seer','anon','doctor'].includes(role) || X('papakha') || X('cowboy');
+  const style = hatted ? 'buzz' : L ? L.hs : old && role==='grandma' ? 'bun' : kid ? pick(['buzz','curly','side']) : role==='dana' ? 'bald' : fighterish ? pick(['bald','buzz','buzz','mohawk','bun','curly','side','slick']) : pick(['side','slick','curly','buzz','bald','long']);
   if(style==='long') s += `<path d="M${cx-rx-2} ${cy-6} C${cx-rx-6} ${cy+16} ${cx-rx} ${cy+30} ${cx-rx+4} ${cy+34} L${cx+rx-4} ${cy+34} C${cx+rx} ${cy+30} ${cx+rx+6} ${cy+16} ${cx+rx+2} ${cy-6} Z" fill="${hairC}" stroke="${INK}" stroke-width="2"/>`;
+  if(style==='dreads') for(let i=0;i<8;i++){ const x = cx-rx-3 + i*(2*rx+6)/7, len = 26 + (i%3)*5; s += `<rect x="${(x-2.6).toFixed(1)}" y="${cy-ry+8}" width="5.2" height="${len+ry-8}" rx="2.6" fill="${hairC}" stroke="${INK}" stroke-width="1.5"/>`; }
+  if(style==='shaggy') s += `<path d="M${cx-rx-3} ${cy-8} C${cx-rx-5} ${cy+6} ${cx-rx-2} ${cy+14} ${cx-rx+2} ${cy+16} L${cx+rx-2} ${cy+16} C${cx+rx+2} ${cy+14} ${cx+rx+5} ${cy+6} ${cx+rx+3} ${cy-8} Z" fill="${hairC}" stroke="${INK}" stroke-width="2"/>`;
   /* orejas */
-  const earR = fighterish && r()<.45 ? 4.6 : 3.8;
+  const earR = X('ears') ? 5.6 : fighterish && r()<.45 ? 4.6 : 3.8;
   s += `<ellipse cx="${cx-rx}" cy="${cy+3}" rx="${earR}" ry="${earR+1.6}" fill="${skin}" stroke="${INK}" stroke-width="2"/><ellipse cx="${cx+rx}" cy="${cy+3}" rx="${earR}" ry="${earR+1.6}" fill="${skin}" stroke="${INK}" stroke-width="2"/>`;
   /* cabeza + sombra en semitono */
   s += `<defs><pattern id="${uid}h" width="3.4" height="3.4" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle cx="1.7" cy="1.7" r=".95" fill="${INK}" opacity=".32"/></pattern><clipPath id="${uid}c"><path d="${head}"/></clipPath></defs>`;
   s += `<path d="${head}" fill="${skin}" stroke="${INK}" stroke-width="2.4"/>`;
   s += `<g clip-path="url(#${uid}c)"><ellipse cx="${cx+rx*.95}" cy="${cy+6}" rx="${rx*.55}" ry="${ry*1.3}" fill="url(#${uid}h)"/></g>`;
   /* barba */
-  const beard = fighterish || role==='coach' || role==='producer' ? pick(['none','none','stubble','goatee','full','mustache']) : (old && role!=='grandma' ? pick(['none','mustache']) : 'none');
-  if(beard==='full') s += `<path d="M${cx-rx*.98} ${cy+4} Q${cx-rx*.9} ${cy+ry*.95} ${cx} ${cy+ry*1.12} Q${cx+rx*.9} ${cy+ry*.95} ${cx+rx*.98} ${cy+4} Q${cx+rx*.5} ${cy+14} ${cx} ${cy+15} Q${cx-rx*.5} ${cy+14} ${cx-rx*.98} ${cy+4} Z" fill="${hairC}" stroke="${INK}" stroke-width="1.8"/>`;
+  const beard = L ? L.bd : fighterish || role==='coach' || role==='producer' ? pick(['none','none','stubble','goatee','chin','full','mustache']) : (old && role!=='grandma' ? pick(['none','mustache']) : 'none');
+  if(beard==='full' || beard==='chin' || beard==='big'){ const bl = beard==='big' ? 1.42 : 1.12;
+    s += `<path d="M${cx-rx*.98} ${cy+4} Q${cx-rx*.95} ${cy+ry*(bl-.17)} ${cx} ${cy+ry*bl} Q${cx+rx*.95} ${cy+ry*(bl-.17)} ${cx+rx*.98} ${cy+4} Q${cx+rx*.5} ${cy+14} ${cx} ${cy+15} Q${cx-rx*.5} ${cy+14} ${cx-rx*.98} ${cy+4} Z" fill="${hairC}" stroke="${INK}" stroke-width="1.8"/>`; }
   if(beard==='stubble') s += `<path d="M${cx-rx*.9} ${cy+8} Q${cx} ${cy+ry*1.25} ${cx+rx*.9} ${cy+8} Q${cx} ${cy+20} ${cx-rx*.9} ${cy+8} Z" fill="url(#${uid}h)"/>`;
   if(beard==='goatee') s += `<path d="M${cx-5} ${cy+ry*.78} Q${cx} ${cy+ry*1.16} ${cx+5} ${cy+ry*.78} Z" fill="${hairC}" stroke="${INK}" stroke-width="1.5"/>`;
   /* pelo */
   const top = cy-ry;
+  if(style==='fade') s += `<path d="M${cx-rx+1} ${cy-7} Q${cx-rx} ${top-7} ${cx} ${top-6} Q${cx+rx} ${top-7} ${cx+rx-1} ${cy-7} Q${cx+rx*.6} ${top+6} ${cx} ${top+5} Q${cx-rx*.6} ${top+6} ${cx-rx+1} ${cy-7} Z" fill="${hairC}" stroke="${INK}" stroke-width="2"/><path d="M${cx-rx-.5} ${cy-6} L${cx-rx-.5} ${cy-1} M${cx+rx+.5} ${cy-6} L${cx+rx+.5} ${cy-1}" stroke="${hairC}" stroke-width="2" opacity=".6"/>`;
+  if(style==='balding') s += `<path d="M${cx-rx-1} ${cy-2} Q${cx-rx-1} ${cy-12} ${cx-rx+5} ${cy-15} L${cx-rx+4} ${cy-7} Z M${cx+rx+1} ${cy-2} Q${cx+rx+1} ${cy-12} ${cx+rx-5} ${cy-15} L${cx+rx-4} ${cy-7} Z" fill="${hairC}" stroke="${INK}" stroke-width="1.6"/>`;
+  if(style==='dreads') s += `<path d="M${cx-rx-1} ${cy-4} Q${cx-rx} ${top-6} ${cx} ${top-5} Q${cx+rx} ${top-6} ${cx+rx+1} ${cy-4} Q${cx} ${top+6} ${cx-rx-1} ${cy-4} Z" fill="${hairC}" stroke="${INK}" stroke-width="2"/><path d="M${cx-10} ${top+1} v-5 M${cx-3} ${top} v-6 M${cx+4} ${top} v-6 M${cx+11} ${top+1} v-5" stroke="${INK}" stroke-width="1.2" opacity=".6"/>`;
+  if(style==='shaggy') s += `<path d="M${cx-rx-2} ${cy+2} Q${cx-rx-3} ${top-6} ${cx} ${top-5} Q${cx+rx+3} ${top-6} ${cx+rx+2} ${cy+2} L${cx+rx-3} ${cy-6} L${cx+rx-8} ${top+10} L${cx+4} ${top+7} L${cx-3} ${top+11} L${cx-9} ${top+7} L${cx-rx+5} ${top+11} L${cx-rx+3} ${cy-6} Z" fill="${hairC}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>`;
+  if(style==='spiky') s += `<path d="M${cx-rx} ${cy-4} L${cx-rx+2} ${top-2} L${cx-rx+7} ${top+1} L${cx-8} ${top-7} L${cx-3} ${top-1} L${cx+2} ${top-9} L${cx+6} ${top-1} L${cx+11} ${top-6} L${cx+rx-6} ${top+1} L${cx+rx-1} ${top-2} L${cx+rx} ${cy-4} Q${cx} ${top+7} ${cx-rx} ${cy-4} Z" fill="${hairC}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>`;
   if(style==='buzz') s += `<path d="M${cx-rx-.5} ${cy-2} Q${cx-rx} ${top-4} ${cx} ${top-2} Q${cx+rx} ${top-4} ${cx+rx+.5} ${cy-2} Q${cx+rx*.6} ${top+7} ${cx} ${top+6} Q${cx-rx*.6} ${top+7} ${cx-rx-.5} ${cy-2} Z" fill="${hairC}" opacity=".9" stroke="${INK}" stroke-width="2"/>`;
   if(style==='mohawk') s += `<path d="M${cx-5} ${top+8} Q${cx-7} ${top-10} ${cx} ${top-12} Q${cx+7} ${top-10} ${cx+5} ${top+8} Z" fill="${hairC}" stroke="${INK}" stroke-width="2"/>`;
   if(style==='bun') s += `<path d="M${cx-rx} ${cy-4} Q${cx-rx} ${top-3} ${cx} ${top-2} Q${cx+rx} ${top-3} ${cx+rx} ${cy-4} Q${cx} ${top+5} ${cx-rx} ${cy-4} Z" fill="${hairC}" stroke="${INK}" stroke-width="2"/><circle cx="${cx}" cy="${top-6}" r="7" fill="${hairC}" stroke="${INK}" stroke-width="2"/>`;
@@ -1120,11 +1270,11 @@ function portrait(seed, role, expr, opt){
   if(['analyst','journalist','grandma','seer'].includes(role) || (role==='producer')) s += `<g fill="none" stroke="${INK}" stroke-width="1.8"><circle cx="${cx-ex}" cy="${ey}" r="5.2"/><circle cx="${cx+ex}" cy="${ey}" r="5.2"/><path d="M${cx-ex+5.2} ${ey} h${2*ex-10.4}"/></g>`;
   if(['shades','influencer','anon'].includes(role)) s += `<path d="M${cx-ex-6} ${ey-3} h${ex*2+12} v2 q-1 6 -7 6 q-5 0 -5 -5 h-${2*ex-14} q0 5 -5 5 q-6 0 -7 -6 Z" fill="${INK}"/>`;
   /* nariz */
-  const broken = fighterish && r()<.4;
+  const broken = L ? X('nose') : fighterish && r()<.4;
   s += broken ? `<path d="M${cx-1} ${ey+3} l3 5 l-3 3 h4" stroke="${INK}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>` : `<path d="M${cx} ${ey+3} q-2.5 6 0 8 h3" stroke="${INK}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
   /* boca */
   const my = cy+ry*.52;
-  if(beard==='mustache' || (old && beard!=='none')) s += `<path d="M${cx-8} ${my-2} Q${cx} ${my-7} ${cx+8} ${my-2} Q${cx} ${my-3} ${cx-8} ${my-2} Z" fill="${hairC}" stroke="${INK}" stroke-width="1.4"/>`;
+  if(beard==='mustache' || beard==='full' || beard==='big' || (old && beard!=='none')) s += `<path d="M${cx-8} ${my-2} Q${cx} ${my-7} ${cx+8} ${my-2} Q${cx} ${my-3} ${cx-8} ${my-2} Z" fill="${hairC}" stroke="${INK}" stroke-width="1.4"/>`;
   const mouth = {
     idle:`<path d="M${cx-6} ${my} h12" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/>`,
     neutral:`<path d="M${cx-5} ${my} h10" stroke="${INK}" stroke-width="2" stroke-linecap="round"/>`,
@@ -1140,7 +1290,9 @@ function portrait(seed, role, expr, opt){
   }[expr] || '';
   s += mouth;
   /* marcas de pelea */
-  if(fighterish && r()<.35) s += `<path d="M${cx+ex-6} ${by-4} l5 9" stroke="#a52a14" stroke-width="1.5" stroke-linecap="round"/>`;
+  if(L ? X('scar') : fighterish && r()<.35) s += L ? `<path d="M${cx-ex-7} ${ey+5} l9 6 M${cx-ex-4} ${ey+5} l-1 3 M${cx-ex} ${ey+8} l-1 3" stroke="#a52a14" stroke-width="1.5" stroke-linecap="round"/>` : `<path d="M${cx+ex-6} ${by-4} l5 9" stroke="#a52a14" stroke-width="1.5" stroke-linecap="round"/>`;
+  if(X('papakha')) s += `<path d="M${cx-rx-3} ${top+10} L${cx-rx-1} ${top-15} Q${cx} ${top-21} ${cx+rx+1} ${top-15} L${cx+rx+3} ${top+10} Q${cx} ${top+5} ${cx-rx-3} ${top+10} Z" fill="#9b958a" stroke="${INK}" stroke-width="2"/><path d="M${cx-rx+3} ${top-6} q3 -3 6 0 q3 -3 6 0 q3 -3 6 0 q3 -3 6 0 q3 -3 6 0 M${cx-rx+1} ${top+2} q3 -3 6 0 q3 -3 6 0 q3 -3 6 0 q3 -3 6 0 q3 -3 6 0 q3 -3 6 0" stroke="${INK}" stroke-width="1.2" fill="none" opacity=".55"/>`;
+  if(X('cowboy')) s += `<ellipse cx="${cx}" cy="${top+8}" rx="${rx+15}" ry="5" fill="#8a5a2b" stroke="${INK}" stroke-width="2"/><path d="M${cx-rx+3} ${top+7} L${cx-rx+5} ${top-12} Q${cx} ${top-6} ${cx+rx-5} ${top-12} L${cx+rx-3} ${top+7} Z" fill="#8a5a2b" stroke="${INK}" stroke-width="2"/><path d="M${cx-rx+4} ${top+3} h${2*rx-8}" stroke="${INK}" stroke-width="2.4"/>`;
   if(['hit','crit','ko','pain'].includes(expr)){
     s += `<ellipse cx="${cx-ex}" cy="${ey+.5}" rx="6" ry="5" fill="#6a2d6e" opacity=".22"/>`;
     s += `<path d="M${cx+2} ${ey+11} q1.5 4 0 6 q-1.5 -2 0 -6Z" fill="#cf3a1f" stroke="#7a2416" stroke-width=".8"/>`;
@@ -1292,7 +1444,7 @@ function newGame(cfg){
   if(cfg.daily) seedRNG('idolo-mma-'+cfg.daily); else unseedRNG();
   G = { v:3, daily:cfg.daily||null, marks:[], startYear:new Date().getFullYear(), season:0, p:newPlayer(cfg), lists:{}, timeline:[], pending:[], forced:null,
         step:'card', cards:null, event:null, evRes:null, seasonRes:null, big:null, lastBig:null, yearLog:null,
-        usedEvents:[], usedTrash:[], seenGames:{}, bigCount:0, lastGames:[], picantes:0, retireAsk:false };
+        usedEvents:[], usedTrash:[], seenGames:{}, recent:[], regLeft:0, bigCount:0, lastGames:[], picantes:0, retireAsk:false };
   G.p.rival = makeRival(G.p);
   startSeason(true);
 }
@@ -1426,12 +1578,19 @@ function afterCard(){
   if(G.event){ G.step = 'event'; }
   else toPreview();
 }
-/* las peleas simuladas y la consecuencia del evento se muestran arriba de la previa */
+/* después del evento: las peleas de la temporada, todas jugables (la última es la grande) */
 function toPreview(){
-  playSeason();
+  G.seasonRes = [];
   if(G.skipSeason){ G.lastBig = null; finishSeason(); return; }
-  setupBig();
+  G.regLeft = TIERS[G.p.tier].sims;
+  G.step = 'fights';
+  startRegular();
 }
+/* para no cruzarte siempre con los mismos: se recuerdan los últimos rivales */
+function noteRecent(name){ G.recent = (G.recent||[]).filter(n=>n!==name); G.recent.push(name); if(G.recent.length>6) G.recent.shift(); G.faced = G.faced || {}; G.faced[name] = (G.faced[name]||0)+1; }
+function isRecent(f){ return !!f && ((G.recent||[]).includes(f.name) || ((G.faced||{})[f.name]||0)>=2); }
+function pickFresh(lst, idxs){ const c = idxs.filter(i=>i>=0 && i<lst.L.length).map(i=>lst.L[i]).filter(f=>f && !f.isRival && !isRecent(f)); return c.length ? choice(c) : null; }
+function range(a, b){ const o = []; for(let i=a;i<=b;i++) o.push(i); return o; }
 function drawEvent(){
   const p = G.p;
   if(G.pending.length) return {special:G.pending.shift()};
@@ -1526,7 +1685,7 @@ function moveTier(t, rank){
   syncRival();
 }
 
-/* ---------- peleas de la temporada (simuladas) ---------- */
+/* ---------- peleas de la temporada: rivales y forma de ganar ---------- */
 function winProb(a, b){ return clamp(sigmoid((a-b)/6.5), .04, .96); }
 const KO_HOW = ['gancho de izquierda','patada a la cabeza','rodillazo volador','cross de derecha','uppercut','codazo giratorio'];
 const SUB_HOW = ['mata león','guillotina','armbar','triangular','kimura','D\'Arce'];
@@ -1542,29 +1701,16 @@ function methodFor(winner, loserOvr, winnerOvr, heavy){
 }
 function simOpponent(){
   const p = G.p, lst = getList(p), T = TIERS[p.tier];
-  if(p.champ){ const i = randi(3,10); return {...lst.L[i], dispRank:i+1}; }
+  if(p.champ){ const f = pickFresh(lst, range(3,10)); if(f) return {...f, dispRank:lst.L.indexOf(f)+1}; }
   if(p.rank && R()<.65){
-    const i = clamp(p.rank-1+randi(0,4), 0, 14);
-    const f = lst.L[i];
-    if(f && !f.isRival) return {...f, dispRank:dispRank(i)<=15?dispRank(i):null};
+    const f = pickFresh(lst, range(p.rank-1, Math.min(14, p.rank+4)));
+    if(f){ const i = lst.L.indexOf(f); return {...f, dispRank:dispRank(i)<=15?dispRank(i):null}; }
   }
   const base = p.rank ? rankOvr(p.tier, Math.min(15, p.rank+4)) : rand(T.unr[0], T.unr[1]);
   return {...makeOpp(base + rand(-2,2)), dispRank:null};
 }
-function playSeason(){
-  const p = G.p, res = [];
-  const n = G.skipSeason ? 0 : TIERS[p.tier].sims;
-  for(let i=0;i<n;i++){
-    const opp = simOpponent();
-    const me = ovrOf(p);
-    const win = R() < winProb(me, opp.ovr);
-    const heavy = !!wcOf(p).heavy;
-    const mm = win ? methodFor(p.style, opp.ovr, me, heavy) : methodFor(opp.spec, me, opp.ovr, heavy);
-    const out = applyResult(opp, win, mm.m, 'sim');
-    res.push({opp, win, m:mm.m, how:mm.how, rank:out.rank, money:out.money});
-  }
-  G.seasonRes = res;
-}
+/* cómo terminó una pelea jugada, para el resumen del año */
+function howFor(method){ if(/Decisi/.test(method)) return ''; return (method==='Sumisión' ? choice(SUB_HOW) : method==='TKO' ? choice(TKO_HOW) : choice(KO_HOW))+' · R'+randi(1,3); }
 
 /* ---------- pelea grande del año ---------- */
 const TITLE_KINDS = ['title','defense','dwcs','doble'];
@@ -1582,7 +1728,8 @@ function setupBig(){
   } else if(p.champ){
     type = 'defense';
     const top = lst.L.slice(0,3), rv = top.find(f=>f.isRival);
-    const f = (rv && R()<.6) ? rv : choice(top);
+    const fresh = top.filter(f=>!isRecent(f));
+    const f = (rv && R()<.6) ? rv : choice(fresh.length ? fresh : top);
     opp = {...f, dispRank:lst.L.indexOf(f)+1};
   } else if(forced==='title' || p.flags.promise2 || (p.rank && p.rank<=3)){
     p.flags.promise2 = false;
@@ -1592,7 +1739,8 @@ function setupBig(){
     if(rv && R() < (G.lastClasico===G.season-1 ? .08 : .3)){ type = 'clasico'; G.lastClasico = G.season; const i=lst.L.indexOf(rv); opp = {...rv, dispRank:dispRank(i)<=15?dispRank(i):null}; }
     else {
       type = 'estelar';
-      const i = p.rank ? Math.max(0, p.rank-1-randi(3,5)) : randi(5,9);
+      const f = p.rank ? pickFresh(lst, range(Math.max(0, p.rank-7), Math.max(0, p.rank-3))) || pickFresh(lst, range(0, Math.max(2, p.rank-2))) : pickFresh(lst, range(4,10));
+      const i = f ? lst.L.indexOf(f) : (p.rank ? Math.max(0, p.rank-1-randi(3,5)) : randi(5,9));
       opp = {...lst.L[i], dispRank:dispRank(i)<=15?dispRank(i):null};
       if(opp.isRival){ type = 'clasico'; G.lastClasico = G.season; }
     }
@@ -1603,7 +1751,7 @@ function setupBig(){
 function bigLabel(b){
   const p = G.p, org = orgShort(p);
   return ({title:`Pelea por el título · ${org}`, defense:`Defensa del título · ${org}`, dwcs:'Serie de Contendientes', doble:`Por el segundo cinturón · ${b.opp.otherWc||''}`,
-           clasico:'El clásico', estelar:`Pelea estelar · ${org}`})[b.type] || 'Pelea del año';
+           clasico:'El clásico', estelar:`Pelea estelar · ${org}`, regular:`Pelea de la temporada · ${org}`})[b.type] || 'Pelea del año';
 }
 function bigClass(b){ return ['title','defense','doble','dwcs'].includes(b.type) ? 'title' : ((b.type==='clasico' || (b.opp && b.opp.isRival)) ? 'hot' : ''); }
 
@@ -1615,7 +1763,9 @@ function applyResult(opp, win, method, kind){
   if(win){ p.record.w++; G.yearLog.w++; p.streakL = 0; if(method==='Sumisión') p.sub++; else if(finish) p.ko++; }
   else { p.record.l++; G.yearLog.l++; p.streakL++; }
   /* plata */
-  let purse = big ? rand(T.big[0], T.big[1]) : rand(T.purse[0], T.purse[1]);
+  /* antes había dos peleas chicas por año en el regional y el mundial; ahora una, que vale doble */
+  const regMul = (!big && p.tier<2) ? 2 : 1;
+  let purse = big ? rand(T.big[0], T.big[1]) : rand(T.purse[0], T.purse[1])*regMul;
   if(['title','defense','doble'].includes(kind)) purse *= 2.3;
   if(kind==='dwcs') purse = 25000;
   if(!win) purse *= .45;
@@ -1624,7 +1774,7 @@ function applyResult(opp, win, method, kind){
   if(p.tier===2 && big && win && finish && R()<.6){ purse += 50000; out.notes.push({t:'Actuación de la Noche: +'+fmtMoney(50000), i:'rayo', c:'o'}); }
   p.money += purse; p.earned += purse; out.money = purse;
   /* fama e hinchada */
-  let fame = (big ? (win?5:-3) : (win?2:-1)) * T.fame;
+  let fame = (big ? (win?5:-3) : (win?2:-1)*regMul) * T.fame;
   if(win && finish) fame += big ? 2 : 1;
   if(win && TITLE_KINDS.includes(kind)) fame += 10;
   if(p.persona==='bocon') fame *= fame>0 ? 1.5 : 2;
@@ -1678,6 +1828,8 @@ function applyResult(opp, win, method, kind){
       p.rank = nr;
       if(oi>=0 && opp.dispRank && nr<=opp.dispRank){ const [f] = lst.L.splice(oi,1); lst.L.splice(Math.min(lst.L.length, oi+1),0,f); }
     } else if(before){ const nr = before + randi(1,3); p.rank = nr>15 ? null : nr; }
+    /* el que te ganó sube en el ranking (y deja de ser "el de al lado" para la próxima) */
+    if(!win && oi>0){ const [f] = lst.L.splice(oi,1); lst.L.splice(Math.max(0, oi-2), 0, f); }
     if(big) p.flags.promise = false;
     out.rank = {from:before, to:p.rank};
   }
@@ -1830,6 +1982,28 @@ function startBig(useArenga, mode){
   if(p.persona==='bocon'){ F.phase = 'trash'; F.trash = pickTrash(); render(); return; }
   nextRound();
 }
+/* las peleas de la temporada: un round, un minijuego corto, sin cara a cara */
+function startRegular(){
+  const p = G.p, n = TIERS[p.tier].sims;
+  if(!(G.regLeft>0)){ setupBig(); UI.screen = 'career'; return; }
+  F = {mode:fixedMode() || 'skill', type:'regular', quick:true, opp:simOpponent(), need:1, max:1, round:0, meW:0, opW:0, hist:[], used:[], hype:0,
+       game:null, phase:null, num:n-G.regLeft+1, of:n};
+  UI.screen = 'fight';
+  nextRound();
+}
+function finishRegular(win, method){
+  mgStop();
+  const opp = F.opp;
+  const out = applyResult(opp, win, method, 'sim');
+  G.seasonRes.push({opp, win, m:method, how:howFor(method), rank:out.rank, money:out.money});
+  noteRecent(opp.name);
+  F.phase = 'done'; F = null;
+  G.regLeft--;
+  if(G.regLeft>0){ startRegular(); save(); return; }
+  setupBig();
+  UI.screen = 'career';
+  render(); save();
+}
 function pickTrash(){
   let pool = TRASH.map((t,i)=>i).filter(i=>!G.usedTrash.includes(i));
   if(!pool.length){ G.usedTrash = []; pool = TRASH.map((t,i)=>i); }
@@ -1881,7 +2055,8 @@ function roundDiff(gid){
   const [mine, his] = statPair(gid);
   let d = (his - mine)/13;
   if(F.round>0) d += (o.cardio - p.cardio)/55;              // el cardio pesa en los rounds de campeonato
-  if(G.bigCount<=2) d -= .55;                                // tus primeras peleas grandes son más amables
+  if(F.type==='regular'){ if(G.season===0) d -= .35; }     // la primera temporada, más amable
+  else if(G.bigCount<=2) d -= .55;                           // tus primeras peleas grandes son más amables
   if(F.round===0) d -= F.hype;                               // bocón: el cara a cara
   if(p.persona==='guerrero' && F.opW > F.meW) d -= .45;      // guerrero: se agranda cuando va abajo
   if(F.shortNotice) d += .3;
@@ -1926,7 +2101,7 @@ function roundDone(tier){
   else if(F.opW>=F.need) F.end = {win:false, method:(F.max===1 || F.meW===0) ? 'Decisión unánime' : 'Decisión dividida'};
   else F.end = null;
   if(F.end && F.end.win && !/Decisi/.test(F.end.method) && MG[F.game].luck) F.end.method = choice(['KO','KO','TKO','Sumisión']);
-  F.canAmuleto = isLuck() && res==='l' && p.amuletos>0;
+  F.canAmuleto = isLuck() && res==='l' && p.amuletos>0 && F.type!=='regular';
   if(res==='w') (tier==='perfect' ? SFX.great : SFX.good)(); else (tier==='ko' ? SFX.hurt : SFX.bad)();
   if(tier==='perfect'){ flashScreen('y'); vibrate([30,40,60]); } else if(tier==='ko'){ flashScreen('r'); vibrate(120); }
   showRoundOverlay();
@@ -1952,9 +2127,11 @@ function afterRound(){
   nextRound();
 }
 function finishBig(win, method){
+  if(F && F.type==='regular') return finishRegular(win, method);
   mgStop();
   const b = G.big;
   const out = applyResult(b.opp, win, method, b.type);
+  noteRecent(b.opp.name);
   out.arenga = !!(F && F.arenga);
   G.lastBig = {...out, opp:b.opp, kind:b.type};
   G.lastFight = out;
@@ -1994,11 +2171,26 @@ function mgLoop(fn){
   MGR.raf = requestAnimationFrame(tick);
 }
 function hitStop(ms){ MGR.freeze = performance.now() + (ms||70); }
-const C = {paper:'#faf5e9', paper2:'#e7dbbf', paper3:'#d6c49e', ink:'#1c1915', ink3:'#655b4d', red:'#cf3a1f', red2:'#a52a14', mustard:'#e3a92c', green:'#2e6b44', blue:'#2a5297'};
-const SVG_DEFS = `<defs>
+/* paleta de los minijuegos: sale de las variables CSS, así respeta el modo oscuro */
+const C = {paper:'#faf5e9', paper2:'#e7dbbf', paper3:'#d6c49e', ink:'#1c1915', ink3:'#655b4d', red:'#cf3a1f', red2:'#a52a14', mustard:'#e3a92c', green:'#2e6b44', blue:'#2a5297', photo:'#e7dbbf', dark:false};
+let SVG_DEFS = '', GLOVE = '';
+function refreshPalette(){
+  try{
+    const cs = getComputedStyle(document.documentElement), v = n=>cs.getPropertyValue(n).trim();
+    const M = {paper:'--white', paper2:'--paper-2', paper3:'--paper-3', ink:'--ink', ink3:'--ink-3', red:'--red', red2:'--red-2', mustard:'--mustard', green:'--green', blue:'--blue', photo:'--photo'};
+    for(const k in M){ const x = v(M[k]); if(x) C[k] = x; }
+    C.dark = document.documentElement.getAttribute('data-theme')==='dark';
+  }catch(e){}
+  SVG_DEFS = `<defs>
   <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="${C.ink}" stroke-width="1.6"/></pattern>
   <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.2" fill="${C.ink}" opacity=".25"/></pattern>
 </defs>`;
+  GLOVE = `<path d="M-12 -2 C-14 -12 -8 -19 1 -19 C10 -19 15 -12 14 -4 L14 4 C14 11 9 15 1 15 L-4 15 C-9 15 -12 11 -12 6 Z" fill="${C.red}" stroke="${C.ink}" stroke-width="2.6"/>
+  <path d="M-12 2 C-17 2 -18 -5 -14 -7 C-11 -8 -9 -6 -9 -3" fill="${C.red}" stroke="${C.ink}" stroke-width="2.6"/>
+  <rect x="-8" y="13" width="17" height="8" rx="1.5" fill="${C.paper}" stroke="${C.ink}" stroke-width="2.6"/>
+  <path d="M-5 -13 C-1 -16 5 -16 8 -12" stroke="${C.paper}" stroke-width="2" fill="none" opacity=".75"/>`;
+}
+refreshPalette();
 function polar(r, a){ const t = (a-90)*Math.PI/180; return [r*Math.cos(t), r*Math.sin(t)]; }
 function arcPath(r, a0, a1){
   if(a1-a0>=359.9) a1 = a0+359.9;
@@ -2018,20 +2210,19 @@ function octagonBg(){ return `<polygon points="${octPts(158)}" fill="url(#hatch)
 function contOf(cc){ const c = COUNTRIES.find(x=>x.c===cc); return c ? c.cont : null; }
 function faceOf(f, expr){ return portrait(f.name, f===G.p ? 'me' : 'fighter', expr, {cont:contOf(f.cc)}); }
 function faceInner(f, expr){ return faceOf(f, expr).replace(/^<svg[^>]*>|<\/svg>$/g, ''); }
-function faceG(id, x, y, size){ return `<g transform="translate(${x} ${y}) scale(${size/100})"><g id="${id}"></g></g>`; }
-const GLOVE = `<path d="M-12 -2 C-14 -12 -8 -19 1 -19 C10 -19 15 -12 14 -4 L14 4 C14 11 9 15 1 15 L-4 15 C-9 15 -12 11 -12 6 Z" fill="${C.red}" stroke="${C.ink}" stroke-width="2.6"/>
-  <path d="M-12 2 C-17 2 -18 -5 -14 -7 C-11 -8 -9 -6 -9 -3" fill="${C.red}" stroke="${C.ink}" stroke-width="2.6"/>
-  <rect x="-8" y="13" width="17" height="8" rx="1.5" fill="${C.paper}" stroke="${C.ink}" stroke-width="2.6"/>
-  <path d="M-5 -13 C-1 -16 5 -16 8 -12" stroke="${C.paper}" stroke-width="2" fill="none" opacity=".75"/>`;
+/* en el modo oscuro las caras van sobre un círculo claro, como una foto pegada */
+function faceBack(){ return C.dark ? `<circle cx="50" cy="52" r="47" fill="${C.photo}" stroke="${C.ink}" stroke-width="2"/>` : ''; }
+function faceG(id, x, y, size){ return `<g transform="translate(${x} ${y}) scale(${size/100})">${faceBack()}<g id="${id}"></g></g>`; }
+
 
 function mgRun(gid, d){
-  mgStop(); MGR.alive = true; MGR.freeze = 0;
+  mgStop(); MGR.alive = true; MGR.freeze = 0; refreshPalette();
   /* el azar interno de los minijuegos no toca la semilla del desafío del día */
   MGR.seedSave = RNGS.seeded; RNGS.seeded = false;
   const stage = $('stage'), hud = $('mgHud'), act = $('mgAct'), sub = $('mgSub'), timer = $('mgTimer');
   let finished = false;
   const c = {
-    d, p:luckP(d), stage, hud, act, sub, opp:F.opp, me:G.p,
+    d, p:luckP(d), quick:!!(F && F.quick), stage, hud, act, sub, opp:F.opp, me:G.p,
     done(tier){
       if(finished) return; finished = true; mgUnseed();
       MGR.alive = false; cancelAnimationFrame(MGR.raf); MGR.key = MGR.keyup = MGR.up = null;
@@ -2067,7 +2258,9 @@ window.addEventListener('pointercancel', e=>{ if(MGR.up && MGR.alive) MGR.up(e);
 function botTier(d, s, luck){
   const r = R();
   if(luck){ const p = luckP(d); if(r < p*.3) return 'perfect'; if(r < p) return 'win'; if(r > 1-(1-p)*.2) return 'ko'; return 'lose'; }
-  const pw = clamp(.5 + (s-.5)*.9 - d*.28, .05, .95);
+  /* calibrado con el humano simulado: promedio ~65% parejo, ~35% difícil; flojo ~40% parejo */
+  const off = -.2 + (s-.3)*1.7 + Math.max(0, s-.6)*1.5;
+  const pw = clamp(sigmoid(2*(off - d)), .03, .97);
   if(r < pw*(.2+.35*s)) return 'perfect';
   if(r < pw) return 'win';
   if(r > 1-(1-pw)*.2) return 'zero';
@@ -2076,7 +2269,7 @@ function botTier(d, s, luck){
 
 /* ---------- 1. LA ZONA (golpe) ---------- */
 MG.zona = {icon:'diana', nm:'La Zona', stat:'striking', fin:'KO', hint:'Tocá cuando la bola pase por lo amarillo',
-  how:'La bola gira alrededor del rival. Tocá cuando pase por la <b class="y">zona amarilla</b>; el centro <b class="r">rojo</b> es golpe perfecto. Son tres golpes: con tres en lo amarillo no alcanza, metele por lo menos uno en el rojo.',
+  how:'La bola gira alrededor del rival. Tocá cuando pase por la <b class="y">zona amarilla</b>; el centro <b class="r">rojo</b> es golpe perfecto. Para ganar el round tenés que meter por lo menos uno en el rojo.',
   run(c){
     const R0 = 112, arc = byDiff(c.d, 80, 46, 30), gold = arc*.34;
     let speed = byDiff(c.d, 140, 225, 330), dir = R()<.5 ? 1 : -1, ang = rand(0,360), target = 0, n = 0, score = 0, lock = false, idle = 0;
@@ -2096,15 +2289,16 @@ MG.zona = {icon:'diana', nm:'La Zona', stat:'striking', fin:'KO', hint:'Tocá cu
       zA.setAttribute('d', arcPath(R0, target-arc/2, target+arc/2));
       zG.setAttribute('d', arcPath(R0, target-gold/2, target+gold/2));
     }
-    place(); c.pips(3, res);
+    const N = c.quick ? 2 : 3;
+    place(); c.pips(N, res);
     c.tapButton('¡PEGÁ!');
     function strike(){
       if(lock) return; lock = true; idle = 0;
       const dd = angDist(ang, target);
       const pts = dd<=gold/2 ? 2 : dd<=arc/2 ? 1 : 0;
-      score += pts; res.push(pts); n++; c.pips(3, res); c.fb(pts);
+      score += pts; res.push(pts); n++; c.pips(N, res); c.fb(pts);
       c.face(zF, pts===2 ? 'crit' : pts===1 ? 'hit' : 'smirk');
-      if(n>=3){ if(score>=5) c.face(zF,'ko'); return c.done(score>=5 ? 'perfect' : score>=4 ? 'win' : score>=1 ? 'lose' : 'zero'); }
+      if(n>=N){ if(score>=2*N-1+(c.quick?1:0)) c.face(zF,'ko'); return c.done(score>=2*N-1+(c.quick?1:0) ? 'perfect' : score>=N+1 ? 'win' : score>=1 ? 'lose' : 'zero'); }
       mgAfter(420, ()=>{ lock = false; speed *= 1.12; if(R()<.4) dir *= -1; place(); c.face(zF, 'idle'); });
     }
     c.onTap(strike);
@@ -2117,7 +2311,7 @@ MG.zona = {icon:'diana', nm:'La Zona', stat:'striking', fin:'KO', hint:'Tocá cu
 
 /* ---------- 2. PATADA A LA CABEZA (puntería) ---------- */
 MG.patada = {icon:'diana', nm:'Patada a la cabeza', stat:'striking', fin:'KO', hint:'Tocá cuando la mira pase por el centro',
-  how:'La mira va y viene sobre un rival que se mueve. Tocá cuando pase por el <b class="r">centro rojo</b> del blanco. Son tres patadas.',
+  how:'La mira va y viene sobre un rival que se mueve. Tocá cuando pase por el <b class="r">centro rojo</b> del blanco: ahí es perfecta.',
   run(c){
     const gold = byDiff(c.d, 20, 14, 9), green = gold*2.4, Rr = byDiff(c.d, 95, 108, 120), bob = byDiff(c.d, 4, 12, 24);
     let w = byDiff(c.d, 1.9, 2.6, 3.4), th = rand(0,6.28), tt = Math.PI/(2*w), tx = 0, ty = -8, bx = 0, by = 0, n = 0, score = 0, lock = false, idle = 0, cx = 0, cy = 0, clock = 0;
@@ -2134,14 +2328,15 @@ MG.patada = {icon:'diana', nm:'Patada a la cabeza', stat:'striking', fin:'KO', h
     const pT = $('pT'), pX = $('pX'), pF = $('pF');
     c.face(pF, 'idle');
     const placeT = ()=> pT.setAttribute('transform', `translate(${(tx+bx).toFixed(1)} ${(ty+by).toFixed(1)})`);
-    placeT(); c.pips(3, res); c.tapButton('¡PATEÁ!');
+    const N = c.quick ? 2 : 3;
+    placeT(); c.pips(N, res); c.tapButton('¡PATEÁ!');
     function kick(){
       if(lock) return; lock = true; idle = 0;
       const dist = Math.hypot(cx-tx-bx, cy-ty-by);
       const pts = dist<=gold ? 2 : dist<=green ? 1 : 0;
-      score += pts; res.push(pts); n++; c.pips(3, res); c.fb(pts);
+      score += pts; res.push(pts); n++; c.pips(N, res); c.fb(pts);
       c.face(pF, pts===2 ? 'crit' : pts===1 ? 'hit' : 'smirk');
-      if(n>=3){ if(score>=5) c.face(pF,'ko'); return c.done(score>=5 ? 'perfect' : score>=3 ? 'win' : score>=1 ? 'lose' : 'zero'); }
+      if(n>=N){ if(score>=2*N-1+(c.quick?1:0)) c.face(pF,'ko'); return c.done(score>=2*N-1+(c.quick?1:0) ? 'perfect' : score>=N ? 'win' : score>=1 ? 'lose' : 'zero'); }
       mgAfter(450, ()=>{ tx = rand(-58,58); ty = rand(-60,48); placeT(); w *= 1.12; tt = Math.PI/(2*w); c.face(pF,'idle'); lock = false; });
     }
     c.onTap(kick);
@@ -2156,12 +2351,12 @@ MG.patada = {icon:'diana', nm:'Patada a la cabeza', stat:'striking', fin:'KO', h
 
 /* ---------- 3. BLOQUEÁ (reflejos, 3 carriles) ---------- */
 MG.bloqueo = {icon:'escudo', nm:'Bloqueá', stat:'defense', fin:'KO', hint:'Tocá el carril del guante rojo',
-  how:'Te tira golpes por tres carriles. Tocá el carril del <b class="r">guante rojo</b> antes de que te llegue. Los <b>rayados</b> son amagues: no los toques. Son cinco golpes: si te comés más de uno, el round es de él.',
+  how:'Te tira golpes por tres carriles. Tocá el carril del <b class="r">guante rojo</b> antes de que te llegue. Los <b>rayados</b> son amagues: no los toques. Si te comés más de un golpe, el round es de él.',
   run(c){
     let travel = byDiff(c.d, 900, 600, 505);
     const gap = byDiff(c.d, 380, 260, 180);
-    const nFeint = c.d>1 ? 3 : c.d>.4 ? 2 : c.d>-.4 ? 1 : 0;
-    const seq = Array.from({length:5}, ()=>({lane:randi(0,2), feint:false}));
+    const NP = c.quick ? 3 : 5, nFeint = Math.min(c.quick ? 1 : 3, c.d>1 ? 3 : c.d>.4 ? 2 : c.d>-.4 ? 1 : 0);
+    const seq = Array.from({length:NP}, ()=>({lane:randi(0,2), feint:false}));
     for(let i=0;i<nFeint;i++) seq.splice(randi(1,seq.length-1), 0, {lane:randi(0,2), feint:true});
     let idx = -1, cur = null, t0 = 0, hits = 0;
     const res = [], LX = [-92, 0, 92];
@@ -2175,10 +2370,10 @@ MG.bloqueo = {icon:'escudo', nm:'Bloqueá', stat:'defense', fin:'KO', hint:'Toc�
     c.act.innerHTML = `<div class="lanes"><button data-l="0">${triSvg(-90)}<small>izquierda</small></button><button data-l="1">${triSvg(0)}<small>centro</small></button><button data-l="2">${triSvg(90)}<small>derecha</small></button></div>`;
     const bG = $('bG'), bGi = $('bGi'), bF = $('bF');
     c.face(bF, 'angry');
-    c.pips(5, res);
+    c.pips(NP, res);
     function next(){
       idx++;
-      if(idx>=seq.length){ cur = null; return c.done(hits===0 ? 'perfect' : hits<=1 ? 'win' : hits<=3 ? 'lose' : 'zero'); }
+      if(idx>=seq.length){ cur = null; return c.done(hits===0 ? 'perfect' : hits<=1 ? 'win' : hits<=(c.quick?2:3) ? 'lose' : 'zero'); }
       cur = {...seq[idx], done:false}; t0 = performance.now(); if(!cur.feint) travel *= .96;
       bGi.querySelector('path').setAttribute('fill', cur.feint ? 'url(#hatch)' : C.red);
       bG.setAttribute('opacity', 1);
@@ -2189,7 +2384,7 @@ MG.bloqueo = {icon:'escudo', nm:'Bloqueá', stat:'defense', fin:'KO', hint:'Toc�
       $('bL'+cur.lane).setAttribute('fill', C.paper);
       if(outcome==='block'){ res.push(1); c.pop('¡TAPADO!','ok',true); SFX.block(); const s=$('bS'+cur.lane); s.setAttribute('opacity',1); mgAfter(250,()=>s.setAttribute('opacity',.35)); c.face(bF,'smirk'); }
       else if(outcome==='hit'){ hits++; res.push(0); c.pop(cur.feint?'¡AMAGUE!':'¡PUM!','bad',true); SFX.hurt(); hitStop(60); shake(c.stage); flashScreen('r'); vibrate(60); c.face(bF,'happy'); }
-      c.pips(Math.max(5,res.length), res);
+      c.pips(Math.max(NP,res.length), res);
       bG.setAttribute('opacity', 0);
       mgAfter(gap, ()=>{ c.face(bF,'angry'); next(); });
     }
@@ -2215,7 +2410,7 @@ MG.bloqueo = {icon:'escudo', nm:'Bloqueá', stat:'defense', fin:'KO', hint:'Toc�
 
 /* ---------- 4. CERRÁ LA LLAVE (mantener y soltar) ---------- */
 MG.llave = {icon:'piso', nm:'Cerrá la llave', stat:'sumision', fin:'Sumisión', hint:'Mantené apretado y soltá en lo amarillo',
-  how:'<b>Mantené apretado</b> para cerrar la llave y <b>soltá</b> cuando la aguja esté en lo <b class="y">amarillo</b> (el <b class="r">rojo</b> del medio es perfecto). Si llegás a lo rayado, se escapa. Son tres apretadas y por lo menos una tiene que caer en el rojo.',
+  how:'<b>Mantené apretado</b> para cerrar la llave y <b>soltá</b> cuando la aguja esté en lo <b class="y">amarillo</b> (el <b class="r">rojo</b> del medio es perfecto). Si llegás a lo rayado, se escapa. Para ganar el round, por lo menos una apretada tiene que caer en el rojo.',
   run(c){
     const bw = byDiff(c.d, 30, 19, 9), gw = bw*.38, R0 = 108;
     let rate = byDiff(c.d, 32, 48, 74), P = 0, holding = false, lock = false, idle = 0, step = 0, score = 0, band = 0, ph = rand(0,6);
@@ -2235,17 +2430,18 @@ MG.llave = {icon:'piso', nm:'Cerrá la llave', stat:'sumision', fin:'Sumisión',
     c.face(lF, 'angry');
     function setBand(){ band = centers[step]; lB.setAttribute('d', arcPath(R0, toA(band-bw/2), toA(band+bw/2))); lG.setAttribute('d', arcPath(R0, toA(band-gw/2), toA(band+gw/2))); }
     function draw(){ lN.setAttribute('transform', `rotate(${toA(P).toFixed(2)})`); lP.setAttribute('d', P>1 ? arcPath(R0-28, A0, toA(P)) : ''); }
-    setBand(); draw(); c.pips(3, res);
+    const N = c.quick ? 2 : 3;
+    setBand(); draw(); c.pips(N, res);
     const btn = c.tapButton('MANTENÉ APRETADO', 'ink');
     function down(e){ if(e){ if(!MGR.alive) return; e.preventDefault(); } if(lock || holding) return; holding = true; idle = 0; btn.classList.add('on'); SFX.tap(); c.face(lF,'pain'); }
     function judge(forceFail){
       holding = false; lock = true; btn.classList.remove('on');
       const dd = Math.abs(P - band);
       const pts = forceFail ? 0 : dd<=gw/2 ? 2 : dd<=bw/2 ? 1 : 0;
-      score += pts; res.push(pts); step++; c.pips(3, res);
+      score += pts; res.push(pts); step++; c.pips(N, res);
       if(forceFail){ c.pop('¡SE ZAFÓ!','bad'); SFX.whiff(); } else c.fb(pts);
       c.face(lF, pts===2 ? 'crit' : pts===1 ? 'hit' : 'smirk');
-      if(step>=3){ if(score>=5) c.face(lF,'tap'); return c.done(score>=5 ? 'perfect' : score>=4 ? 'win' : score>=1 ? 'lose' : 'zero'); }
+      if(step>=N){ if(score>=2*N-1+(c.quick?1:0)) c.face(lF,'tap'); return c.done(score>=2*N-1+(c.quick?1:0) ? 'perfect' : score>=N+1 ? 'win' : score>=1 ? 'lose' : 'zero'); }
       const from = P, t0 = performance.now();
       mgAfter(460, ()=>{ rate *= 1.13; setBand(); c.face(lF,'angry'); lock = false; idle = 0; });
       const drop = ()=>{ const k = Math.min(1,(performance.now()-t0)/380); P = from*(1-k); draw(); if(k<1 && MGR.alive) requestAnimationFrame(drop); };
@@ -2270,7 +2466,7 @@ MG.llave = {icon:'piso', nm:'Cerrá la llave', stat:'sumision', fin:'Sumisión',
 MG.cadena = {icon:'lucha', nm:'Cadena de lucha', stat:'wrestling', fin:'TKO', hint:'Memorizá la cadena y repetila',
   how:'Mirá la cadena de movimientos que se ilumina y <b>repetila en el mismo orden</b> (también con las flechas del teclado). Si la hacés rápido, es un slam.',
   run(c){
-    const len = Math.round(byDiff(c.d, 3, 4, 6)), show = byDiff(c.d, 580, 450, 320), limit = len*byDiff(c.d, 1200, 900, 650);
+    const len = Math.max(3, Math.round(byDiff(c.d, 3, 4, 6)) - (c.quick ? 1 : 0)), show = byDiff(c.d, 580, 450, 320), limit = len*byDiff(c.d, 1200, 900, 650);
     const seq = []; for(let i=0;i<len;i++){ let v; do{ v = randi(0,3); } while(i>0 && v===seq[i-1] && R()<.6); seq.push(v); }
     const PADS = [{a:0, n:'CAMBIO DE NIVEL', x:0, y:-84, col:C.mustard}, {a:90, n:'DOBLE PIERNA', x:84, y:0, col:C.blue},
                   {a:180, n:'SPRAWL', x:0, y:84, col:C.red}, {a:270, n:'CLINCH', x:-84, y:0, col:C.green}];
@@ -2420,7 +2616,7 @@ MG.ruleta = {icon:'ruleta', nm:'La ruleta', stat:'ovr', luck:true, hint:'Girá y
     c.tapButton('¡GIRÁ!', 'gold');
     function spin(){
       if(spinning) return; spinning = true; $('tapB').disabled = true; $('tapB').textContent = 'GIRANDO…';
-      const from = rot, to = rot + 360*5 + rand(0,360), dur = 3300, t0 = performance.now();
+      const from = rot, to = rot + 360*(c.quick ? 4 : 5) + rand(0,360), dur = c.quick ? 2400 : 3300, t0 = performance.now();
       let lastSlice = -1;
       mgLoop(()=>{
         const k = Math.min(1,(performance.now()-t0)/dur), e = 1-Math.pow(1-k,3);
@@ -2442,7 +2638,7 @@ MG.ruleta = {icon:'ruleta', nm:'La ruleta', stat:'ovr', luck:true, hint:'Girá y
 
 /* ---------- 8. MANO A MANO (los penales del MMA) ---------- */
 MG.mano = {icon:'guante', nm:'Mano a mano', stat:'ovr', luck:true, hint:'Pegá donde no se cubre, cubrí donde te pega',
-  how:'Como en los penales: elegí dónde pegar (él adivina qué cubrir) y después qué cubrirte vos. Dos y dos. Mirá sus ojos: a veces te avisa… y a veces te engaña.',
+  how:'Como en los penales: elegí dónde pegar (él adivina qué cubrir) y después qué cubrirte vos. Mirá sus ojos: a veces te avisa… y a veces te engaña.',
   run(c){
     const read = byDiff(c.d, .2, .34, .5), truth = byDiff(c.d, .76, .58, .42);
     const Z = ['CABEZA','CUERPO','PIERNAS'], ZY = [-86, 2, 92];
@@ -2481,7 +2677,7 @@ MG.mano = {icon:'guante', nm:'Mano a mano', stat:'ovr', luck:true, hint:'Pegá d
     function finish(){ const dif = me - him; c.done(dif>=2 ? 'perfect' : dif>0 ? 'win' : dif<=-2 ? 'ko' : 'lose'); }
     function nextTurn(){
       turn++;
-      const base = 4 + extra*2;
+      const base = (c.quick ? 2 : 4) + extra*2;
       if(turn>=base){
         if(me===him && extra<2){ extra++; info.innerHTML = '<b class="y">¡Muerte súbita!</b>'; mgAfter(700, setup); return; }
         if(me===him){ const ok = R()<c.p; if(ok) me++; else him++; c.pop('JUECES', ok?'ok':'bad', true); }
@@ -2534,7 +2730,7 @@ MG.cartas = {icon:'cartas', nm:'Las cartas', stat:'ovr', luck:true, hint:'Seguí
         <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[ic]}</svg>
         <b style="font-family:var(--f-cond);font-weight:900;font-size:30px;line-height:1">${lab}</b></div>`;
     };
-    const swaps = Math.round(byDiff(c.d, 3, 5, 8)), swapMs = byDiff(c.d, 560, 430, 290);
+    const swaps = Math.round(byDiff(c.d, 3, 5, 8)) - (c.quick ? 1 : 0), swapMs = byDiff(c.d, 560, 430, 290);
     const slot = i=>({x:(i%3)*33.33+16.66, y:Math.floor(i/3)*50+25});
     const pos = deck.map((_,i)=>i);
     let phase = 'show', picks = [], total = 0;
@@ -2550,7 +2746,7 @@ MG.cartas = {icon:'cartas', nm:'Las cartas', stat:'ovr', luck:true, hint:'Seguí
     c.act.innerHTML = `<div class="mini" id="kInfo">Memorizá dónde están las buenas…</div>`;
     const info = $('kInfo');
     c.hud.innerHTML = `Puntos: <b id="kPts" style="font-size:18px">0</b>`;
-    mgAfter(1400, ()=>{ deck.forEach((_,i)=>flip(i,true)); SFX.card(); info.textContent = 'Se mezclan… no les saques los ojos';
+    mgAfter(c.quick ? 1100 : 1400, ()=>{ deck.forEach((_,i)=>flip(i,true)); SFX.card(); info.textContent = 'Se mezclan… no les saques los ojos';
       let s = 0;
       const doSwap = ()=>{
         if(s>=swaps){ phase = 'pick'; info.innerHTML = '<b>Elegí dos cartas</b>'; return; }
@@ -2616,7 +2812,7 @@ MG.dados = {icon:'dados', nm:'Los dados', stat:'ovr', luck:true, hint:'Sacá el 
 
 /* ---------- 11. EL DUELO (nuevo): el primero que pega ---------- */
 MG.duelo = {icon:'rayo', nm:'El duelo', stat:'reflejos', fin:'KO', hint:'Esperá el ¡YA! y pegá primero',
-  how:'Cara a cara y quietos. Cuando aparezca <b class="r">¡YA!</b>, tocá antes que él. Si te adelantás en un amague, perdés el cruce. Son tres cruces.',
+  how:'Cara a cara y quietos. Cuando aparezca <b class="r">¡YA!</b>, tocá antes que él. Si te adelantás en un amague, perdés el cruce. Ganá dos de tres.',
   run(c){
     const rivalRT = ()=>byDiff(c.d, 470, 330, 250) + rand(-60,60);
     const feints = c.d>.8 ? 2 : c.d>-.2 ? 1 : 0;
@@ -2625,8 +2821,8 @@ MG.duelo = {icon:'rayo', nm:'El duelo', stat:'reflejos', fin:'KO', hint:'Esperá
     c.stage.innerHTML = `<svg viewBox="-160 -160 320 320">${SVG_DEFS}
       <rect x="-160" y="-160" width="320" height="320" fill="${C.paper}"/>
       <rect x="-160" y="92" width="320" height="68" fill="url(#hatch)" opacity=".16"/><line x1="-160" y1="92" x2="160" y2="92" stroke="${C.ink}" stroke-width="3"/>
-      <g id="duMe" style="transition:transform .12s ease-out"><g transform="translate(-156 -54) scale(1.46)">${faceInner(G.p,'angry')}</g></g>
-      <g id="duOp" style="transition:transform .12s ease-out"><g transform="translate(156 -54) scale(-1.46 1.46)"><g id="duOpF"></g></g></g>
+      <g id="duMe" style="transition:transform .12s ease-out"><g transform="translate(-156 -54) scale(1.46)">${faceBack()}${faceInner(G.p,'angry')}</g></g>
+      <g id="duOp" style="transition:transform .12s ease-out"><g transform="translate(156 -54) scale(-1.46 1.46)">${faceBack()}<g id="duOpF"></g></g></g>
       <g id="duSign" transform="translate(0 -122)"><rect x="-64" y="-28" width="128" height="56" fill="${C.paper2}" stroke="${C.ink}" stroke-width="3"/><text id="duTxt" y="12" font-size="32" text-anchor="middle" fill="${C.ink}">QUIETO</text></g>
     </svg>`;
     const sign = $('duSign'), txt = $('duTxt'), opF = $('duOpF'), opG = $('duOp'), meG = $('duMe');
@@ -2638,7 +2834,7 @@ MG.duelo = {icon:'rayo', nm:'El duelo', stat:'reflejos', fin:'KO', hint:'Esperá
     function round(){
       phase = 'wait'; signal('QUIETO', C.paper2); setOp('angry');
       opG.style.transform = ''; meG.style.transform = '';
-      const delay = rand(900, 2000), nf = R()<.7 ? feints : 0;
+      const delay = c.quick ? rand(700, 1500) : rand(900, 2000), nf = R()<.7 ? feints : 0;
       for(let k=0;k<nf;k++){
         const at = rand(350, Math.max(400, delay-300));
         mgAfter(at, ()=>{ if(phase!=='wait') return; phase = 'feint'; signal('¡UUH!', C.mustard); opG.style.transform = 'translateX(-14px)'; SFX.whoosh();
@@ -2681,7 +2877,7 @@ MG.combo = {icon:'nota', nm:'Combo', stat:'striking', fin:'KO', hint:'Tocá cada
   run(c){
     const bpm = byDiff(c.d, 96, 116, 140), beat = 60000/bpm;
     const COMBOS = [[0,1,2,1],[0,0,1,2],[0,1,0,1],[2,1,0,1],[0,1,2,2],[1,0,1,2]];
-    const lanes = [...choice(COMBOS), ...choice(COMBOS)];
+    const lanes = c.quick ? [...choice(COMBOS)] : [...choice(COMBOS), ...choice(COMBOS)], NN = lanes.length;
     const fall = byDiff(c.d, 1500, 1250, 1000), perf = byDiff(c.d, 70, 50, 35), good = byDiff(c.d, 140, 100, 70);
     const start = performance.now() + 900;
     let acc = 0;
@@ -2699,13 +2895,13 @@ MG.combo = {icon:'nota', nm:'Combo', stat:'striking', fin:'KO', hint:'Tocá cada
       <text id="cbS" x="0" y="-122" font-size="26" text-anchor="middle" fill="${C.red}"></text>
     </svg>`;
     c.act.innerHTML = `<div class="lanes"><button data-l="0">1<small>jab</small></button><button data-l="1">2<small>cross</small></button><button data-l="2">3<small>gancho</small></button></div>`;
-    c.pips(8, res);
+    c.pips(NN, res);
     let lastBeat = -1;
     function judge(n, dt){
       n.done = true; const g = $('cbn'+notes.indexOf(n));
       const a = Math.abs(dt);
       const pts = a<=perf ? 2 : a<=good ? 1 : 0;
-      score += pts; res.push(pts); c.pips(8, res);
+      score += pts; res.push(pts); c.pips(NN, res);
       if(pts){ streak++; (pts===2 ? SFX.crit : SFX.hit)(); if(pts===2) hitStop(35); g.setAttribute('opacity',0); c.pop(pts===2 ? choice(ONO.gold) : choice(ONO.ok), pts===2?'gold':'ok', true); }
       else { streak = 0; SFX.whiff(); }
       $('cbS').textContent = streak>=3 ? `COMBO x${streak}` : '';
@@ -2733,7 +2929,7 @@ MG.combo = {icon:'nota', nm:'Combo', stat:'striking', fin:'KO', hint:'Tocá cada
         if(now - n.t > good){ judge(n, 999); g.setAttribute('opacity',.25); }
       });
       if(notes.every(n=>n.done)){
-        c.done(score>=14 ? 'perfect' : score>=11 ? 'win' : score>=5 ? 'lose' : 'zero'); return false;
+        const k = NN/8; c.done(score>=14*k ? 'perfect' : score>=11*k ? 'win' : score>=5*k ? 'lose' : 'zero'); return false;
       }
     });
   }};
@@ -2742,7 +2938,7 @@ MG.combo = {icon:'nota', nm:'Combo', stat:'striking', fin:'KO', hint:'Tocá cada
 MG.gnp = {icon:'puno', nm:'Ground & pound', stat:'wrestling', fin:'TKO', hint:'Pegale a los huecos rojos, no a la guardia',
   how:'Lo tenés de espaldas en el piso. Se abren <b class="r">huecos rojos</b> en su guardia: pegale rápido. Si le pegás a la <b>guardia rayada</b>, perdés el ritmo.',
   run(c){
-    const win = byDiff(c.d, 800, 600, 470), every = byDiff(c.d, 560, 470, 380), total = 8;
+    const win = byDiff(c.d, 800, 600, 470), every = byDiff(c.d, 560, 470, 380), total = c.quick ? 5 : 8;
     const SP = [[-92,-70],[0,-100],[92,-70],[-92,62],[0,100],[92,62]];
     let spawned = 0, hits = 0, bad = 0;
     const live = {};
@@ -2787,8 +2983,8 @@ MG.gnp = {icon:'puno', nm:'Ground & pound', stat:'wrestling', fin:'TKO', hint:'P
       if((spawned>=total && !Object.values(live).some(l=>l.kind==='open')) || now-T0>dur){
         c.timer(null);
         const net = hits - bad;
-        if(net>=8) c.face(gF,'ko');
-        c.done(net>=8 ? 'perfect' : net>=6 ? 'win' : net>=3 ? 'lose' : 'zero'); return false;
+        if(net>=total) c.face(gF,'ko');
+        c.done(net>=total ? 'perfect' : net>=Math.round(total*.75) ? 'win' : net>=Math.round(total*.38) ? 'lose' : 'zero'); return false;
       }
     });
   }};
@@ -2816,9 +3012,31 @@ function render(){
   if(UI.bot) botStep();
 }
 function mast(extra){
+  const fs = document.fullscreenEnabled && matchMedia('(pointer:fine)').matches;
   return `<header class="mast"><div class="brand">El Ídolo <i>MMA</i></div><div class="mast-r">${extra||''}
+    ${fs ? `<button class="ibtn" id="fsBtn" onclick="toggleFullscreen()" title="Pantalla completa (F)" aria-label="Pantalla completa">${ico(document.fullscreenElement?'contraer':'expandir')}</button>` : ''}
+    <button class="ibtn" id="themeBtn" onclick="toggleTheme()" title="Modo oscuro" aria-label="Cambiar entre modo claro y oscuro">${ico(curTheme()==='dark'?'sol':'luna')}</button>
     <button class="ibtn" id="sndBtn" onclick="toggleSound()" title="Sonido" aria-label="Sonido">${ico(sfxOn()?'sonido':'mudo')}</button></div></header>`;
 }
+/* modo oscuro: se recuerda la elección; si no hay, se sigue al sistema */
+function curTheme(){ return document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light'; }
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  const m = document.querySelector('meta[name=theme-color]'); if(m) m.setAttribute('content', t==='dark' ? '#14110d' : '#efe5cf');
+  refreshPalette();
+}
+function toggleTheme(){
+  const t = curTheme()==='dark' ? 'light' : 'dark';
+  try{ localStorage.setItem('idolo_mma_theme', t); }catch(e){}
+  setTheme(t); SFX.tap();
+  /* en medio de un minijuego no se redibuja (se cortaría); el juego toma los colores nuevos en el próximo round */
+  if(F && F.phase==='play' && MGR.alive){ const b = $('themeBtn'); if(b) b.innerHTML = ico(t==='dark'?'sol':'luna'); return; }
+  render();
+}
+function toggleFullscreen(){
+  try{ if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen(); }catch(e){}
+}
+document.addEventListener('fullscreenchange', ()=>{ const b = $('fsBtn'); if(b) b.innerHTML = ico(document.fullscreenElement?'contraer':'expandir'); });
 /* no redibuja la pantalla: así no se corta un minijuego en curso */
 function toggleSound(){ try{ localStorage.setItem('idolo_mma_sound', sfxOn()?'0':'1'); }catch(e){} SFX.unlock(); SFX.tap(); const b = $('sndBtn'); if(b) b.innerHTML = ico(sfxOn()?'sonido':'mudo'); }
 
@@ -2849,6 +3067,7 @@ function scrMenu(){
   return mast(hof.length ? `<button class="ibtn" onclick="openModal('hof')" title="Salón de la fama" aria-label="Salón de la fama">${ico('trofeo')}</button>` : '') + `
   <div class="poster">
     <div class="poster-top"><span>Gran velada</span><span>Entrada general</span></div>
+    <div class="poster-grid"><div class="poster-l">
     <h1 class="poster-title">El Ídolo</h1>
     <span class="poster-mma">MMA</span>
     <div class="poster-faces">
@@ -2856,12 +3075,14 @@ function scrMenu(){
       <div class="vs">vs</div>
       <div>${portrait(champ[0], 'fighter', 'smirk', {cont:contOf(champ[1])})}<div class="lab">El campeón</div></div>
     </div>
-    <p class="poster-sub">Del gimnasio del barrio al cinturón de la UFC <b>en cinco minutos</b>. Una carta por año, decisiones sin vuelta atrás y peleas que se ganan jugando.</p>
+    </div><div class="poster-r">
+    <p class="poster-sub">Del gimnasio del barrio al cinturón de la UFC <b>en seis minutos</b>. Una carta por año, decisiones sin vuelta atrás y peleas que se ganan jugando.</p>
     ${saved ? `<button class="ticket ink" data-k="enter" onclick="resumeGame()"><div class="main"><b>Seguir la carrera</b><span>${escapeHtml(saved.p.name)}, ${saved.p.age} años</span></div><div class="stub">Año<b>${saved.season+1}</b></div></button>` : ''}
     <button class="ticket" ${saved?'':'data-k="enter"'} onclick="goCreate()"><div class="main"><b>${saved ? 'Carrera nueva' : 'Arrancar mi carrera'}</b><span>Armá tu peleador</span></div><div class="stub">Platea<b>1</b></div></button>
     <button class="ticket alt" onclick="startDaily()"><div class="main"><b>Desafío del día</b><span>${played ? `Tu mejor: ${dl.best} pts · ${dl.tries} ${dl.tries===1?'intento':'intentos'}` : 'El mismo peleador para todos'}</span></div><div class="stub">N.º<b>${dailyNo(key)}</b></div></button>
     <div class="daily-who">${portrait(dc.name, 'me', 'idle', {cont:countryOf(dc.cc).cont})}
       <p>Hoy te toca <b>${escapeHtml(dc.name)}</b> ${flag(dc.cc)}, ${STYLES.find(s=>s.id===dc.style).nm.toLowerCase()} ${PERSONAS[dc.persona].nm.toLowerCase()} de peso ${WEIGHT_CLASSES.find(w=>w.id===dc.wc).n.toLowerCase()}. Misma suerte para todos: compará el puntaje con tus amigos.</p></div>
+    </div></div>
     <p class="poster-fine">Inspirado en El Ídolo, de Potrero. Proyecto de fans sin afiliación con ninguna organización.</p>
   </div>
   <div class="menu-links"><button class="btn txt" onclick="openModal('how')">Cómo se juega</button>${hof.length ? `<button class="btn txt" onclick="openModal('hof')">Salón de la fama</button>` : ''}</div>`;
@@ -2872,8 +3093,11 @@ function resumeGame(){
   if(!s){ goCreate(); return; }
   G = s; F = null;
   if(G.rng!=null){ RNGS.seeded = true; RNGS.s = G.rng; } else unseedRNG();
+  G.recent = G.recent || [];
+  UI.modal = null; SFX.unlock();
+  if(G.step==='fights'){ if(!(G.regLeft>0)) G.regLeft = 1; if(!G.seasonRes) G.seasonRes = []; startRegular(); return; }
   if(G.step==='preview' && !G.big) setupBig();
-  UI.screen = 'career'; UI.modal = null; SFX.unlock(); render();
+  UI.screen = 'career'; render();
 }
 function startDaily(){
   const cfg = dailyCfg(todayKey());
@@ -2901,7 +3125,7 @@ function randomizeAll(){
 function scrCreate(){
   const d = UI.draft, wc = WEIGHT_CLASSES.find(w=>w.id===d.wc);
   return mast(`<button class="ibtn" onclick="randomizeAll()" title="Todo al azar" aria-label="Todo al azar">${ico('dado')}</button><button class="ibtn" onclick="UI.screen='menu';render()" aria-label="Volver">${ico('cerrar')}</button>`) + `
-  <div class="wrap">
+  <div class="wrap create-grid"><div class="col">
     <div class="sec" style="margin-top:4px"><div class="sec-h"><h2>Tu peleador</h2><small>Si lo dejás vacío, inventamos uno</small></div>
       <div class="name-row"><input class="name-input" id="nameIn" maxlength="24" placeholder="Nombre y apellido" autocomplete="off" value="${escapeHtml(d.name)}" oninput="UI.draft.name=this.value">
         <button class="sqbtn" onclick="rollName()" title="Nombre al azar" aria-label="Nombre al azar">${ico('dado')}</button></div></div>
@@ -2910,11 +3134,12 @@ function scrCreate(){
     <div class="sec"><div class="sec-h"><h2>Categoría</h2><small>${wc ? wc.kg : ''}</small></div>
       <div class="wcs">${WEIGHT_CLASSES.map(w=>`<button class="wc-opt ${d.wc===w.id?'on':''}" onclick="setDraft('wc','${w.id}')"><div class="n">${w.n}</div><div class="k">${w.kg}</div></button>`).join('')}</div>
       <div class="note-line">${wc ? wc.trait : ''}</div></div>
+    </div><div class="col">
     <div class="sec"><div class="sec-h"><h2>Estilo</h2><small>Tu primer round se juega a tu manera</small></div>
       <div class="opts c3">${STYLES.map(s=>`<button class="opt ${d.style===s.id?'on':''}" onclick="setDraft('style','${s.id}')">${ico(s.icon)}<div class="nm">${s.nm}</div><div class="ds">${s.ds}</div></button>`).join('')}</div></div>
     <div class="sec"><div class="sec-h"><h2>Personalidad</h2><small>Cambia cómo se juega todo</small></div>
       <div class="opts c2">${Object.entries(PERSONAS).map(([id,pp])=>`<button class="opt ${d.persona===id?'on':''}" onclick="setDraft('persona','${id}')">${ico(pp.icon)}<div class="nm">${pp.nm}</div><div class="tg">${pp.tg}</div><div class="ds">${pp.ds}</div></button>`).join('')}</div></div>
-  </div>
+  </div></div>
   <div class="create-cta"><div class="err">${d.err||''}</div><button class="btn" data-k="enter" onclick="startCareer()">Arrancar la carrera</button></div>`;
 }
 function startCareer(){
@@ -2931,7 +3156,8 @@ function startCareer(){
 /* ---------- CARRERA ---------- */
 function scrCareer(){
   const showStats = G.step==='card' || G.step==='event';
-  return mast(`<button class="ibtn" onclick="openModal('menu')" title="Menú" aria-label="Menú">${ico('menu')}</button>`) + ficha(showStats) + stepPanel() + archivoHtml();
+  return mast(`<button class="ibtn" onclick="openModal('menu')" title="Menú" aria-label="Menú">${ico('menu')}</button>`) +
+    `<div class="career"><div class="c-ficha">${ficha(showStats)}</div><div class="c-main">${stepPanel()}</div><div class="c-arch">${archivoHtml()}</div></div>`;
 }
 function ficha(showStats){
   const p = G.p, o = ovrOf(p), ps = PERSONAS[p.persona], st = STYLES.find(s=>s.id===p.style);
@@ -2954,7 +3180,7 @@ function ficha(showStats){
     ${p.persona==='cabulero' ? `<span title="Amuletos">${ico('trebol')}<b>${p.amuletos}</b></span>` : ''}
     ${p.arenga ? `<span title="Arenga: ganás una pelea sí o sí (no vale en títulos)">${ico('megafono')}<b>${p.arenga}</b></span>` : ''}
   </div>
-  ${showStats ? `<div class="stats">${STAT_KEYS.map(k=>{ const n = Math.round(p[k]/5);
+  ${true ? `<div class="stats ${showStats?'':'m-hide'}">${STAT_KEYS.map(k=>{ const n = Math.round(p[k]/5);
     return `<div class="st ${k===bestStat(p)?'me':''}">${ico(STAT_ICON[k])}<span class="k">${STAT_LABEL[k]}</span><span class="bar">${Array.from({length:20},(_,i)=>`<i class="${i<n?'f':''}"></i>`).join('')}</span><span class="v">${p[k]}${fl[k] ? `<span class="up ${fl[k]<0?'dn':''}">${sgn(fl[k])}</span>` : ''}</span></div>`; }).join('')}</div>` : ''}`;
 }
 function stepPanel(){
@@ -2962,6 +3188,7 @@ function stepPanel(){
     case 'card': return panelCard();
     case 'event': return panelEvent();
     case 'preview': return panelPreview();
+    case 'fights': return `<section class="step"><button class="btn" data-k="enter" onclick="startRegular()">Seguir peleando</button></section>`;
     case 'yearEnd': return panelYearEnd();
   }
   return '';
@@ -3020,10 +3247,10 @@ function conseqHtml(){
 function seasonResHtml(){
   const res = G.seasonRes || [];
   if(!res.length) return '';
-  return `<div class="results"><h4>${res.length===1 ? 'Tu pelea del año' : 'Tus peleas del año'}</h4>${res.map((r,i)=>`<div class="rrow" style="animation-delay:${i*.12}s">
+  return `<div class="results"><h4>${res.length===1 ? 'Tu pelea de la temporada' : 'Tus peleas de la temporada'}</h4>${res.map((r,i)=>`<div class="rrow" style="animation-delay:${i*.12}s">
       <span class="wl ${r.win?'w':'l'}">${r.win?'G':'P'}</span>
       <div style="min-width:0"><div>${flag(r.opp.cc)} ${escapeHtml(r.opp.name)} <span class="m">${r.opp.dispRank?'#'+r.opp.dispRank+' · ':''}OVR ${r.opp.ovr}</span></div>
-        <div class="m">${r.win?'Ganaste':'Perdiste'} por ${methodTxt(r.m)}${/Decisi/.test(r.m)?'':', '+r.how} · ${fmtMoney(r.money)}</div></div>
+        <div class="m">${r.win?'Ganaste':'Perdiste'} por ${methodTxt(r.m)}${r.how ? ', '+r.how : ''} · ${fmtMoney(r.money)}</div></div>
       <span class="rk">${rankChange(r.rank)}</span></div>`).join('')}</div>`;
 }
 function panelPreview(){
@@ -3058,7 +3285,7 @@ function goFight(arenga, mode){ if(G.step!=='preview') return; SFX.unlock(); sta
 function beltSvg(){
   const org = orgShort(G.p).slice(0,5).toUpperCase();
   return `<svg class="belt" viewBox="0 0 200 110" aria-hidden="true">
-    <path d="M2 40 H62 V70 H2 Z M138 40 H198 V70 H138 Z" fill="${INK}"/>
+    <path d="M2 40 H62 V70 H2 Z M138 40 H198 V70 H138 Z" fill="${INK}" stroke="${C.dark ? C.ink : INK}" stroke-width="2"/>
     <path d="M8 46 H58 M8 64 H58 M142 46 H192 M142 64 H192" stroke="#e3a92c" stroke-width="1.5" stroke-dasharray="3 3"/>
     <path d="M100 6 L146 22 L146 82 L100 104 L54 82 L54 22 Z" fill="#e3a92c" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
     <path d="M100 16 L137 29 L137 77 L100 94 L63 77 L63 29 Z" fill="none" stroke="${INK}" stroke-width="1.5"/>
@@ -3115,15 +3342,18 @@ function archivoHtml(){
 
 /* ---------- PELEA ---------- */
 function scrFight(){
-  const p = G.p, o = F.opp, b = G.big;
+  const p = G.p, o = F.opp, b = F.type==='regular' ? {type:'regular', opp:o} : G.big;
   const body = F.phase==='trash' ? fightTrash() : F.phase==='intro' ? fightIntro() : fightPlay();
-  return mast() + `<div class="fhead">
+  const side = (f, me)=>`<aside class="f-side ${me?'me':'op'}">${me ? meFace('angry') : oppFace(f,'angry')}<div class="nm">${escapeHtml(f.name)}</div>
+      <div class="mt">${me ? `${f.record.w}-${f.record.l} · ${rankLabel(f)}` : `${f.dispRank==='C' ? 'Campeón' : f.dispRank ? '#'+f.dispRank : 'Sin ranking'}${f.spec ? ' · '+STAT_LABEL[f.spec] : ''}`}</div>
+      <div class="o">${me ? ovrOf(f) : f.ovr}</div></aside>`;
+  return mast() + `<div class="fight">${side(p, true)}<div class="f-center"><div class="fhead">
       <div class="fside">${meFace('angry')}<div style="min-width:0"><div class="n">${escapeHtml(lastName(p.name))}</div><div class="o">OVR ${ovrOf(p)}</div></div></div>
       <div class="rdots" id="rdots">${roundDots()}</div>
       <div class="fside op">${oppFace(o,'angry')}<div style="min-width:0"><div class="n">${escapeHtml(lastName(o.name))}</div><div class="o">OVR ${o.ovr}</div></div></div>
     </div>
     <div class="ftag ${bigClass(b)}">${bigLabel(b)}</div>
-    <div class="fbody">${body}</div>`;
+    <div class="fbody">${body}</div></div>${side(o, false)}</div>`;
 }
 function roundDots(){ return Array.from({length:F.max},(_,i)=>{ const h = F.hist[i]; return `<span class="rdot ${h?(h.res==='w'?'w':'l'):''}"></span>`; }).join(''); }
 function fightTrash(){
@@ -3135,7 +3365,7 @@ function fightTrash(){
                 {t:'¡Picante!', c:'gold', d:'El estadio explotó y lo sacaste de quicio: el primer round es mucho más fácil. +2 de fama.'}][q];
     return `<div class="round-k">Cara a cara</div>
       <div class="intro">
-        <div style="width:110px;margin:0 auto 8px;border:2.5px solid var(--ink);background:var(--paper-2)">${oppFace(o, q===2 ? 'scared' : q===0 ? 'happy' : 'neutral')}</div>
+        <div style="width:110px;margin:0 auto 8px;border:2.5px solid var(--ink);background:var(--photo)">${oppFace(o, q===2 ? 'scared' : q===0 ? 'happy' : 'neutral')}</div>
         <div class="round-res" style="position:static;background:none;padding:0;animation:none"><div class="big ${RS.c}">${RS.t}</div></div>
         <div class="bubble" style="text-align:left;margin-top:16px">«${escapeHtml(said)}»</div>
         <p class="hw">${RS.d}</p>
@@ -3151,8 +3381,11 @@ function fightTrash(){
 }
 function afterTrash(){ if(F && F.phase==='trash' && F.trashRes) nextRound(); }
 function fightIntro(){
-  const g = MG[F.game], d = roundDiff(F.game), isNew = !G.seenGames[F.game];
-  return `<div class="round-k">${F.max===1 ? 'Pelea a un round' : `Round ${F.round+1} de 3`}</div>
+  const g = MG[F.game], d = roundDiff(F.game), isNew = !G.seenGames[F.game], o = F.opp;
+  const oRank = o.dispRank==='C' ? 'campeón' : o.dispRank ? '#'+o.dispRank : 'sin ranking';
+  const head = F.type==='regular' ? `Pelea ${F.num} de ${F.of+1} del año · contra ${escapeHtml(o.name)}, ${oRank}, OVR ${o.ovr}`
+    : F.max===1 ? 'La pelea del año, a un round' : `Round ${F.round+1} de 3`;
+  return `<div class="round-k">${head}</div>
     <div class="intro">
       ${F.retry ? '<span class="nv">Segunda chance</span>' : isNew ? '<span class="nv">Juego nuevo</span>' : ''}
       ${ico(g.icon,'gi')}
@@ -3213,15 +3446,15 @@ function scrEnd(){
   const beatRival = r && (c.titles.length>r.titles || (c.titles.length===r.titles && c.w>=r.w));
   const cap = s=>s.charAt(0)+s.slice(1).toLowerCase();
   const di = f.dailyInfo;
-  return mast() + `<article class="plaque">
-      <div class="pl-k">${f.daily ? `Desafío del día N.º ${dailyNo(f.daily)}` : 'Carrera terminada'} · ${c.years} temporadas</div>
+  return mast() + `<div class="end"><div class="e-l"><article class="plaque">
+      <div class="pl-k">${f.daily ? `Desafío del día N.º ${dailyNo(f.daily)}` : 'Carrera terminada'} · ${c.years} ${c.years===1?'temporada':'temporadas'}</div>
       <div class="pl-por">${portrait(c.name, 'me', f.rk.lv>=4 ? 'happy' : f.rk.lv>=2 ? 'smirk' : 'neutral', {cont:countryOf(c.cc).cont})}</div>
       <div class="pl-name">${flag(c.cc,'lg')}<span>${escapeHtml(c.name)}</span></div>
       <div class="pl-sub">${cap(ps.nm)} · ${cap(st.nm)} · peso ${wcOf(G.p).n.toLowerCase()} · se retiró a los ${c.age}</div>
       <div class="pl-rank ${f.rk.lv>=6?'l6':f.rk.lv>=5?'l5':''}">${f.rk.t}</div>
       <div class="pl-score">${f.sc} <small>puntos</small></div>
       ${di ? `<div class="pl-k">Hoy: ${di.tries} ${di.tries===1?'intento':'intentos'} · tu mejor, ${di.best} pts</div>` : ''}
-      <div class="legend"><div class="k">Tu carrera se parece a la de</div><div class="n">${escapeHtml(f.lg.n)}</div><div class="d">${escapeHtml(f.lg.d)}</div></div>
+      <div class="legend ${LOOKS[f.lg.n] ? 'has-por' : ''}">${LOOKS[f.lg.n] ? `<div class="lg-por">${portrait(f.lg.n, 'fighter', 'smirk')}</div>` : ''}<div><div class="k">Tu carrera se parece a la de</div><div class="n">${escapeHtml(f.lg.n)}</div><div class="d">${escapeHtml(f.lg.d)}</div></div></div>
       <div class="pl-nums">
         <div><small>Récord</small><b>${c.w}-${c.l}</b></div>
         <div><small>KO / sumisión</small><b>${c.ko} / ${c.sub}</b></div>
@@ -3232,8 +3465,8 @@ function scrEnd(){
       </div>
       <div class="belts-line">${c.titles.length ? 'Cinturones: '+c.titles.map(t=>`<b>${escapeHtml(t.org)} ${t.year}</b>`).join(' ') : 'Sin cinturones.'}</div>
       ${r ? `<div class="rival-line">${beatRival ? 'Le ganaste la carrera a' : 'Te ganó la carrera'} <b>${escapeHtml(r.name)}</b>, «${r.nick}» <span class="muted">(${r.w}-${r.l}, ${r.titles} ${r.titles===1?'título':'títulos'}${(r.h2hW+r.h2hL)?`, clásicos ${r.h2hW}-${r.h2hL}`:''})</span></div>` : ''}
-    </article>
-    <div class="wrap" style="padding-bottom:0"><div class="sec-h"><h2>Año por año</h2><small>${(f.marks||[]).length} temporadas</small></div>
+    </article></div><div class="e-r">
+    <div class="wrap" style="padding-bottom:0"><div class="sec-h"><h2>Año por año</h2><small>${(f.marks||[]).length} ${(f.marks||[]).length===1?'temporada':'temporadas'}</small></div>
       <div class="marks">${(f.marks||[]).map(m=>`<i class="${m}"></i>`).join('')}</div>
       <p class="note-line" style="text-align:center;margin:-6px 0 12px">Verde: ganaste la pelea del año. Rojo: la perdiste. Amarillo: título. Rayado: sin pelea.</p>
       <button class="btn gold" id="shareBtn" data-k="enter" onclick="shareCareer()">Copiar para compartir</button></div>
@@ -3244,7 +3477,7 @@ function scrEnd(){
       <button class="btn paper" onclick="UI.draft=null;goCreate()">Crear otro peleador</button>
       <button class="btn txt" style="width:100%" onclick="UI.screen='menu';render()">Volver al afiche</button>
     </div>
-    <div class="wrap"><div class="sec-h"><h2>Salón de la fama</h2><small>En este dispositivo</small></div>${hofHtml(f.hofPos)}</div>`;
+    <div class="wrap"><div class="sec-h"><h2>Salón de la fama</h2><small>En este dispositivo</small></div>${hofHtml(f.hofPos)}</div></div></div>`;
 }
 function hofHtml(hi){
   const hof = LS.get('idolo_mma_hof', []);
@@ -3288,7 +3521,7 @@ function modalHtml(){
   let inner = '';
   if(UI.modal==='hof') inner = `<h3>Salón de la fama</h3>${hofHtml(-1)}<button class="btn paper" style="margin-top:12px" onclick="closeModal()">Cerrar</button>`;
   if(UI.modal==='how') inner = `<h3>Cómo se juega</h3>
-    <p>Cada temporada elegís <b>una carta</b> de mejora, a veces tomás <b>una decisión</b> y jugás <b>la pelea del año</b> con minijuegos. El resto de tus peleas se simula según tu OVR.</p>
+    <p>Cada temporada elegís <b>una carta</b> de mejora, a veces tomás <b>una decisión</b> y jugás <b>todas tus peleas</b>: una de cartelera, corta, y <b>la pelea del año</b>. Cada pelea se define con un minijuego; contra mejores rivales, más difícil.</p>
     <p>Ganá, subí en el ranking, sacá cinturones y llegá a la UFC antes de que el cuerpo diga basta. A los 33 te preguntan si seguís; a los 38 se termina.</p>
     <p><b>La personalidad cambia todo:</b> el cabulero juega a la suerte, el habilidoso a la técnica, el bocón bardea antes de pelear y el guerrero no se rinde nunca. El bocón y el guerrero eligen antes de cada pelea grande si la juegan con técnica o al instinto.</p>
     <p>En el <b>desafío del día</b> todos arrancan con el mismo peleador y la misma suerte.</p>
@@ -3306,6 +3539,7 @@ function modalHtml(){
 /* ---------- teclado ---------- */
 function screenKey(e){
   if(e.target && e.target.tagName==='INPUT') return;
+  if(e.code==='KeyF' && !e.ctrlKey && !e.metaKey && !e.altKey){ toggleFullscreen(); return; }
   if(UI.modal && e.code==='Escape'){ closeModal(); return; }
   const n = {Digit1:1, Digit2:2, Digit3:3, Digit4:4, Numpad1:1, Numpad2:2, Numpad3:3, Numpad4:4}[e.code];
   if(n){ const b = document.querySelector(`[data-k="${n}"]`); if(b && !b.disabled){ e.preventDefault(); b.click(); } return; }
@@ -3346,6 +3580,7 @@ function botStep(){
 }
 
 /* ---------- arranque ---------- */
+try{ matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e=>{ let saved = null; try{ saved = localStorage.getItem('idolo_mma_theme'); }catch(_){ } if(saved) return; setTheme(e.matches ? 'dark' : 'light'); if(!(F && F.phase==='play')) render(); }); }catch(e){}
 function init(){
   const q = new URLSearchParams(location.search);
   if(q.has('bot')){

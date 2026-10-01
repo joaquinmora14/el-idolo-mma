@@ -1,6 +1,6 @@
 # El Ídolo: MMA
 
-**Del gimnasio del barrio al cinturón de la UFC en cinco minutos.** Armá la carrera de un peleador
+**Del gimnasio del barrio al cinturón de la UFC en seis minutos.** Armá la carrera de un peleador
 de MMA: una carta de mejora por año, decisiones sin vuelta atrás y peleas que se ganan jugando
 minijuegos.
 
@@ -19,7 +19,9 @@ Abrí `index.html` en cualquier navegador (en el celular se juega de diez).
 - **Desafío del día**: todos arrancan con el mismo peleador y la misma suerte. Al final copiás tu
   resultado en cuadraditos, como en Wordle, y lo comparás con tus amigos.
 
-Una carrera completa dura **unos 5 minutos**: de los 22 años al retiro, entre 12 y 15 temporadas. A los 33 te preguntan si seguís; a los 38 se termina.
+Una carrera completa dura **unos 6 minutos**: de los 22 años al retiro, entre 12 y 15 temporadas, y **todas las peleas se juegan**. A los 33 te preguntan si seguís; a los 38 se termina.
+
+Se juega en el celular y en la compu (en pantalla ancha se arma en columnas; con la tecla F, pantalla completa). Tiene **modo oscuro**: sigue al del sistema y se cambia con el botón de la luna.
 
 ---
 
@@ -29,11 +31,11 @@ Investigué El Ídolo (Potrero), Copero, 7-0 y los juegos diarios tipo Wordle:
 
 | Lo que funciona | Cómo lo aplica este juego |
 |---|---|
-| **Partidas cortas e impredecibles**, fáciles de compartir. Copero: una carrera en menos de 2 minutos; El Ídolo: unos 5. | Apuntamos a **5 minutos**, como El Ídolo: menos que eso y la carrera pierde historia (rival, ofertas, retiro); más, y deja de dar ganas de jugar "una más". Se sacaron pantallas intermedias: el resultado del evento y las peleas simuladas se muestran arriba de la previa, y el nocaut, el round y el cara a cara avanzan solos. Son 4 toques por temporada más el minijuego (unos 20 segundos). |
+| **Partidas cortas e impredecibles**, fáciles de compartir. Copero: una carrera en menos de 2 minutos; El Ídolo: unos 5. | Apuntamos a **5 o 6 minutos**, como El Ídolo: menos que eso y la carrera pierde historia (rival, ofertas, retiro); más, y deja de dar ganas de jugar "una más". Todas las peleas se juegan, así que las de la temporada usan **versiones cortas** de los minijuegos; el nocaut, el round y el cara a cara avanzan solos. |
 | **Decisiones simples con consecuencias** (El Ídolo tiene más de 300 eventos). | 49 eventos y 6 momentos especiales (ofertas que no vuelven, Serie de Contendientes, título con dos semanas de aviso, doble cinturón, corte de contrato). Se muestra *qué* se juega con íconos, pero no el signo. |
-| **Los momentos grandes se juegan.** En El Ídolo las finales se definen con minijuegos y antes elegís si ir con instinto o con técnica. | Una **pelea del año** jugable por temporada; los títulos de la UFC, al mejor de tres. El bocón y el guerrero eligen antes de cada pelea grande **con técnica** (habilidad) o **al instinto** (suerte). |
+| **Los momentos grandes se juegan.** En El Ídolo las finales se definen con minijuegos y antes elegís si ir con instinto o con técnica. | **No hay peleas simuladas**: cada temporada jugás una pelea de cartelera (corta) y la pelea del año; los títulos de la UFC, al mejor de tres. Contra mejores rivales, más difícil. El bocón y el guerrero eligen antes de cada pelea grande **con técnica** (habilidad) o **al instinto** (suerte). |
 | **Identidad desde el arranque** (El Ídolo 2.1: elegís qué clase de jugador sos y cambia toda la carrera). | 4 personalidades que cambian las reglas. |
-| **Un rival de toda la carrera.** | Tu rival sube, gana títulos, se cruza con vos en clásicos y al final se compara tu carrera con la suya. |
+| **Un rival de toda la carrera.** | Tu rival sube, gana títulos, se cruza con vos en clásicos y al final se compara tu carrera con la suya. Con el resto no te cruzás siempre: el juego recuerda tus últimos rivales y nadie (salvo tu rival y los campeones) te toca más de dos veces. Si alguien te gana, sube en el ranking. |
 | **Un motivo para volver mañana** (Wordle: un desafío por día y un resultado que se comparte sin spoilers). | Desafío del día con semilla fija y resultado en cuadraditos: verde ganaste, rojo perdiste, amarillo título. |
 | **Que cada golpe se sienta** ("juice": congelar un instante el golpe, sacudir la pantalla, onomatopeyas). | Hit-stop en los golpes buenos, sacudón, flash, onomatopeyas de historieta (¡PAF!, ¡CRAC!) y la cara del rival que reacciona a cada golpe. |
 
@@ -57,6 +59,11 @@ Este juego va en contra de eso con una dirección de arte concreta: **afiche de 
 - Íconos dibujados a mano en SVG en lugar de emojis.
 - **Retratos generados en tinta** con semitono para cada peleador, entrenador, periodista, abuela o
   influencer. Tu rival te pone cara de enojado, le duele cuando le pegás y queda noqueado si lo terminás.
+- Los **120 peleadores del plantel de la UFC y las leyendas** tienen rasgos parecidos a los reales:
+  peinado, barba, color de piel, tatuajes, orejas de luchador (el gorro de Khabib, la barba colorada de
+  Conor, el pelo turquesa de O'Malley, el sombrero de Cerrone…). Están en `const LOOKS = {`.
+- **Modo oscuro como "edición nocturna"**: fondo carbón, tinta crema, el mismo rojo y mostaza y las
+  mismas sombras duras; las caras quedan como fotos impresas. Nada de neón ni brillos.
 - El menú es un afiche con entradas; las cartas son figuritas; el cierre de año es la tapa de un diario;
   el final es una placa.
 - Hay un script de auditoría que recorre todas las pantallas y busca brillos, degradés, emojis, rayas
@@ -68,9 +75,10 @@ Este juego va en contra de eso con una dirección de arte concreta: **afiche de 
 
 1. **Pretemporada**: elegís **1 de 3 cartas** de mejora (comunes, raras, épicas y legendarias).
 2. **Evento** (a veces): una decisión rápida. Un influencer te desafía, tu abuela te pide que dejes, la UFC te llama…
-3. **La previa**: ves qué pasó con tu decisión, cómo te fue en las peleas simuladas del año y el cartel de la pelea grande.
-4. **La pelea del año**: se define con **minijuegos**.
-5. **El diario**: titular, foto, resultado, ranking, plata y qué hizo tu rival.
+3. **Pelea de cartelera**: un minijuego corto contra un rival de tu nivel en el ranking.
+4. **La previa**: qué pasó con tu decisión, cómo te fue en la pelea de cartelera y el cartel de la pelea grande.
+5. **La pelea del año**: se define con **minijuegos** (al mejor de tres si es por un título de la UFC).
+6. **El diario**: titular, foto, resultado, ranking, plata y qué hizo tu rival.
 
 Del circuito regional (LUX, LFA, Cage Warriors, FFC) al nivel mundial (PFL, Bellator, ONE) y a la
 **UFC**, con atajo opcional por la **Serie de Contendientes**. Si perdés tres seguidas, te cortan el contrato.
@@ -122,11 +130,11 @@ son más amables.
 - **Humano simulado**: un script que *mira la pantalla* y toca con errores de timing reales
   (±30/55/90 ms) y tiempos de reacción de 340-530 ms para medir cada minijuego. En dificultad pareja,
   un jugador promedio gana 6 o 7 de cada 10 rounds; en "difícil", 3 o 4.
-- **Partidas completas por la interfaz**, con tiempos de lectura de una persona real, para medir la
-  duración y sacar capturas de cada pantalla: 4,9 minutos con el guerrero (13 temporadas) y 5,4 con
-  el habilidoso (15 temporadas), sin errores de consola.
-- **Bot por personalidad**: con un jugador promedio, cinturón de la UFC en 1 de cada 4 o 5 carreras;
-  con uno muy bueno, en la mitad.
+- **Partidas completas por la interfaz**, con tiempos de lectura de una persona real, jugando todas
+  las peleas: 6,0 minutos con el guerrero y 6,4 con el habilidoso (unas 25 peleas), sin errores.
+- **Bot calibrado con el humano simulado**: con un jugador promedio, cinturón de la UFC en 1 de cada
+  3 o 4 carreras; con uno muy bueno, en 2 de cada 3; con uno flojo, muy de vez en cuando.
+- **Capturas en celular y compu, claro y oscuro**, sin desbordes de 320 a 1920 px de ancho.
 
 Parámetros útiles para probar: `?bot=0.8&persona=cabulero&retire=34` (el bot también acepta
 `style`, `wc`, `cc` y `daily=1`).

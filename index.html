@@ -770,14 +770,14 @@ const UFC_ROSTER = {
 };
 /* prospectos: los reales (con nombre alterado) van entrando con los años; también aparecen inventados */
 const UFC_PROSPECTS = {
-  mosca:[['Lone\'er Kavanah','GB',1999],['Clayton Carpentér','US',1996],['Najim Ruzibóev','UZ',1999],['Kevin Borjas','PE',1999]],
-  gallo:[['Raúl Rosas Jr.','US',2004],['Malcolm Welmaker','US',1999],['Vinicius Oliveyra','BR',1995],['Daniel Marcós','PE',1993]],
-  pluma:[['Melquizael Kosta','BR',1997],['Kaan Oflí','TR',1998],['Nazim Sadýkhov','AZ',1994],['Lucas Almeyda','BR',1997]],
-  ligero:[['Esteban Ribóvics','AR',1996],['Mauricio Rufy','BR',1996],['Quillan Salkild','AU',2000],['Chris Dunkan','GB',1993]],
-  welter:[['Gabriel Bonfím','BR',1997],['Oban Eliott','GB',1998],['Uroš Medič','RS',1993],['Nikolas Mota','BR',1999]],
-  medio:[['Ateba Gautiér','CM',2002],['Shara Magomédov','RU',1994],['Christian Leroy Dunkan','GB',1995],['Ikram Aliskérov','RU',1992]],
-  semipesado:[['Rodolfo Belatto','BR',1996],['Oumar Sy','FR',1995],['Ibo Aslán','TR',1996],['Navajo Stirlin','NZ',1999]],
-  pesado:[['Valter Walkker','BR',1997],['Rizvan Kúniev','RU',1991],['Tom Nolán','AU',2001],['Jhonata Díniz','BR',1991]],
+  mosca:[['Lone\'er Kavanah','GB',1999],['Clayton Carpentér','US',1996],['Igor Severíno','BR',2003],['Kevin Borjas','PE',1999],['Stewart Nicol','AU',1997],['Mitch Raposso','US',1999],['Najim Ruzibóev','UZ',1999]],
+  gallo:[['Raúl Rosas Jr.','US',2004],['Malcolm Welmaker','US',1999],['Vinicius Oliveyra','BR',1995],['Jean Matsumóto','BR',1999],['Aoriqíleng','CN',1995],['Daniel Marcós','PE',1993],['David Martínes','MX',1998]],
+  pluma:[['Melquizael Kosta','BR',1997],['Kaan Oflí','TR',1998],['Nazim Sadýkhov','AZ',1994],['Yi Zhá','CN',1997],['Joanderson Brítto','BR',1995],['Jack Jenkíns','AU',1993],['Lucas Almeyda','BR',1997]],
+  ligero:[['Esteban Ribóvics','AR',1996],['Mauricio Rufy','BR',1996],['Quillan Salkild','AU',2000],['Chris Dunkan','GB',1993],['Manuel Tórres','MX',1995],['Tom Nolán','AU',2000],['Nikolas Mota','BR',1999]],
+  welter:[['Gabriel Bonfím','BR',1997],['Oban Eliott','GB',1998],['Uroš Medič','RS',1993],['Daniel Zellhúber','MX',1999],['Mike Malot','CA',1991],['Carlos Leál','BR',1993]],
+  medio:[['Ateba Gautiér','CM',2002],['Shara Magomédov','RU',1994],['Christian Leroy-Duncan','GB',1995],['Ikram Aliskérov','RU',1992],['Joe Pyffer','US',1996],['Gregory Rodrígues','BR',1992]],
+  semipesado:[['Rodolfo Belatto','BR',1996],['Oumar Sy','FR',1995],['Ibo Aslán','TR',1996],['Navajo Stirlin','NZ',1999],['Diyar Nurgozháy','KZ',1996]],
+  pesado:[['Valter Walkker','BR',1997],['Rizvan Kúniev','RU',1991],['Jhonata Díniz','BR',1991],['Mário Pinto','PT',1999],['Josh Hokkit','US',1997]],
 };
 
 const STAT_KEYS = ['striking','wrestling','sumision','cardio','chin'];
@@ -1616,6 +1616,9 @@ function orgShort(p, tier){ return ORGS[orgIdOf(p,tier)].short; }
 function wcOf(p){ return WEIGHT_CLASSES.find(w=>w.id===p.wc) || WEIGHT_CLASSES[3]; }
 function seasonYear(){ return G.startYear + G.season; }
 function curYear(){ return seasonYear() - (G._ff||0); }   // al adelantar años de una lista nueva, el año que se está simulando
+/* la UFC queda "congelada" como está hoy hasta que llegás: ahí arranca su reloj */
+function ufcYears(){ return G.ufcStart===undefined ? 0 : Math.max(0, G.season - G.ufcStart); }
+function yearFor(tier){ return tier===2 ? (G.startYear||seasonYear()) + ufcYears() - (G._ff||0) : curYear(); }
 
 /* nunca un rival con tu mismo apellido: "Gómez noqueó a Gómez" no se entiende */
 /* nombres únicos: nadie se llama igual que otro en las listas, ni que vos o tu rival */
@@ -1663,7 +1666,7 @@ function listFor(tier, wc){
   if(!G.lists[key]){
     const lst = tier===2 ? ufcList(wc) : genList(tier, p.cont);
     lst.tier = tier; lst.wc = wc; G.lists[key] = lst;
-    for(let y=(G.season||0); y>0; y--){ G._ff = y-1; ageList(lst, false); }
+    for(let y=(tier===2 ? ufcYears() : (G.season||0)); y>0; y--){ G._ff = y-1; ageList(lst, false); }
     G._ff = 0;
   }
   return G.lists[key];
@@ -1690,16 +1693,17 @@ function freshPerson(taken, cont){ let id = genPerson(cont), k = 0; while(taken.
 /* un prospecto que llega a la UFC: a veces uno real (de la lista), a veces uno inventado */
 function ufcProspect(wc){
   const free = ((UFC_PROSPECTS[wc]||[])).filter(x=>!nameTaken(x[0]) && !(G.gone||[]).includes(x[0]));
-  if(free.length && R()<.7){ const x = choice(free); return {name:x[0], cc:x[1], born:x[2], real:true, pot:randi(86,95), ...makeStats(randi(76,80))}; }
+  /* los prospectos reales de hoy tienen prioridad: llegan primero y con techo alto */
+  if(free.length && R()<.88){ const x = choice(free); return {name:x[0], cc:x[1], born:x[2], real:true, pot:randi(88,96), ...makeStats(randi(77,81))}; }
   /* inventado: que no repita apellido con nadie de la categoría */
   const id = freshPerson(usedSurnames());
   const pot = R()<.18 ? randi(92,97) : randi(83,92);   // de vez en cuando aparece un fenómeno
-  return {name:id.name, cc:id.cc, born:curYear()-randi(21,25), pot, ...makeStats(randi(75,79))};
+  return {name:id.name, cc:id.cc, born:yearFor(2)-randi(21,25), pot, ...makeStats(randi(75,79))};
 }
 /* ---------- el mundo envejece: los jóvenes crecen, los veteranos caen y se retiran ---------- */
-function ageOf(f){ if(!f.born) f.born = curYear() - randi(24,32); return curYear() - f.born; }
+function ageOf(f, tier){ const y = yearFor(tier===undefined ? 2 : tier); if(!f.born) f.born = y - randi(24,32); return y - f.born; }
 function ageFighter(f, tier){
-  const a = ageOf(f), T = TIERS[tier];
+  const a = ageOf(f, tier), T = TIERS[tier];
   if(!f.pot) f.pot = a<=27 ? f.ovr + randi(2,6) : f.ovr;           // techo: hasta dónde puede llegar
   const room = f.pot - f.ovr;
   const d = a<=28 ? (room>0 ? Math.min(room, rand(1.5,3.5)) : rand(-.5,.5)) : a<=31 ? rand(-1,.8) : a<=34 ? rand(-2.5,-.5) : rand(-4,-1.5);
@@ -1709,7 +1713,7 @@ function ageFighter(f, tier){
   f.ovr = ovrOf(f);
 }
 function retires(f, tier){
-  const a = ageOf(f), T = TIERS[tier];
+  const a = ageOf(f, tier), T = TIERS[tier];
   if(a>=40) return true;
   if(a>=35 && R() < .22 + (a-35)*.14) return true;
   if(a>=31 && f.ovr < T.r15-4 && R()<.5) return true;
@@ -1731,7 +1735,11 @@ function ageList(lst, loud){
   const p = G.p, tier = lst.tier!==undefined ? lst.tier : 2, gone = [];
   lst.L.forEach(f=>{ if(!f.isRival) ageFighter(f, tier); });
   if(lst.champ && !lst.champ.isRival) ageFighter(lst.champ, tier);
-  lst.L = lst.L.filter(f=>{ if(!f.isRival && retires(f, tier)){ gone.push(f.name); return false; } return true; });
+  /* el recambio es de a poco: como mucho 2 retiros por año (3 si hay muchos veteranos), primero los más grandes */
+  const cand = lst.L.filter(f=>!f.isRival && retires(f, tier)).sort((a,b)=>ageOf(b,tier)-ageOf(a,tier));
+  const maxOut = cand.filter(f=>ageOf(f,tier)>=38).length>=3 ? 3 : 2;
+  const out = new Set(cand.slice(0, maxOut).map(f=>f.name));
+  lst.L = lst.L.filter(f=>{ if(out.has(f.name)){ gone.push(f.name); return false; } return true; });
   if(lst.champ && !lst.champ.isRival && retires(lst.champ, tier)){
     const old = lst.champ; gone.push(old.name);
     lst.L.sort((a,b)=>b.ovr-a.ovr); lst.champ = lst.L.shift();
@@ -1870,9 +1878,10 @@ function syncRival(){
 }
 function worldTick(){
   const p = G.p, lst = getList(p);
-  listFor(2, p.wc);                                  // la UFC de tu categoría vive aunque todavía no estés ahí
+  if(p.tier===2 && G.ufcStart===undefined) G.ufcStart = G.season - 1;   // partidas viejas que ya estaban en la UFC
   Object.entries(G.lists).forEach(([k,l])=>{
     if(l.tier===undefined){ const id = k.split('_')[0]; l.tier = id==='ufc' ? 2 : Math.max(0, p.orgChain.indexOf(id)); l.wc = k.slice(id.length+1); }
+    if(l.tier===2 && G.ufcStart===undefined) return;          // la UFC no se mueve hasta que llegás
     ageList(l, l===lst);
   });
   const seen = (G.faced||{})[lst.champ && lst.champ.name]||0;   // si ya te cruzaste mucho con el campeón, alguien se lo saca
@@ -1992,7 +2001,7 @@ function canFace(name){
 function isRecent(f){ return !!f && ((G.recent||[]).includes(f.name) || !canFace(f.name)); }
 /* si no queda nadie nuevo arriba, aparece un contendiente que se ganó la chance */
 function newContender(lst, rank){
-  const p = G.p, nu = p.tier===2 ? ufcProspect(p.wc) : {...makeOpp(rankOvr(p.tier, rank)), born:seasonYear()-randi(23,28), dispRank:null};
+  const p = G.p, nu = p.tier===2 ? ufcProspect(p.wc) : {...makeOpp(rankOvr(p.tier, rank)), born:yearFor(p.tier)-randi(23,28), dispRank:null};
   restat(nu, rankOvr(p.tier, rank) + rand(-1,1)); delete nu.dispRank;
   lst.L.splice(Math.max(0, rank-1), 0, nu); lst.L = lst.L.slice(0,15);
   news(`${nu.name} viene arrasando y se metió en el #${rank}.`);
@@ -2149,7 +2158,7 @@ function moveTier(t, rank){
   if(t>p.tier) G.celebrate = {tier:clamp(t,0,2), org:orgShort(p, clamp(t,0,2))};
   if(t>p.tier && p.persona==='cabulero'){ p.amuletos++; if(G.yearLog) G.yearLog.news.push('Cábala nueva para la liga nueva: +1 amuleto.'); }
   p.tier = clamp(t,0,2); p.champ = false; p.rank = rank || null; p.streakL = 0; p.orgW = 0;
-  if(p.tier===2) p.flags.ufc = true;
+  if(p.tier===2){ p.flags.ufc = true; if(G.ufcStart===undefined) G.ufcStart = G.season; }
   p.flags.declines = 0;
   syncRival();
 }

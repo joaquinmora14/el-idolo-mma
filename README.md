@@ -16,7 +16,7 @@ llevado a las artes marciales mixtas.
 Abrí `index.html` en cualquier navegador (en el celular se juega de diez).
 
 - **Arrancar mi carrera**: armás tu peleador (país, categoría, estilo y personalidad).
-- **Desafío del día**: cambia todos los días y todos arrancan con el mismo peleador y la misma suerte. Es un **fenómeno**: arranca con mejores stats, crece mucho más rápido y se cae menos con la edad, así que termina con números de élite (90 a 99). Al final copiás tu
+- **Desafío del día**: cambia todos los días y todos arrancan con el mismo peleador y la misma suerte. Es un **fenómeno**: arranca un poco mejor, crece un poco más rápido y se cae un poco menos con la edad. Ayuda, pero no gana solo. Al final copiás tu
   resultado en cuadraditos, como en Wordle, y lo comparás con tus amigos.
 
 Una carrera completa dura **unos 8 minutos**: de los 22 años al retiro, entre 12 y 15 temporadas, y **todas las peleas se juegan**. A los 33 te preguntan si seguís; a los 38 se termina.
@@ -33,7 +33,7 @@ Se juega en el celular y en la compu (en pantalla ancha se arma en columnas; con
 - **Las peleas importantes duran más.** Los títulos son a 5 rounds; las del top 5 (también las de cartelera), los eventos principales, los co-estelares y las de contendientes, a 3. Solo un round perfecto (nocaut) las termina antes.
 - **A la UFC se llega por una liga mundial.** Casi siempre pasás antes por una liga mundial (PFL, Bellator, ONE...). Ir directo desde el regional a la Serie de Contendientes solo lo logra un campeón invicto y muy famoso.
 - **Eventos con suerte buena y mala.** Problemas con la balanza, una gripe en pleno campamento, te hackean las redes, se te escapa el manager con la plata, un corte en la ceja que te deja cicatriz. Y tentaciones: **un hombre de traje te paga por perder** tu próxima pelea grande, o **un "suplemento" ilegal** que te sube golpe, cardio y mentón. Si te descubren (al cerrar el año), te **suspenden una temporada** y perdés fama y seguidores.
-- **Menos rivales repetidos.** El campeón rota de retador (no siempre el mismo #1), el retador que perdió baja varios puestos y el título cambia de manos más seguido si ya te cruzaste dos veces con el mismo campeón. En una carrera entera, como mucho repetís 3 veces con alguien (sin contar a tu rival personal).
+- **Regla de revanchas.** Con el mismo peleador te cruzás como mucho 2 veces; una trilogía solo si la serie está 1-1. Vale para todo: retadores cuando sos campeón, la cartelera, la pelea grande y el campeón (si ya no podés pelear con él, otro le saca el cinturón). Si arriba no queda nadie nuevo, aparece un contendiente que se ganó la chance.
 - **Tu historial al final.** El cierre de carrera muestra tus victorias por KO, sumisión y decisión, tu mejor victoria y la lista de todas tus peleas con el evento, el método y el tipo de pelea.
 - **Elegís contra quién peleás.** En cada cartelera el matchmaker te ofrece un rival **para arriba** (más riesgo, más premio y un salto grande en el ranking), uno **en tu rango** y uno **para asegurar** (si perdés, caés fuerte). Si estás en el top 3, podés **esperar la pelea por el título**.
 - **El ranking tiene sentido.** El top 3, o un top 5 con 4 victorias seguidas, va por el título. El campeón no pelea en la cartelera: defiende contra el #1 (a veces el #2).

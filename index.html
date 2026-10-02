@@ -1640,7 +1640,7 @@ function newPlayer(cfg){
   if(cfg.style==='sumision') s.wrestling += 4;
   if(cfg.persona==='guerrero') s.chin += 8;
   STAT_KEYS.forEach(k=>s[k] += randi(-1,1));
-  if(cfg.daily) STAT_KEYS.forEach(k=>s[k] += 6);     // el del desafío es un fenómeno: arranca mejor y crece más rápido
+  if(cfg.daily) STAT_KEYS.forEach(k=>s[k] += 3);     // el del desafío es un fenómeno: arranca mejor y crece más rápido
   const p = {
     name:cfg.name, cc:c.c, countryName:c.n, cont:c.cont, wc:cfg.wc, style:cfg.style, persona:cfg.persona,
     ...s, age:19, fame:5, fans:20, money:1000, earned:1000,
@@ -1688,7 +1688,7 @@ function growthPoints(age, persona){
 function applyGrowth(p){
   const u = p.upg || {};
   let pts = growthPoints(p.age, p.persona);
-  if(p.prodigy) pts = pts>0 ? pts+5 : pts===0 ? 3 : Math.ceil(pts/2);   // fenómeno: crece más y se cae menos
+  if(p.prodigy) pts = pts>0 ? pts+2 : pts===0 ? 1 : pts+1;   // fenómeno: crece un poco más y se cae un poco menos
   if(pts<0) pts = Math.min(0, pts + (u.fisico||0));
   const out = {};
   if(pts>0 && u.coach){ const b = p[p.style]; p[p.style] = clamp(p[p.style]+u.coach, 10, 99); if(p[p.style]!==b) out[p.style] = p[p.style]-b; }
@@ -1854,7 +1854,22 @@ function matchOptions(){
 }
 /* para no cruzarte siempre con los mismos: se recuerdan los últimos rivales */
 function noteRecent(name){ G.recent = (G.recent||[]).filter(n=>n!==name); G.recent.push(name); if(G.recent.length>6) G.recent.shift(); G.faced = G.faced || {}; G.faced[name] = (G.faced[name]||0)+1; }
-function isRecent(f){ return !!f && ((G.recent||[]).includes(f.name) || ((G.faced||{})[f.name]||0)>=2); }
+/* regla de revanchas: con alguien peleás como mucho 2 veces; la trilogía solo si la serie está 1-1 */
+function canFace(name){
+  const h = (G.h2h||{})[name];
+  if(!h) return ((G.faced||{})[name]||0) < 2;
+  const n = h.w + h.l;
+  return n<2 || (n===2 && h.w===1);
+}
+function isRecent(f){ return !!f && ((G.recent||[]).includes(f.name) || !canFace(f.name)); }
+/* si no queda nadie nuevo arriba, aparece un contendiente que se ganó la chance */
+function newContender(lst, rank){
+  const p = G.p, nu = p.tier===2 ? ufcProspect() : {...makeOpp(rankOvr(p.tier, rank)), dispRank:null};
+  restat(nu, rankOvr(p.tier, rank) + rand(-1,1)); delete nu.dispRank;
+  lst.L.splice(Math.max(0, rank-1), 0, nu); lst.L = lst.L.slice(0,15);
+  news(`${nu.name} viene arrasando y se metió en el #${rank}.`);
+  return nu;
+}
 function pickFresh(lst, idxs){ const c = idxs.filter(i=>i>=0 && i<lst.L.length).map(i=>lst.L[i]).filter(f=>f && !f.isRival && !isRecent(f)); return c.length ? choice(c) : null; }
 function range(a, b){ const o = []; for(let i=a;i<=b;i++) o.push(i); return o; }
 function drawEvent(){
@@ -2130,26 +2145,32 @@ function setupBig(){
   } else if(forced==='doble'){
     const i = WEIGHT_CLASSES.findIndex(w=>w.id===p.wc);
     const other = WEIGHT_CLASSES[i<WEIGHT_CLASSES.length-1 ? i+1 : i-1];
-    const r = UFC_ROSTER[other.id][0];
+    const r = UFC_ROSTER[other.id].find(x=>canFace(x[0])) || UFC_ROSTER[other.id][0];
     type = 'doble'; opp = {name:r[0], cc:r[1], ...makeStats(ufcPow(r[2])+3), dispRank:'C', otherWc:other.n};
   } else if(p.champ){
     type = 'defense';
     /* el campeón defiende contra el #1 (a veces el #2, o el rival si está arriba) */
-    const top = lst.L.slice(0,5), rv = lst.L.slice(0,2).find(f=>f.isRival), fresh = top.filter(f=>!f.isRival && !isRecent(f));
-    const f = (rv && R()<.6) ? rv : (fresh[0] || top[0]);
+    const top = lst.L.slice(0,5), rv = lst.L.slice(0,2).find(f=>f.isRival && canFace(f.name)), fresh = top.filter(f=>!f.isRival && !isRecent(f));
+    const f = (rv && R()<.6) ? rv : (fresh[0] || lst.L.slice(0,8).find(x=>!x.isRival && !isRecent(x)) || newContender(lst, 1));
     opp = {...f, dispRank:lst.L.indexOf(f)+1};
   } else if(forced==='title' || p.flags.promise2 || titleEligible(p)){
     if(!forced && !p.flags.promise2 && hypeShot(p) && !(p.rank<=2 && orgWins(p)>=ORG_WINS_FOR_TITLE[p.tier])) G.hypeShot = true;
     p.flags.promise2 = false;
+    if(lst.champ && !canFace(lst.champ.name)){        // ya no se puede: otro le sacó el cinturón
+      const old = lst.champ, j = lst.L.findIndex(x=>!x.isRival && canFace(x.name));
+      const ch = j>=0 ? lst.L.splice(j,1)[0] : newContender(lst, 1) && lst.L.shift();
+      lst.L.splice(randi(1,3), 0, old); lst.champ = ch;
+      news(`${ch.name} le ganó el título a ${old.name}.`);
+    }
     type = 'title'; opp = {...lst.champ, dispRank:'C'};
   } else {
-    const rv = lst.L.find(f=>f.isRival);
+    const rv = lst.L.find(f=>f.isRival && canFace(f.name));
     if(rv && R() < (G.lastClasico===G.season-1 ? .08 : .3)){ type = 'clasico'; G.lastClasico = G.season; const i=lst.L.indexOf(rv); opp = {...rv, dispRank:dispRank(i)<=15?dispRank(i):null}; }
     else {
       type = 'estelar';
       const f = (p.rank ? pickFresh(lst, range(Math.max(0, p.rank-5), Math.max(0, p.rank-3))) || pickFresh(lst, range(0, Math.max(4, p.rank+1))) : pickFresh(lst, range(10,14)))
         || pickFresh(lst, range(0, 14));
-      const i = f ? lst.L.indexOf(f) : (p.rank ? Math.max(0, p.rank-1-randi(2,4)) : randi(10,13));
+      const i = lst.L.indexOf(f || newContender(lst, p.rank ? Math.max(1, p.rank-3) : 12));
       opp = {...lst.L[i], dispRank:dispRank(i)<=15?dispRank(i):null};
       if(opp.isRival){ type = 'clasico'; G.lastClasico = G.season; }
       else if((p.rank && p.rank<=6) || (opp.dispRank && opp.dispRank<=5)) type = 'contender';
@@ -2227,6 +2248,7 @@ function applyResult(opp, win, method, kind, mk){
   p.streakW = win ? (p.streakW||0)+1 : 0;
   if(win) p.orgW = (p.orgW||0)+1;
   (p.log = p.log || []).push({y:seasonYear(), a:p.age, n:opp.name, cc:opp.cc, r:opp.dispRank||null, o:opp.ovr, k:kind, w:win, m:method, org:orgShort(p), ev:(kind!=='sim' && G.big && G.big.card) ? G.big.card.name : null, s:(kind!=='sim' && G.big) ? G.big.slot : null});
+  G.h2h = G.h2h || {}; const hh = G.h2h[opp.name] = G.h2h[opp.name] || {w:0, l:0}; if(win) hh.w++; else hh.l++;
   if(win){ p.record.w++; G.yearLog.w++; p.streakL = 0; if(method==='Sumisión') p.sub++; else if(finish) p.ko++; }
   else { p.record.l++; G.yearLog.l++; p.streakL++; }
   /* plata */

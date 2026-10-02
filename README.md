@@ -16,7 +16,7 @@ llevado a las artes marciales mixtas.
 Abrí `index.html` en cualquier navegador (en el celular se juega de diez).
 
 - **Arrancar mi carrera**: armás tu peleador (país, categoría, estilo y personalidad).
-- **Desafío del día**: todos arrancan con el mismo peleador y la misma suerte. Al final copiás tu
+- **Desafío del día**: cambia todos los días y todos arrancan con el mismo peleador y la misma suerte. Es un **fenómeno**: arranca con mejores stats, crece mucho más rápido y se cae menos con la edad, así que termina con números de élite (90 a 99). Al final copiás tu
   resultado en cuadraditos, como en Wordle, y lo comparás con tus amigos.
 
 Una carrera completa dura **unos 8 minutos**: de los 22 años al retiro, entre 12 y 15 temporadas, y **todas las peleas se juegan**. A los 33 te preguntan si seguís; a los 38 se termina.
@@ -25,7 +25,10 @@ Se juega en el celular y en la compu (en pantalla ancha se arma en columnas; con
 
 ### Lo nuevo
 
-- **El afiche de la noche.** Antes de cada pelea grande ves la cartelera como un póster de evento: nombre (UFC 331, Fight Night, Bellator 312...), fecha y ciudad, vos contra el rival con banderas y rating, y abajo la cartelera principal y las preliminares con otros peleadores y otras categorías.
+- **El afiche de la noche.** Antes de cada pelea grande ves la cartelera como un póster de evento: nombre (UFC 331, Fight Night, Bellator 312...), fecha y ciudad, el evento principal arriba y la cartelera principal y las preliminares abajo.
+- **Arrancás abajo y vas subiendo.** Cuando llegás a una liga peleás en las **preliminares**; con ranking pasás a la **cartelera principal**, en el top 5 al **co-estelar**, y el **evento principal** es para las peleas de contendientes y de título. Tu pelea aparece marcada en su lugar del afiche.
+- **Una carrera más larga y realista.** Arrancás a los 19. En el ranking se sube de a poco (como mucho 3 o 4 puestos por victoria, y nadie entra directo al top 8), y para pelear por un título hay que estar #1 o #2 (o top 4 con 4 victorias seguidas) y haber ganado varias peleas en esa liga (4 en las regionales y mundiales, 5 en la UFC). Para cambiar de liga hay que ser campeón o el #1 con muchas victorias.
+- **A la UFC se llega por una liga mundial.** Casi siempre pasás antes por una liga mundial (PFL, Bellator, ONE...). Ir directo desde el regional a la Serie de Contendientes solo lo logra un campeón invicto y muy famoso.
 - **Eventos con suerte buena y mala.** Problemas con la balanza, una gripe en pleno campamento, te hackean las redes, se te escapa el manager con la plata, un corte en la ceja que te deja cicatriz. Y tentaciones: **un hombre de traje te paga por perder** tu próxima pelea grande, o **un "suplemento" ilegal** que te sube golpe, cardio y mentón. Si te descubren (al cerrar el año), te **suspenden una temporada** y perdés fama y seguidores.
 - **Menos rivales repetidos.** El campeón rota de retador (no siempre el mismo #1), el retador que perdió baja varios puestos y el título cambia de manos más seguido si ya te cruzaste dos veces con el mismo campeón. En una carrera entera, como mucho repetís 3 veces con alguien (sin contar a tu rival personal).
 - **Tu historial al final.** El cierre de carrera muestra tus victorias por KO, sumisión y decisión, tu mejor victoria y la lista de todas tus peleas con el evento, el método y el tipo de pelea.

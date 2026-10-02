@@ -468,6 +468,10 @@
   .shop-row .si span{display:block;font-size:12.5px;line-height:1.35;color:var(--ink-2);margin-top:2px;}
   .shop-row .btn.sm{width:auto;min-width:96px;font-size:16px;padding:8px 8px 7px;}
   .shop-row.max .si, .shop-row.used .si{opacity:.6;}
+  .shop-row .si .why{display:flex;gap:5px;align-items:center;color:var(--red);font-weight:600;} .shop-row .si .why .ico{width:12px;height:12px;flex:none;}
+  .moves-btn small{display:inline-block;background:var(--red);color:var(--on-red);font-family:var(--f-cond);font-size:14px;padding:1px 6px 0;margin-left:4px;vertical-align:2px;}
+  .move-res{display:flex;gap:8px;align-items:flex-start;border:2px solid var(--ink);padding:9px 10px;margin-top:10px;font-size:14px;line-height:1.35;background:var(--paper-2);}
+  .move-res .ico{width:18px;height:18px;flex:none;margin-top:1px;} .move-res.bad{border-color:var(--red);}
 
   /* ---------- dificultad a la vista ---------- */
   .dm{display:inline-flex;align-items:center;gap:2px;vertical-align:middle;}
@@ -780,7 +784,7 @@ const PERSONAS = {
   habilidoso:{icon:'diana', nm:'HABILIDOSO', tg:'La técnica',
     ds:'Tus peleas grandes se definen con minijuegos de habilidad. En cada pretemporada elegís entre 4 cartas en vez de 3.'},
   bocon:{icon:'microfono', nm:'BOCÓN', tg:'El show',
-    ds:'Antes de cada pelea grande hay cara a cara de bardeo. Plata y fama x1,5… pero las derrotas te destrozan en redes.'},
+    ds:'Antes de cada pelea grande hay cara a cara de bardeo. Plata y hype x1,5… pero las derrotas te destrozan en redes.'},
   guerrero:{icon:'escudo', nm:'GUERRERO', tg:'El corazón',
     ds:'Mentón de hierro: en los minijuegos nunca te finalizan y cuando vas abajo te agrandás. La hinchada te ama.'},
 };
@@ -807,7 +811,7 @@ const CARDS = [
   {id:'altura', r:'r', ico:'⛰️', nm:'Entrenar en la altura', g:{cardio:6}},
   {id:'cuello', r:'r', ico:'🐂', nm:'Cuello de toro', g:{chin:6}},
   {id:'psico', r:'r', icon:'ojo', ico:'', nm:'Psicólogo deportivo', g:{striking:2, wrestling:2, sumision:2, cardio:1, chin:1}},
-  {id:'cm', r:'r', icon:'megafono', ico:'', nm:'Community manager', fn:p=>{p.fame=clamp(p.fame+9,0,100);}, fx:'+9 fama'},
+  {id:'cm', r:'r', icon:'megafono', ico:'', nm:'Community manager', fn:p=>{p.fame=clamp(p.fame+9,0,100);}, fx:'+9 hype'},
   {id:'sponsor', r:'r', icon:'plata', ico:'', nm:'Sponsor de ropa', fn:p=>{p.money+=Math.round(4000*TIERS[p.tier].money);}, fxf:p=>'+'+fmtMoney(4000*TIERS[p.tier].money)},
   {id:'pesas', r:'r', icon:'puno', ico:'', nm:'Pesas pesadas', g:{striking:5, chin:3, cardio:-2}},
   {id:'capoeira', r:'r', ico:'🌀', nm:'Patadas de capoeira', g:{striking:6, wrestling:-1}},
@@ -1045,11 +1049,11 @@ const SHOP = [
   {id:'fisico', icon:'cardio', nm:'Preparador físico', ds:'Los años pesan menos: 1 punto menos de desgaste por año.', max:2, price:[9000,22000]},
   {id:'video', icon:'ojo', nm:'Analista de video', ds:'Estudia a tu próximo rival grande: esa pelea, más fácil.', use:true, price:[2500]},
   {id:'sparring', icon:'guante', nm:'Sparrings de nivel', ds:'+2 de golpe, lucha y piso.', use:true, price:[4500], lim:2},
-  {id:'prensa', icon:'megafono', nm:'Agencia de prensa', ds:'+8 de fama.', use:true, price:[3000]},
+  {id:'prensa', icon:'megafono', nm:'Agencia de prensa', ds:'+8 de hype.', use:true, price:[3000]},
   {id:'asado', icon:'corazon', nm:'Asado para la hinchada', ds:'+6 de hinchada.', use:true, price:[2000]},
   {id:'amuleto', icon:'trebol', nm:'Amuleto bendecido', ds:'+1 amuleto.', use:true, price:[3500], cond:p=>p.persona==='cabulero'},
   /* las compras de la vida tienen precio fijo: son metas para cuando empezás a ganar en serio */
-  {id:'auto', icon:'auto', nm:'Auto importado', ds:'+6 de fama y −3 de hinchada (no a todos les gusta).', max:1, price:[45000], abs:true},
+  {id:'auto', icon:'auto', nm:'Auto importado', ds:'+6 de hype y −3 de hinchada (no a todos les gusta).', max:1, price:[45000], abs:true},
   {id:'casa', icon:'casa', nm:'La casa para tu vieja', ds:'+15 de hinchada. Se lo prometiste de chico.', max:1, price:[120000], abs:true},
   {id:'gym', icon:'cinturon', nm:'Tu propio gimnasio', ds:'+8 de hinchada y te deja plata todos los años.', max:1, price:[220000], abs:true},
 ];
@@ -1766,9 +1770,10 @@ function startSeason(first){
   if(!first){ p.age++; G.season++; }
   G.yearLog = {year:seasonYear(), age:p.age, w:0, l:0, ovr0:ovrOf(p), rank0:rankLabel(p), tier0:p.tier, money0:p.money, news:[], notes:[]};
   G.growth = first ? {} : applyGrowth(p);
+  if(!first) p.fame = Math.round(p.fame*.88);   // el hype se enfría si no hacés nada grande
   if(!first){ rivalTick(); worldTick(); } else syncRival();
   if(!first && p.upg && p.upg.gym){ const inc = M(1500); p.money += inc; p.earned += inc; news(`Tu gimnasio dejó ${fmtMoney(inc)} este año.`); }
-  G.cards = drawCards(); G.picked = null;
+  G.cards = drawCards(); G.picked = null; G.moveRes = null;
   G.event = null; G.evRes = null; G.seasonRes = null; G.big = null; G.skipSeason = false;
   G.prevBig = G.lastBig; G.lastBig = null; G.lastFight = null;
   G.suspension = false;
@@ -1879,10 +1884,10 @@ function specialChoices(kind){
   const last = (p.flags.declines||0)>=2 ? 1 : 2;
   switch(kind){
     case 'oferta1': return [
-      {t:'«Trato hecho. ¿Dónde firmo?»', h:'💰⭐📈', say:'Así me gusta. Preparate, que acá los rivales no perdonan.', fx:()=>{ const wasChamp = p.champ; vacate(); moveTier(1, wasChamp?randi(12,15):null); return {fame:4, r:`Nueva casa: ${next}. Los rivales ahora son otra cosa.`}; }},
+      {t:'«Trato hecho. ¿Dónde firmo?»', h:'💰⭐📈', say:'Así me gusta. Preparate, que acá los rivales no perdonan.', fx:()=>{ const wasChamp = p.champ; vacate(); moveTier(1, debutRank(1, wasChamp)); return {fame:4, r:`Nueva casa: ${next}. Los rivales ahora son otra cosa.`}; }},
       {t:'«Todavía no. Me quedo a defender lo mío.»', h:'❤️💰', say:'Respeto eso. Pero las ofertas no se quedan esperando para siempre.', fx:()=>{ p.flags.declines = (p.flags.declines||0)+1; return {fans:6, money:M(1500), r:'Tu gente te lo agradece. La oferta quizás vuelva.'}; }}].slice(0, last);
     case 'oferta2': return [
-      {t:'«¡Dónde firmo, Dana!»', h:'👑💰⭐', say:'Bienvenido a la UFC. Acá no hay peleas fáciles. Nos vemos en Las Vegas.', fx:()=>{ const wasChamp = p.champ; vacate(); moveTier(2, wasChamp?randi(13,15):null); return {fame:8, fans:5, r:'Firmaste con la UFC. De chico lo soñabas. Ahora es real.'}; }},
+      {t:'«¡Dónde firmo, Dana!»', h:'👑💰⭐', say:'Bienvenido a la UFC. Acá no hay peleas fáciles. Nos vemos en Las Vegas.', fx:()=>{ const wasChamp = p.champ; vacate(); moveTier(2, debutRank(2, wasChamp)); return {fame:8, fans:5, r:'Firmaste con la UFC. De chico lo soñabas. Ahora es real.'}; }},
       {t:'«Todavía no. Quiero ser rey en mi casa.»', h:'❤️💰', say:'Está bien. Pero no te voy a esperar toda la vida, eh.', fx:()=>{ p.flags.declines = (p.flags.declines||0)+1; return {fans:5, money:M(2000), r:'Seguís siendo el rey de tu casa.'}; }}].slice(0, last);
     case 'dwcs': return [
       {t:'«Voy. Prepará la lapicera.»', h:'🌟🎲', say:'Me gusta la actitud. Ganá y hablamos de contrato esa misma noche.', fx:()=>{ G.forced='dwcs'; p.flags.dwcsDone = true; return {r:'La pelea grande del año va a ser en la Serie de Contendientes. Todo o nada.'}; }},
@@ -1943,7 +1948,7 @@ function applyDelta(d){
   const sg = v=>v>0 ? '+'+v : '−'+Math.abs(v);
   if(d.money<0 && -d.money>p.money) d.money = -p.money;      // si no alcanza para nada, se paga lo que hay
   if(d.money){ p.money += d.money; if(d.money>0) p.earned += d.money; chips.push({t:(d.money>0?'+':'')+fmtMoney(d.money), i:'plata', c:d.money>0?'p':'n'}); }
-  if(d.fame){ const b=p.fame; p.fame = clamp(p.fame+d.fame,0,100); if(p.fame!==b) chips.push({t:`${sg(p.fame-b)} fama`, i:'estrella', c:d.fame>0?'p':'n'}); }
+  if(d.fame){ const b=p.fame; p.fame = clamp(p.fame+d.fame,0,100); if(p.fame!==b) chips.push({t:`${sg(p.fame-b)} hype`, i:'estrella', c:d.fame>0?'p':'n'}); }
   if(d.fans){ const b=p.fans; p.fans = clamp(p.fans+d.fans,0,100); if(p.fans!==b) chips.push({t:`${sg(p.fans-b)} hinchada`, i:'corazon', c:d.fans>0?'p':'n'}); }
   STAT_KEYS.forEach(k=>{ if(d[k]){ const b=p[k]; p[k]=clamp(p[k]+d[k],10,99); if(p[k]!==b) chips.push({t:`${sg(p[k]-b)} ${STAT_LABEL[k].toLowerCase()}`, i:STAT_ICON[k], c:d[k]>0?'p':'n'}); } });
   if(d.amuletos){ const b=p.amuletos; p.amuletos = Math.max(0,p.amuletos+d.amuletos); if(p.amuletos!==b) chips.push({t:`${sg(p.amuletos-b)} amuleto`, i:'trebol', c:d.amuletos>0?'p':'n'}); }
@@ -2006,6 +2011,68 @@ function moveTier(t, rank){
   syncRival();
 }
 
+/* ---------- movidas de carrera: decisiones tuyas en la pretemporada ---------- */
+function wcIdx(p){ return WEIGHT_CLASSES.findIndex(w=>w.id===p.wc); }
+function bardeoChance(p){ return clamp(.08 + (p.fame-20)/60 + (p.persona==='bocon' ? .15 : 0), .05, .9); }
+function moveList(){
+  const p = G.p, i = wcIdx(p), up = WEIGHT_CLASSES[i+1], dn = WEIGHT_CLASSES[i-1];
+  const used = G.moveSeason===G.season, cool = (p.flags.wcMoved!==undefined && G.season-p.flags.wcMoved<2);
+  const lock = (c, why)=>c ? null : why;
+  const all = [
+    {id:'subir', icon:'arriba', nm:p.champ ? `Dejar el cinturón y subir a peso ${up?up.n.toLowerCase():'—'}` : `Subir a peso ${up?up.n.toLowerCase():'—'}`,
+     ds:'Rivales más grandes: +2 golpe y +2 mentón, −3 cardio. Arrancás en el ranking según tu hype.',
+     why: !up ? 'Ya estás en la categoría más pesada.' : cool ? 'Acabás de cambiar de categoría: esperá un año.' : null},
+    {id:'bajar', icon:'abajo', nm:`Bajar a peso ${dn?dn.n.toLowerCase():'—'}`,
+     ds:'El corte de peso cuesta: +3 cardio, −3 mentón y −1 golpe. Arrancás en el ranking según tu hype.',
+     why: !dn ? 'Ya estás en la categoría más liviana.' : p.champ ? 'Sos campeón: primero defendé o dejá el cinturón.' : cool ? 'Acabás de cambiar de categoría: esperá un año.' : null},
+    {id:'doble', icon:'cinturon', nm:'Ir por el segundo cinturón',
+     ds:'Este año peleás por el título de la categoría de arriba, a 5 rounds. Si ganás, sos doble campeón.',
+     why: lock(p.champ && p.tier===2, 'Tenés que ser campeón de la UFC.') || lock(!p.double, 'Ya sos doble campeón.') || lock(!up ? false : true, 'No hay categoría más pesada.')
+        || lock(p.defenses>=1 || p.fame>=HYPE_HI[2], `Defendé el cinturón una vez o llegá a ${HYPE_HI[2]} de hype.`) || lock(!(p.flags.dobleTry!==undefined && G.season-p.flags.dobleTry<2), 'Ya lo intentaste hace poco.')},
+    {id:'bardeo', icon:'megafono', nm:'Bardear al campeón en redes',
+     ds:`Si pega, te dan la pelea por el título este año. Si no, quedás mal parado: −6 hype. Chance hoy: ${Math.round(bardeoChance(p)*100)}% (sube con tu hype).`,
+     why: lock(!p.champ, 'El campeón sos vos.') || lock(p.rank && p.rank<=8, 'Tenés que estar en el top 8.') || lock(!titleEligible(p), 'Ya te toca pelear por el título.') || lock(!p.flags.promise2, 'Ya tenés la pelea por el título.')},
+  ];
+  return all.map(m=>({...m, why: m.why || (used ? 'Ya hiciste una movida esta temporada.' : G.step!=='card' ? 'Las movidas se hacen en la pretemporada.' : null)}));
+}
+function movesOpen(){ return moveList().filter(m=>!m.why).length; }
+function changeWc(dir){
+  const p = G.p, i = wcIdx(p), w = WEIGHT_CLASSES[i+dir], wasChamp = p.champ;
+  if(!w) return null;
+  if(wasChamp) vacate();
+  const lst0 = getList(p); if(lst0.champ===null) lst0.champ = lst0.L.shift();
+  p.wc = w.id; p.champ = false; p.flags.wcMoved = G.season;
+  const f = p.fame, h = HYPE_HI[p.tier];
+  p.rank = wasChamp ? randi(2,4) : f>=h ? randi(5,8) : (p.rank && p.rank<=5) ? randi(8,11) : f>=h*.6 ? randi(11,15) : null;
+  p.streakW = 0; p.orgW = Math.min(orgWins(p), 2);
+  const g = dir>0 ? {striking:2, chin:2, cardio:-3} : {cardio:3, chin:-3, striking:-1};
+  Object.entries(g).forEach(([k,v])=>{ p[k] = clamp(p[k]+v, 10, 99); });
+  G.statFlash = g;
+  syncRival();
+  return g;
+}
+function doMove(id){
+  const p = G.p, m = moveList().find(x=>x.id===id);
+  if(!m || m.why) return null;
+  G.moveSeason = G.season;
+  let res;
+  if(id==='subir' || id==='bajar'){
+    const from = wcOf(p).n.toLowerCase(), was = p.champ;
+    changeWc(id==='subir' ? 1 : -1);
+    res = {ok:true, t:`${was ? 'Dejaste el cinturón y subiste' : id==='subir' ? 'Subiste' : 'Bajaste'} de peso ${from} a peso ${wcOf(p).n.toLowerCase()}. Arrancás ${p.rank ? 'como #'+p.rank : 'sin ranking'}.`};
+    news(`Cambio de categoría: ahora peleás en peso ${wcOf(p).n.toLowerCase()}.`);
+  } else if(id==='doble'){
+    G.forced = 'doble'; p.flags.dobleTry = G.season; p.flags.dobleTried = true;
+    res = {ok:true, t:'Pediste la pelea por el segundo cinturón. Este año, la pelea grande es esa.'};
+  } else if(id==='bardeo'){
+    if(R() < bardeoChance(p)){ p.flags.promise2 = true; p.fame = clamp(p.fame+4, 0, 100); res = {ok:true, t:'¡Pegó! El campeón te contestó y la pelea se hace. Este año vas por el título.'}; news('Tu bardeo al campeón explotó en redes: te dieron la pelea por el título.'); }
+    else { p.fame = clamp(p.fame-6, 0, 100); p.fans = clamp(p.fans-2, 0, 100); res = {ok:false, t:'El campeón ni te contestó y en redes te liquidaron. −6 hype.'}; }
+  }
+  p.peak = Math.max(p.peak, ovrOf(p));
+  G.moveRes = res;
+  return res;
+}
+
 /* ---------- peleas de la temporada: rivales y forma de ganar ---------- */
 function winProb(a, b){ return clamp(sigmoid((a-b)/6.5), .04, .96); }
 const KO_HOW = ['gancho de izquierda','patada a la cabeza','rodillazo volador','cross de derecha','uppercut','codazo giratorio'];
@@ -2037,10 +2104,22 @@ function howFor(method){ if(/Decisi/.test(method)) return ''; return (method==='
 const TITLE_KINDS = ['title','defense','dwcs','doble'];
 /* para pelear por el título: estar arriba de verdad y haber ganado lo suficiente en esta liga */
 const ORG_WINS_FOR_TITLE = [4,4,5];
+/* el hype: cuánto vale en cada liga, y lo que te abre */
+const HYPE_MUL = [.4, .8, 1.3];
+const HYPE_HI = [20, 40, 65];          // con esto te suben en la cartelera
+const HYPE_SHOT = [30, 55, 85];        // con esto te dan la pelea por el título aunque no seas #1 (la pelea de la plata)
+function hypeShot(p){ return !!p.rank && !p.champ && p.rank<=5 && orgWins(p)>=2 && p.fame>=HYPE_SHOT[p.tier]; }
+/* con cuánto ranking arrancás en una liga nueva según tu hype */
+function debutRank(tier, wasChamp){
+  const f = G.p.fame;
+  if(f >= [0,30,60][tier]) return randi(5,8);
+  if(f >= [0,20,45][tier]) return randi(9,12);
+  return wasChamp ? randi(12,15) : null;
+}
 function orgWins(p){ return p.orgW===undefined ? 99 : p.orgW; }
 function titleEligible(p){
   if(!p.rank || p.champ) return false;
-  return (p.rank<=2 || (p.rank<=4 && (p.streakW||0)>=4)) && orgWins(p) >= ORG_WINS_FOR_TITLE[p.tier];
+  return ((p.rank<=2 || (p.rank<=4 && (p.streakW||0)>=4)) && orgWins(p) >= ORG_WINS_FOR_TITLE[p.tier]) || hypeShot(p);
 }
 function setupBig(){
   const p = G.p, lst = getList(p);
@@ -2060,6 +2139,7 @@ function setupBig(){
     const f = (rv && R()<.6) ? rv : (fresh[0] || top[0]);
     opp = {...f, dispRank:lst.L.indexOf(f)+1};
   } else if(forced==='title' || p.flags.promise2 || titleEligible(p)){
+    if(!forced && !p.flags.promise2 && hypeShot(p) && !(p.rank<=2 && orgWins(p)>=ORG_WINS_FOR_TITLE[p.tier])) G.hypeShot = true;
     p.flags.promise2 = false;
     type = 'title'; opp = {...lst.champ, dispRank:'C'};
   } else {
@@ -2075,10 +2155,12 @@ function setupBig(){
       else if((p.rank && p.rank<=6) || (opp.dispRank && opp.dispRank<=5)) type = 'contender';
     }
   }
-  /* los títulos se pelean a 5 rounds; las de contendientes, los clásicos y la Serie, a 3. Un nocaut las termina antes */
-  const rounds = ['title','defense','doble'].includes(type) ? 5 : ['contender','clasico','dwcs'].includes(type) ? 3 : 1;
-  G.big = {type, opp, rounds, shortNotice:forced==='title'};
+  G.big = {type, opp, rounds:1, shortNotice:forced==='title'};
   G.big.slot = slotFor(G.big);
+  /* los títulos se pelean a 5 rounds; las del top 5, los eventos principales y co-estelares, los clásicos y la Serie, a 3.
+     Así las importantes no se definen en un solo juego, salvo que lo hagas perfecto (nocaut) */
+  G.big.rounds = ['title','defense','doble'].includes(type) ? 5 : (['contender','clasico','dwcs'].includes(type) || ['main','co'].includes(G.big.slot) || isTop5Fight(opp)) ? 3 : 1;
+  if(G.hypeShot){ G.big.hype = true; G.hypeShot = false; }
   G.big.card = makeCard(G.big);
   G.step = 'preview';
 }
@@ -2087,14 +2169,16 @@ const CITIES = {ufc:['Las Vegas','Abu Dabi','Nueva York','París','Río de Janei
   one:['Singapur','Bangkok','Tokio','Manila'], lux:['Buenos Aires','Córdoba','Rosario','Montevideo','Santiago'], lfa:['Sioux Falls','Phoenix','Dallas','Denver'], cw:['Londres','Dublín','Manchester','Glasgow'], ffc:['Bangkok','Lagos','Sídney','Auckland']};
 const EV_BASE = {ufc:331, pfl:12, bellator:310, one:178, lux:41, lfa:212, cw:186, ffc:77};
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function isTop5Fight(opp){ const p = G.p; return (p.rank && p.rank<=5) || p.champ || (opp && typeof opp.dispRank==='number' && opp.dispRank<=5); }
 /* en qué parte de la cartelera peleás: arrancás en las preliminares y vas subiendo */
 const SLOT_N = {main:'Evento principal', co:'Co-estelar', mc:'Cartelera principal', pre:'Preliminares'};
 function slotFor(b){
   const p = G.p, r = p.rank || 99, or = (b.opp && typeof b.opp.dispRank==='number') ? b.opp.dispRank : 99;
   if(p.champ || ['title','defense','doble','dwcs'].includes(b.type)) return 'main';
-  if(b.type==='contender') return (r<=5 && or<=5) ? 'main' : 'co';
-  if(b.type==='clasico') return r<=10 ? 'co' : r<=15 ? 'mc' : 'pre';
-  return r<=5 ? 'co' : r<=15 ? 'mc' : 'pre';
+  const s = b.type==='contender' ? ((r<=5 && or<=5) ? 'main' : 'co') : b.type==='clasico' ? (r<=10 ? 'co' : r<=15 ? 'mc' : 'pre') : (r<=5 ? 'co' : r<=15 ? 'mc' : 'pre');
+  if(p.fame < HYPE_HI[p.tier] || s==='main') return s;
+  b.hypeUp = true;                       // con mucho hype te ponen más arriba en la cartelera
+  return ({pre:'mc', mc:'co', co:'main'})[s];
 }
 function makeCard(b){
   const p = G.p, id = orgIdOf(p), lst = getList(p), org = orgShort(p);
@@ -2158,10 +2242,12 @@ function applyResult(opp, win, method, kind, mk){
   if(p.tier===2 && big && win && finish && R()<.6){ purse += 50000; out.notes.push({t:'Actuación de la Noche: +'+fmtMoney(50000), i:'rayo', c:'o'}); }
   p.money += purse; p.earned += purse; out.money = purse;
   /* fama e hinchada */
-  let fame = (big ? (win?5:-3) : (win?2:-1)*regMul) * T.fame;
-  if(win && finish) fame += big ? 2 : 1;
-  if(win && TITLE_KINDS.includes(kind)) fame += 10;
-  if(mk==='up' && win) fame += 3; else if(mk==='safe' && !win) fame -= 3;
+  /* el hype cuesta: en las regionales casi no se mueve; lo hacen los nocauts, los títulos y las peleas grandes */
+  let fame = big ? (win ? 3 : -4) : (win ? 1 : -2);
+  if(win && finish) fame += big ? 3 : 1.5;
+  if(win && TITLE_KINDS.includes(kind)) fame += 8;
+  if(mk==='up' && win) fame += 2; else if(mk==='safe' && !win) fame -= 2;
+  if(fame>0) fame *= HYPE_MUL[p.tier];
   if(p.persona==='bocon') fame *= fame>0 ? 1.5 : 2;
   const fb = p.fame; p.fame = clamp(p.fame+Math.round(fame),0,100); out.fame = p.fame-fb;
   let fans = big ? (win?3:-2) : (win?1:0);
@@ -2197,7 +2283,7 @@ function applyResult(opp, win, method, kind, mk){
       out.notes.push({t:'Perdiste el cinturón', i:'cinturon', c:'n'});
     }
   } else if(kind==='dwcs'){
-    if(win){ p.flags.dwcs = true; vacate(); moveTier(2, null); out.notes.push({t:'¡Te ganaste el contrato con la UFC!', i:'rayo', c:'o'}); }
+    if(win){ p.flags.dwcs = true; vacate(); moveTier(2, debutRank(2, false)); out.notes.push({t:'¡Te ganaste el contrato con la UFC!', i:'rayo', c:'o'}); }
     else out.notes.push({t:'La puerta de la UFC se cerró… por ahora.', i:'cerrar', c:'n'});
   } else if(kind==='doble'){
     if(win){ p.double = true; p.titles.push({tier:2, org:'UFC · '+(opp.otherWc||'2ª división'), year:seasonYear(), age:p.age}); out.notes.push({t:'¡DOBLE CAMPEÓN DE LA UFC!', i:'trofeo', c:'o'}); out.belt = true; }
@@ -2270,7 +2356,7 @@ function finishSeason(){
   y.ovr1 = ovrOf(p); y.rank1 = rankLabel(p); y.headline = makeHeadline(); y.paper = choice(NEWSPAPERS);
   y.money = p.money - y.money0; y.org = orgShort(p);
   y.gold = !!(G.lastBig && G.lastBig.win && TITLE_KINDS.includes(G.lastBig.kind) && G.lastBig.kind!=='dwcs');
-  G.timeline.unshift({year:y.year, age:y.age, org:y.org, rank:y.rank1, w:y.w, l:y.l, h:y.headline, gold:y.gold});
+  G.timeline.unshift({year:y.year, age:y.age, org:y.org, rank:y.rank1, w:y.w, l:y.l, h:y.headline, gold:y.gold, fame:G.p.fame});
   const lb = G.lastBig;
   G.marks.push(G.skipSeason || !lb ? 'x' : (lb.win && ['title','defense','doble'].includes(lb.kind)) ? 't' : lb.win ? 'w' : 'l');
   checkOffers();
@@ -2283,11 +2369,13 @@ function checkOffers(){
   G.pending = [];
   if(p.tier>0 && p.streakL>=3){ G.pending.push('cortado'); return; }
   /* a la UFC se llega pasando por una liga mundial; directo desde el regional solo un campeón invicto y famoso */
-  if(p.tier===0 && p.champ && !p.flags.dwcsDone && p.record.l===0 && p.record.w>=8 && p.fame>=45) G.pending.push('dwcs');
-  /* para subir de liga hay que hacerse un nombre: ser campeón, o el #1 con muchas victorias ahí */
-  else if(p.tier===0 && (p.champ || (p.rank===1 && ovr>=68 && orgWins(p)>=6)) && p.fame>=26) G.pending.push('oferta1');
-  else if(p.tier===1 && (p.champ || (p.rank && p.rank<=2 && ovr>=84 && orgWins(p)>=6)) && p.fame>=48) G.pending.push('oferta2');
-  else if(p.tier===1 && !p.flags.dwcsDone && (p.champ || (p.rank && p.rank<=3 && orgWins(p)>=5)) && p.fame>=36) G.pending.push('dwcs');
+  /* a la Serie de Contendientes te invitan si tenés mucho hype (desde el regional, solo si sos un fenómeno) */
+  const top = r=>p.champ || (p.rank && p.rank<=r);
+  if(p.tier===0 && top(3) && !p.flags.dwcsDone && p.fame>=32) G.pending.push('dwcs');
+  /* para subir de liga: ser campeón, el #1 con muchas victorias, o tener el hype para que te vengan a buscar */
+  else if(p.tier===0 && (((p.champ || (p.rank===1 && ovr>=68 && orgWins(p)>=6)) && p.fame>=10) || (top(5) && p.fame>=25))) G.pending.push('oferta1');
+  else if(p.tier===1 && (((p.champ || (p.rank && p.rank<=2 && ovr>=84 && orgWins(p)>=6)) && p.fame>=28) || (top(5) && ovr>=78 && p.fame>=48))) G.pending.push('oferta2');
+  else if(p.tier===1 && top(5) && !p.flags.dwcsDone && p.fame>=35) G.pending.push('dwcs');
   else if(p.tier===2 && p.champ && p.defenses>=1 && !p.flags.dobleTried && !p.double && R()<.3) G.pending.push('doble');
   else if(!p.champ && p.rank && p.rank>=3 && p.rank<=7 && R()<.14) G.pending.push('shortnotice');
 }
@@ -2401,7 +2489,8 @@ function startRegular(opp, mk){
   if(!(G.regLeft>0)){ setupBig(); UI.screen = 'career'; return; }
   opp = opp || G.regOpp || simOpponent(); mk = mk || G.matchKind || 'mid';
   G.regOpp = opp; G.matchKind = mk; G.step = 'fights';
-  F = {mode:fixedMode() || 'skill', type:'regular', quick:true, opp, mk, need:1, max:1, round:0, meW:0, opW:0, hist:[], used:[], hype:0,
+  const rd = isTop5Fight(opp) ? 3 : 1;   // contra el top 5 no se define en un solo juego
+  F = {mode:fixedMode() || 'skill', type:'regular', quick:true, opp, mk, need:Math.floor(rd/2)+1, max:rd, round:0, meW:0, opW:0, hist:[], used:[], hype:0,
        game:null, phase:null, num:n-G.regLeft+1, of:n};
   UI.screen = 'fight';
   nextRound();
@@ -3627,7 +3716,7 @@ function ficha(showStats){
   </div>
   <div class="money-line">
     <span>Récord <b>${p.record.w}-${p.record.l}</b></span>
-    <span title="Fama">${ico('estrella')}<b>${p.fame}</b></span>
+    <span title="Hype">${ico('estrella')}<b>${p.fame}</b></span>
     <span title="Hinchada">${ico('corazon')}<b>${p.fans}</b></span>
     <button class="money-btn" title="Gastar en la tienda" onclick="openModal('shop')">${ico('plata')}<b>${fmtMoney(p.money)}</b><span class="go">Tienda</span></button>
     ${p.persona==='cabulero' ? `<span title="Amuletos">${ico('trebol')}<b>${p.amuletos}</b></span>` : ''}
@@ -3661,7 +3750,11 @@ function panelCard(){
       return `<button class="figu r-${c.r} ${G.picked===c.id?'on':(G.picked?'off':'')}" ${cant||G.picked?'disabled':''} onclick="pickCard(${i})" data-k="${i+1}">
         <div class="band">${RARITY[c.r]}</div><div class="art">${ico(cardIcon(c))}</div><div class="nm">${c.nm}</div><div class="fx">${cardFx(c)}</div>
         ${cost ? `<div class="cost">${cant?'Sin plata: ':''}${fmtMoney(cost)}</div>` : ''}</button>`; }).join('')}</div>
-    <button class="btn txt" style="width:100%;margin-top:6px" onclick="openModal('shop')">Ir a la tienda (tenés ${fmtMoney(p.money)})</button>
+    ${G.moveRes ? `<div class="move-res ${G.moveRes.ok?'ok':'bad'}">${ico(G.moveRes.ok?'arriba':'abajo')}<span>${escapeHtml(G.moveRes.t)}</span></div>` : ''}
+    <div class="row2" style="margin-top:8px">
+      <button class="btn paper moves-btn" onclick="openModal('moves')">Movidas${movesOpen() ? ` <small>${movesOpen()}</small>` : ''}</button>
+      <button class="btn paper" onclick="openModal('shop')">Tienda · ${fmtMoney(p.money)}</button>
+    </div>
   </section>`;
 }
 function pickCard(i){
@@ -3796,8 +3889,8 @@ function panelPreview(){
     ${seasonResHtml()}
     <div class="evp ${slot!=='main' ? 'evp-low' : ''}">
       <div class="evp-head"><b>${escapeHtml(card.name)}</b><span>${card.date} · ${escapeHtml(card.city)}</span></div>
-      ${slot==='main' ? `<div class="evp-lab ${bigClass(b)}">${bigLabel(b).split(' · ')[0]}${['title','defense'].includes(b.type) ? ' de peso '+wcOf(p).n.toLowerCase() : ''}</div>${myFight}`
-        : `<div class="evp-you">Peleás en ${({co:'el co-estelar', mc:'la cartelera principal', pre:'las preliminares'})[slot]}. Ganá y subís.</div>
+      ${slot==='main' ? `${b.hype ? '<div class="evp-you">No sos el #1, pero tu hype vende: te dieron la pelea por el título.</div>' : b.hypeUp ? '<div class="evp-you">Tu hype te puso en el evento principal.</div>' : ''}<div class="evp-lab ${bigClass(b)}">${bigLabel(b).split(' · ')[0]}${['title','defense'].includes(b.type) ? ' de peso '+wcOf(p).n.toLowerCase() : ''}</div>${myFight}`
+        : `<div class="evp-you">Peleás en ${({co:'el co-estelar', mc:'la cartelera principal', pre:'las preliminares'})[slot]}.${b.hypeUp ? ' Tu hype te subió en la cartelera.' : ' Ganá y subís.'}</div>
            ${card.main ? `<div class="evp-lab">Evento principal · ${escapeHtml(card.main.lab)}</div>${headHtml(card.main)}` : ''}`}
       ${sec('co', 'Co-estelar', card.coMain ? [card.coMain] : [])}
       ${sec('mc', 'Cartelera principal', card.co)}
@@ -3908,7 +4001,7 @@ function fightTrash(){
     const q = F.trashRes.q, said = F.trashRes.k>=0 ? F.trash.opts[F.trashRes.k][0].replace('{me}', me.name) : '…';
     const RS = [{t:'Papelón', c:'bad', d:'Hasta tu equipo se rió. Entrás con la cabeza caliente: el primer round es más difícil.'},
                 {t:'Tibio', c:'', d:'Zafaste. Un poquito de ventaja para el primer round.'},
-                {t:'¡Picante!', c:'gold', d:'El estadio explotó y lo sacaste de quicio: el primer round es mucho más fácil. +2 de fama.'}][q];
+                {t:'¡Picante!', c:'gold', d:'El estadio explotó y lo sacaste de quicio: el primer round es mucho más fácil. +2 de hype.'}][q];
     return `<div class="round-k">Cara a cara</div>
       <div class="intro">
         <div style="width:110px;margin:0 auto 8px;border:2.5px solid var(--ink);background:var(--photo)">${oppFace(o, q===2 ? 'scared' : q===0 ? 'happy' : 'neutral')}</div>
@@ -3929,7 +4022,7 @@ function afterTrash(){ if(F && F.phase==='trash' && F.trashRes) nextRound(); }
 function fightIntro(){
   const g = MG[F.game], d = roundDiff(F.game), isNew = !G.seenGames[F.game], o = F.opp;
   const oRank = o.dispRank==='C' ? 'campeón' : o.dispRank ? '#'+o.dispRank : 'sin ranking';
-  const head = F.type==='regular' ? `Pelea ${F.num} de ${F.of+1} del año · contra ${escapeHtml(o.name)}, ${oRank}, OVR ${o.ovr}`
+  const head = F.type==='regular' ? `Pelea ${F.num} de ${F.of+1} del año · contra ${escapeHtml(o.name)}, ${oRank}, OVR ${o.ovr}${F.max>1 ? ` · round ${F.round+1} de ${F.max}${F.meW||F.opW ? `, van ${F.meW}-${F.opW}` : ''}` : ''}`
     : F.max===1 ? 'La pelea del año, a un round' : `Round ${F.round+1} de ${F.max}${F.meW||F.opW ? ` · van ${F.meW}-${F.opW}` : ''}`;
   return `<div class="round-k">${head}</div>
     <div class="intro">
@@ -4006,7 +4099,7 @@ function scrEnd(){
         <div><small>KO / sumisión</small><b>${c.ko} / ${c.sub}</b></div>
         <div><small>OVR máximo</small><b>${c.peak}</b></div>
         <div><small>Defensas</small><b>${c.def}</b></div>
-        <div><small>Fama / hinchada</small><b>${c.fame} / ${c.fans}</b></div>
+        <div><small>Hype / hinchada</small><b>${c.fame} / ${c.fans}</b></div>
         <div><small>Ganó</small><b>${fmtMoney(c.earned)}</b></div>
       </div>
       <div class="belts-line">${c.titles.length ? 'Cinturones: '+c.titles.map(t=>`<b>${escapeHtml(t.org)} ${t.year}</b>`).join(' ') : 'Sin cinturones.'}</div>
@@ -4083,6 +4176,14 @@ function shopHtml(){
         <button class="btn sm ${st==='ok'?'gold':'paper'}" ${st==='ok'?'':'disabled'} onclick="doBuy('${it.id}')">${st==='max' ? 'Listo' : st==='used' ? 'Este año, ya' : fmtMoney(shopPrice(it))}</button></div>`; }).join('')}</div>
     <button class="btn paper" style="margin-top:12px" onclick="closeModal()">Cerrar</button>`;
 }
+function movesHtml(){
+  const ms = moveList();
+  return `<h3>Movidas de carrera</h3><p>Una por temporada, en la pretemporada. Lo que podés hacer depende de tu hype, tu ranking y tu cinturón.</p>
+    <div class="shop">${ms.map(m=>`<div class="shop-row ${m.why?'used':''}">${ico(m.icon)}<div class="si"><b>${escapeHtml(m.nm)}</b><span>${m.ds}</span>${m.why ? `<span class="why">${ico('cerrar')}${m.why}</span>` : ''}</div>
+      <button class="btn sm ${m.why?'paper':'gold'}" ${m.why?'disabled':''} onclick="doMoveUI('${m.id}')">${m.why ? 'Bloqueada' : 'Hacerla'}</button></div>`).join('')}</div>
+    <button class="btn paper" style="margin-top:12px" onclick="closeModal()">Cerrar</button>`;
+}
+function doMoveUI(id){ const res = doMove(id); if(!res){ SFX.buzz(); return; } UI.modal = null; if(res.ok){ SFX.good(); if(!UI.bot) confetti(24, ['#e3a92c','#faf5e9','#1c1915']); } else SFX.buzz(); render(); save(); }
 function doBuy(id){ if(buyItem(id)){ SFX.coin(); render(); save(); } else SFX.buzz(); }
 function confirmRetire(b){
   if(b.dataset.sure){ retireNow(); return; }
@@ -4098,10 +4199,12 @@ function modalHtml(){
     <p>En el <b>desafío del día</b> todos arrancan con el mismo peleador y la misma suerte.</p>
     <button class="btn paper" onclick="closeModal()">Entendido</button>`;
   if(UI.modal==='shop' && G && G.p) inner = shopHtml();
+  if(UI.modal==='moves' && G && G.p) inner = movesHtml();
   if(UI.modal==='look' && G && G.p) inner = `<h3>Tu look</h3><p>Cambialo cuando quieras: pelo, barba, marcas.</p>${lookEditor('p')}<button class="btn" style="margin-top:12px" onclick="closeModal()">Listo</button>`;
   if(UI.modal==='menu') inner = `<h3>Pausa</h3>
     <p>Tu carrera se guarda sola. Podés salir y volver cuando quieras.</p>
     <div class="stack">
+      <button class="btn paper" onclick="openModal('moves')">Movidas de carrera</button>
       <button class="btn paper" onclick="openModal('shop')">La tienda</button>
       <button class="btn paper" onclick="openModal('look')">Cambiar el look</button>
       <button class="btn paper" onclick="UI.modal=null;UI.screen='menu';render()">Salir al afiche</button>
@@ -4144,7 +4247,7 @@ function botStep(){
   UI._bt = setTimeout(()=>{
     try{
       if(UI.screen==='career'){
-        if(G.step==='card'){ if(!G.picked){ botShop(); pickCard(botPickCard()); } }
+        if(G.step==='card'){ if(!G.picked){ botShop(); const mv = moveList().filter(m=>!m.why); if(mv.length && Math.random()<.25) doMove(choice(mv).id); pickCard(botPickCard()); } }
         else if(G.celebrate && (G.step==='signing' || G.step==='yearEnd')) doneSigning();
         else if(G.step==='event'){ botShop(); const v = eventView(); const ok = v.choices.map((c,i)=>i).filter(i=>!choiceBlocked(v,i)); doEvent(v.special ? 0 : choice(ok)); }
         else if(G.step==='eventReply') doReply();

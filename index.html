@@ -697,6 +697,15 @@ const COUNTRIES = [
   {c:'NG',n:'Nigeria',cont:'AF'},{c:'ZA',n:'Sudáfrica',cont:'AF'},
   {c:'AU',n:'Australia',cont:'OC'},{c:'NZ',n:'N. Zelanda',cont:'OC'},
 ];
+const COUNTRIES_X = [
+  {c:'GE',n:'Georgia',cont:'EU'},{c:'PL',n:'Polonia',cont:'EU'},{c:'CZ',n:'Chequia',cont:'EU'},{c:'IE',n:'Irlanda',cont:'EU'},{c:'NL',n:'Países Bajos',cont:'EU'},
+  {c:'IT',n:'Italia',cont:'EU'},{c:'DE',n:'Alemania',cont:'EU'},{c:'AT',n:'Austria',cont:'EU'},{c:'CH',n:'Suiza',cont:'EU'},{c:'PT',n:'Portugal',cont:'EU'},
+  {c:'UA',n:'Ucrania',cont:'EU'},{c:'MD',n:'Moldavia',cont:'EU'},{c:'HR',n:'Croacia',cont:'EU'},{c:'RS',n:'Serbia',cont:'EU'},{c:'HU',n:'Hungría',cont:'EU'},
+  {c:'AM',n:'Armenia',cont:'EU'},{c:'AZ',n:'Azerbaiyán',cont:'EU'},{c:'TR',n:'Turquía',cont:'EU'},{c:'KZ',n:'Kazajistán',cont:'EU'},{c:'UZ',n:'Uzbekistán',cont:'EU'},
+  {c:'IQ',n:'Irak',cont:'EU'},{c:'AE',n:'Emiratos Árabes',cont:'EU'},{c:'BH',n:'Baréin',cont:'EU'},
+  {c:'CN',n:'China',cont:'AS'},{c:'MM',n:'Myanmar',cont:'AS'},
+  {c:'EC',n:'Ecuador',cont:'SA'},{c:'PE',n:'Perú',cont:'SA'},{c:'DO',n:'Rep. Dominicana',cont:'SA'},{c:'JM',n:'Jamaica',cont:'AF'},{c:'CM',n:'Camerún',cont:'AF'},
+];
 /* Países que (hasta donde sabemos) nunca tuvieron un campeón indiscutido de UFC */
 const NEVER_CHAMP = ['AR','CL','UY','CO'];
 
@@ -750,16 +759,26 @@ const NICKS = ['El Toro','La Pantera','El Tanque','Cara de Piedra','El Pibe','La
    [nombre, país, poder]  (ordenados: el primero es el campeón)
    ============================================================ */
 const UFC_ROSTER = {
-  mosca:[['Alexandre Pantója','BR',93],['Tatsuro Taíra','JP',90],['Brandon Roival','US',89],['Manel Kapé','ZA',88],['Muhammad Mokáev','RU',87],['Steve Ersec','AU',86],['Joshua Vann','US',86],['Brandon Morena','MX',85],['Matheus Nicolao','BR',84],['Tagir Ulanbékov','RU',83],['Asu Almabáyev','RU',83],['Amir Alí','US',82],['Bruno Silveira','BR',81],['Tim Eliot','US',80],['Charles Johnsson','US',80]],
-  gallo:[['Merab Dvalishvíli','RU',95],['Umar Nurmagomédov','RU',92],['Sean O\'Molley','US',91],['Cory Sandhágen','US',90],['Petr Yann','RU',89],['Payton Talbott','US',87],['Song Yadóng','KR',86],['Marlon Verra','CO',86],['Deiveson Figueiredo','BR',85],['Mario Bautista','US',84],['José Aldo','BR',83],['Rob Fonte','US',82],['Kyler Filipes','US',81],['Aiemann Zahabi','CA',81],['Pedro Munhóz','BR',80]],
-  pluma:[['Ilya Topurián','ES',96],['Movsar Evloyev','RU',93],['Alexander Volkanóvsky','AU',92],['Diego Lopes','BR',91],['Max Hollowey','US',89],['Lerone Murphi','GB',88],['Yair Rodrígues','MX',87],['Brian Ortéga','US',86],['Jean Silva','BR',86],['Kevin Vallejo','AR',85],['Arnold Alliende','BR',84],['Steve Garcia','US',83],['Bryce Mitchel','US',82],['Dan Ige','US',81],['Josh Emmet','US',80]],
-  ligero:[['Islam Makhachov','RU',97],['Arman Tsarukián','RU',93],['Charles Olivéira','BR',91],['Justin Gaethjee','US',90],['Dustin Poirié','US',88],['Mateusz Gamrot','ES',87],['Paddy Pimblet','GB',87],['Benoît Saint Denís','FR',86],['Rafael Fiziev','FR',85],['Renato Moicano','BR',84],['Grant Dawsson','US',84],['Dan Hooke','NZ',83],['Nasrat Haqparast','CA',82],['Michael Chandlér','US',82],['Terrance McKinnie','US',81]],
-  welter:[['Shavkat Rakhmónov','RU',95],['Jack Della Maddalena','AU',93],['Belal Muhamad','US',91],['Leon Edwars','GB',90],['Michael Morales','CO',89],['Sean Brady','US',88],['Kamaru Usmann','NG',87],['Ian Machado Garri','US',87],['Joaquin Buckley','US',86],['Carlos Prates','BR',86],['Gilbert Burnes','BR',84],['Geoff Neal','US',83],['Randy Brown','US',82],['Colby Covingtón','US',82],['Kevin Holand','US',81]],
-  medio:[['Khamzat Chimáev','RU',95],['Dricus du Plessi','ZA',93],['Sean Strikland','US',90],['Robert Whitaker','AU',89],['Israel Adesánya','NG',88],['Nassourdine Imávov','FR',88],['Caio Borralho','BR',87],['Bo Nickel','US',87],['Anthony Hernándes','US',85],['Reinier de Ridder','FR',85],['Jared Cannonié','US',84],['Brendan Allén','US',84],['Michel Pereyra','BR',83],['Roman Dolidze','RU',83],['Marvin Vettóri','ES',82]],
-  semipesado:[['Magomed Ankaláev','RU',94],['Alex Pereyra','BR',93],['Jiri Prochazká','ES',90],['Carlos Ulberg','NZ',89],['Jamahal Hil','US',87],['Azamat Murzakanov','RU',86],['Zhang Mingyáng','KR',85],['Khalil Rountre','US',85],['Bogdan Guskov','RU',84],['Nikita Krylóv','RU',83],['Aleksandar Rakic','AU',83],['Dominick Reyés','US',82],['Volkan Oezdemír','FR',82],['Modestas Bukauskas','GB',82],['Ryan Spann','US',80]],
-  pesado:[['Tom Aspinal','GB',96],['Jon Jonés','US',94],['Ciryl Gané','FR',91],['Sergei Pavlóvich','RU',88],['Curtis Blaides','US',87],['Alexander Volkóv','RU',87],['Jailton Almeidha','BR',86],['Waldo Cortes-Acosta','ES',85],['Mick Parkin','GB',84],['Serghei Spivac','RU',84],['Shamil Gaziev','RU',83],['Tallison Teixeira','BR',83],['Ante Delija','ES',82],['Marcin Tybura','ES',81],['Derrick Lewiss','US',80]],
+  mosca:[['Alexandre Pantója','BR',93,1990],['Tatsuro Taíra','JP',90,2000],['Brandon Roival','US',89,1992],['Manel Kapé','PT',88,1993],['Muhammad Mokáev','GB',87,2000],['Steve Ersec','AU',86,1995],['Joshua Vann','MM',86,2001],['Brandon Morena','MX',85,1993],['Matheus Nicolao','BR',84,1993],['Tagir Ulanbékov','RU',83,1991],['Asu Almabáyev','KZ',83,1994],['Amir Alí','IQ',82,1993],['Bruno Silveira','BR',81,1989],['Tim Eliot','US',80,1986],['Charles Johnsson','US',80,1990]],
+  gallo:[['Merab Dvalishvíli','GE',95,1991],['Umar Nurmagomédov','RU',92,1996],['Sean O\'Molley','US',91,1994],['Cory Sandhágen','US',90,1992],['Petr Yann','RU',89,1993],['Payton Talbott','US',87,1998],['Song Yadóng','CN',86,1997],['Marlon Verra','EC',86,1992],['Deiveson Figueiredo','BR',85,1987],['Mario Bautista','US',84,1993],['José Aldo','BR',83,1986],['Rob Fonte','US',82,1987],['Kyler Filipes','US',81,1995],['Aiemann Zahabi','CA',81,1987],['Pedro Munhóz','BR',80,1986]],
+  pluma:[['Ilya Topurián','ES',96,1997],['Movsar Evloyev','RU',93,1994],['Alexander Volkanóvsky','AU',92,1988],['Diego Lopes','BR',91,1994],['Max Hollowey','US',89,1991],['Lerone Murphi','GB',88,1991],['Yair Rodrígues','MX',87,1992],['Brian Ortéga','US',86,1991],['Jean Silva','BR',86,1996],['Kevin Vallejo','AR',85,2001],['Arnold Alliende','GB',84,1994],['Steve Garcia','US',83,1992],['Bryce Mitchel','US',82,1994],['Dan Ige','US',81,1991],['Josh Emmet','US',80,1985]],
+  ligero:[['Islam Makhachov','RU',97,1991],['Arman Tsarukián','AM',93,1996],['Charles Olivéira','BR',91,1989],['Justin Gaethjee','US',90,1988],['Dustin Poirié','US',88,1989],['Mateusz Gamrot','PL',87,1990],['Paddy Pimblet','GB',87,1995],['Benoît Saint Denís','FR',86,1995],['Rafael Fiziev','AZ',85,1993],['Renato Moicano','BR',84,1989],['Grant Dawsson','US',84,1994],['Dan Hooke','NZ',83,1990],['Nasrat Haqparast','DE',82,1995],['Michael Chandlér','US',82,1986],['Terrance McKinnie','US',81,1994]],
+  welter:[['Shavkat Rakhmónov','KZ',95,1994],['Jack Della Maddalena','AU',93,1996],['Belal Muhamad','US',91,1988],['Leon Edwars','GB',90,1991],['Michael Morales','EC',89,1999],['Sean Brady','US',88,1992],['Kamaru Usmann','NG',87,1987],['Ian Machado Garri','IE',87,1997],['Joaquin Buckley','US',86,1994],['Carlos Prates','BR',86,1993],['Gilbert Burnes','BR',84,1986],['Geoff Neal','US',83,1990],['Randy Brown','JM',82,1990],['Colby Covingtón','US',82,1988],['Kevin Holand','US',81,1992]],
+  medio:[['Khamzat Chimáev','AE',95,1994],['Dricus du Plessi','ZA',93,1994],['Sean Strikland','US',90,1991],['Robert Whitaker','AU',89,1990],['Israel Adesánya','NZ',88,1989],['Nassourdine Imávov','FR',88,1995],['Caio Borralho','BR',87,1993],['Bo Nickel','US',87,1996],['Anthony Hernándes','US',85,1994],['Reinier de Ridder','NL',85,1990],['Jared Cannonié','US',84,1984],['Brendan Allén','US',84,1995],['Michel Pereyra','BR',83,1993],['Roman Dolidze','GE',83,1988],['Marvin Vettóri','IT',82,1993]],
+  semipesado:[['Magomed Ankaláev','RU',94,1992],['Alex Pereyra','BR',93,1987],['Jiri Prochazká','CZ',90,1992],['Carlos Ulberg','NZ',89,1990],['Jamahal Hil','US',87,1991],['Azamat Murzakanov','RU',86,1989],['Zhang Mingyáng','CN',85,1998],['Khalil Rountre','US',85,1990],['Bogdan Guskov','UZ',84,1992],['Nikita Krylóv','UA',83,1992],['Aleksandar Rakic','AT',83,1992],['Dominick Reyés','US',82,1989],['Volkan Oezdemír','CH',82,1989],['Modestas Bukauskas','GB',82,1994],['Ryan Spann','US',80,1991]],
+  pesado:[['Tom Aspinal','GB',96,1993],['Jon Jonés','US',94,1987],['Ciryl Gané','FR',91,1990],['Sergei Pavlóvich','RU',88,1992],['Curtis Blaides','US',87,1991],['Alexander Volkóv','RU',87,1988],['Jailton Almeidha','BR',86,1991],['Waldo Cortes-Acosta','DO',85,1991],['Mick Parkin','GB',84,1995],['Serghei Spivac','MD',84,1995],['Shamil Gaziev','BH',83,1990],['Tallison Teixeira','BR',83,1999],['Ante Delija','HR',82,1990],['Marcin Tybura','PL',81,1985],['Derrick Lewiss','US',80,1985]],
 };
-const UFC_PROSPECTS = ['Raul Rosas Jr.','Diego Ferreyra','Nikolas Motta','Ateba Gautier','Malik Tsarukián','Vasil Magomédov','Lucas Almeida','Cody Haddon','Elias Mattsson','Ismael Bonfim','Tiago Bandeira','Kaan Ofli','Nazim Sadýkhov','Oumar Sy','Tom Nolan'];
+/* prospectos: los reales (con nombre alterado) van entrando con los años; también aparecen inventados */
+const UFC_PROSPECTS = {
+  mosca:[['Lone\'er Kavanah','GB',1999],['Clayton Carpentér','US',1996],['Najim Ruzibóev','UZ',1999],['Kevin Borjas','PE',1999]],
+  gallo:[['Raúl Rosas Jr.','US',2004],['Malcolm Welmaker','US',1999],['Vinicius Oliveyra','BR',1995],['Daniel Marcós','PE',1993]],
+  pluma:[['Melquizael Kosta','BR',1997],['Kaan Oflí','TR',1998],['Nazim Sadýkhov','AZ',1994],['Lucas Almeyda','BR',1997]],
+  ligero:[['Esteban Ribóvics','AR',1996],['Mauricio Rufy','BR',1996],['Quillan Salkild','AU',2000],['Chris Dunkan','GB',1993]],
+  welter:[['Gabriel Bonfím','BR',1997],['Oban Eliott','GB',1998],['Uroš Medič','RS',1993],['Nikolas Mota','BR',1999]],
+  medio:[['Ateba Gautiér','CM',2002],['Shara Magomédov','RU',1994],['Christian Leroy Dunkan','GB',1995],['Ikram Aliskérov','RU',1992]],
+  semipesado:[['Rodolfo Belatto','BR',1996],['Oumar Sy','FR',1995],['Ibo Aslán','TR',1996],['Navajo Stirlin','NZ',1999]],
+  pesado:[['Valter Walkker','BR',1997],['Rizvan Kúniev','RU',1991],['Tom Nolán','AU',2001],['Jhonata Díniz','BR',1991]],
+};
 
 const STAT_KEYS = ['striking','wrestling','sumision','cardio','chin'];
 const STAT_SHORT = {striking:'GOL', wrestling:'LUC', sumision:'PIS', cardio:'CAR', chin:'MEN'};
@@ -1151,7 +1170,7 @@ function lerp(a,b,t){ return a+(b-a)*t; }
 function sigmoid(x){ return 1/(1+Math.exp(-x)); }
 /* d: -1 (muy fácil) · 0 (parejo) · 1.5 (brutal) → interpola entre tres valores */
 function byDiff(d, easy, normal, hard){ return d<=0 ? lerp(normal, easy, Math.min(1,-d)) : lerp(normal, hard, Math.min(1, d/1.5)); }
-function lastName(n){ const parts=n.split(' '); return parts[parts.length-1]; }
+function lastName(n){ const parts=n.split(' '); const l = parts[parts.length-1]; return /^jr\.?$/i.test(l) && parts.length>2 ? parts[parts.length-2]+' '+l : l; }
 function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function fmtMoney(n){
   n = Math.round(n); const neg = n<0; n = Math.abs(n);
@@ -1161,7 +1180,7 @@ function fmtMoney(n){
   return (neg?'−':'')+s;
 }
 function M(x){ return Math.round(x * TIERS[G.p.tier].money / 50) * 50 || 50; }
-function countryOf(cc){ return COUNTRIES.find(c=>c.c===cc) || COUNTRIES[0]; }
+function countryOf(cc){ return COUNTRIES.find(c=>c.c===cc) || COUNTRIES_X.find(c=>c.c===cc) || COUNTRIES[0]; }
 function sfxOn(){ try{ return localStorage.getItem('idolo_mma_sound')!=='0'; }catch(e){ return true; } }
 
 /* Banderas dibujadas en SVG: no dependen de internet ni de emojis del sistema */
@@ -1186,6 +1205,38 @@ const FLAG_SVG = {
   AU:'<rect width="30" height="20" fill="#00247d"/><path d="M0 0 L13 9 M13 0 L0 9" stroke="#fff" stroke-width="2"/><path d="M6.5 0 L6.5 9 M0 4.5 L13 4.5" stroke="#fff" stroke-width="3"/><path d="M6.5 0 L6.5 9 M0 4.5 L13 4.5" stroke="#c8102e" stroke-width="1.6"/><circle cx="8" cy="15" r="1.1" fill="#fff"/><circle cx="20" cy="6" r="1" fill="#fff"/><circle cx="23" cy="12" r="1" fill="#fff"/><circle cx="19" cy="16" r="1" fill="#fff"/><circle cx="26" cy="16" r="0.8" fill="#fff"/>',
   NZ:'<rect width="30" height="20" fill="#00247d"/><path d="M0 0 L13 9 M13 0 L0 9" stroke="#fff" stroke-width="2"/><path d="M6.5 0 L6.5 9 M0 4.5 L13 4.5" stroke="#fff" stroke-width="3"/><path d="M6.5 0 L6.5 9 M0 4.5 L13 4.5" stroke="#c8102e" stroke-width="1.6"/><circle cx="21" cy="6" r="1.1" fill="#c8102e" stroke="#fff" stroke-width="0.5"/><circle cx="24.5" cy="11" r="1.1" fill="#c8102e" stroke="#fff" stroke-width="0.5"/><circle cx="20" cy="14.5" r="1.1" fill="#c8102e" stroke="#fff" stroke-width="0.5"/><circle cx="25" cy="16" r="0.9" fill="#c8102e" stroke="#fff" stroke-width="0.5"/>',
 };
+Object.assign(FLAG_SVG, {
+  GE:'<rect width="30" height="20" fill="#fff"/><rect x="13" width="4" height="20" fill="#ff0000"/><rect y="8" width="30" height="4" fill="#ff0000"/><g fill="#ff0000"><rect x="5.5" y="2.5" width="1.4" height="4"/><rect x="4.2" y="3.8" width="4" height="1.4"/><rect x="23.1" y="2.5" width="1.4" height="4"/><rect x="21.8" y="3.8" width="4" height="1.4"/><rect x="5.5" y="13.5" width="1.4" height="4"/><rect x="4.2" y="14.8" width="4" height="1.4"/><rect x="23.1" y="13.5" width="1.4" height="4"/><rect x="21.8" y="14.8" width="4" height="1.4"/></g>',
+  PL:'<rect y="0.00" width="30" height="10.05" fill="#fff"/><rect y="10.00" width="30" height="10.05" fill="#dc143c"/>',
+  CZ:'<rect y="0.00" width="30" height="10.05" fill="#fff"/><rect y="10.00" width="30" height="10.05" fill="#d7141a"/><polygon points="0,0 15,10 0,20" fill="#11457e"/>',
+  IE:'<rect x="0.00" width="10.05" height="20" fill="#169b62"/><rect x="10.00" width="10.05" height="20" fill="#fff"/><rect x="20.00" width="10.05" height="20" fill="#ff883e"/>',
+  NL:'<rect y="0.00" width="30" height="6.72" fill="#ae1c28"/><rect y="6.67" width="30" height="6.72" fill="#fff"/><rect y="13.33" width="30" height="6.72" fill="#21468b"/>',
+  IT:'<rect x="0.00" width="10.05" height="20" fill="#009246"/><rect x="10.00" width="10.05" height="20" fill="#fff"/><rect x="20.00" width="10.05" height="20" fill="#ce2b37"/>',
+  DE:'<rect y="0.00" width="30" height="6.72" fill="#000"/><rect y="6.67" width="30" height="6.72" fill="#dd0000"/><rect y="13.33" width="30" height="6.72" fill="#ffce00"/>',
+  AT:'<rect y="0.00" width="30" height="6.72" fill="#ed2939"/><rect y="6.67" width="30" height="6.72" fill="#fff"/><rect y="13.33" width="30" height="6.72" fill="#ed2939"/>',
+  CH:'<rect width="30" height="20" fill="#d52b1e"/><rect x="13" y="4" width="4" height="12" fill="#fff"/><rect x="9" y="8" width="12" height="4" fill="#fff"/>',
+  PT:'<rect width="30" height="20" fill="#ff0000"/><rect width="12" height="20" fill="#006600"/><circle cx="12" cy="10" r="3.6" fill="#ffcc00"/><circle cx="12" cy="10" r="2" fill="#ff0000"/>',
+  UA:'<rect y="0.00" width="30" height="10.05" fill="#0057b7"/><rect y="10.00" width="30" height="10.05" fill="#ffd700"/>',
+  MD:'<rect x="0.00" width="10.05" height="20" fill="#0046ae"/><rect x="10.00" width="10.05" height="20" fill="#ffd200"/><rect x="20.00" width="10.05" height="20" fill="#cc092f"/><rect x="13" y="7" width="4" height="6" fill="#b07e3c"/>',
+  HR:'<rect y="0.00" width="30" height="6.72" fill="#ff0000"/><rect y="6.67" width="30" height="6.72" fill="#fff"/><rect y="13.33" width="30" height="6.72" fill="#171796"/><g><rect x="12" y="6" width="6" height="7" fill="#fff"/><rect x="12" y="6" width="2" height="2" fill="#ff0000"/><rect x="16" y="6" width="2" height="2" fill="#ff0000"/><rect x="14" y="8" width="2" height="2" fill="#ff0000"/><rect x="12" y="10" width="2" height="2" fill="#ff0000"/><rect x="16" y="10" width="2" height="2" fill="#ff0000"/></g>',
+  RS:'<rect y="0.00" width="30" height="6.72" fill="#c6363c"/><rect y="6.67" width="30" height="6.72" fill="#0c4076"/><rect y="13.33" width="30" height="6.72" fill="#fff"/><rect x="7" y="5" width="5" height="8" rx="1" fill="#c6363c" stroke="#fff" stroke-width=".8"/>',
+  HU:'<rect y="0.00" width="30" height="6.72" fill="#ce2939"/><rect y="6.67" width="30" height="6.72" fill="#fff"/><rect y="13.33" width="30" height="6.72" fill="#477050"/>',
+  AM:'<rect y="0.00" width="30" height="6.72" fill="#d90012"/><rect y="6.67" width="30" height="6.72" fill="#0033a0"/><rect y="13.33" width="30" height="6.72" fill="#f2a800"/>',
+  AZ:'<rect y="0.00" width="30" height="6.72" fill="#00b5e2"/><rect y="6.67" width="30" height="6.72" fill="#ef3340"/><rect y="13.33" width="30" height="6.72" fill="#509e2f"/><circle cx="14" cy="10" r="2.6" fill="#fff"/><circle cx="14.9" cy="10" r="2.1" fill="#ef3340"/><polygon points="17.6,8.8 17.9,9.6 18.7,9.6 18.1,10.2 18.3,11.0 17.6,10.5 16.9,11.0 17.1,10.2 16.5,9.6 17.3,9.6" fill="#fff"/>',
+  TR:'<rect width="30" height="20" fill="#e30a17"/><circle cx="11" cy="10" r="5" fill="#fff"/><circle cx="12.3" cy="10" r="4" fill="#e30a17"/><polygon points="17.5,7.6 18.1,9.2 19.8,9.3 18.5,10.3 18.9,11.9 17.5,11.0 16.1,11.9 16.5,10.3 15.2,9.3 16.9,9.2" fill="#fff"/>',
+  KZ:'<rect width="30" height="20" fill="#00afca"/><circle cx="15" cy="9" r="3.6" fill="#fec50c"/><rect x="2" y="2" width="1.5" height="16" fill="#fec50c"/>',
+  UZ:'<rect width="30" height="6.4" fill="#0099b5"/><rect y="6.4" width="30" height=".6" fill="#ce1126"/><rect y="7" width="30" height="6" fill="#fff"/><rect y="13" width="30" height=".6" fill="#ce1126"/><rect y="13.6" width="30" height="6.4" fill="#1eb53a"/><circle cx="5" cy="3.2" r="2" fill="#fff"/><circle cx="5.8" cy="3.2" r="1.7" fill="#0099b5"/>',
+  IQ:'<rect width="30" height="6.7" fill="#ce1126"/><rect y="6.7" width="30" height="6.7" fill="#fff"/><rect y="13.4" width="30" height="6.6" fill="#000"/><rect x="9" y="9" width="12" height="2" fill="#007a3d"/>',
+  AE:'<rect y="0.00" width="30" height="6.72" fill="#00732f"/><rect y="6.67" width="30" height="6.72" fill="#fff"/><rect y="13.33" width="30" height="6.72" fill="#000"/><rect width="8" height="20" fill="#ff0000"/>',
+  BH:'<rect width="30" height="20" fill="#ce1126"/><polygon points="0,0 9,0 12,2 9,4 12,6 9,8 12,10 9,12 12,14 9,16 12,18 9,20 0,20" fill="#fff"/>',
+  CN:'<rect width="30" height="20" fill="#de2910"/><polygon points="5.0,2.0 5.7,4.0 7.9,4.1 6.2,5.4 6.8,7.4 5.0,6.3 3.2,7.4 3.8,5.4 2.1,4.1 4.3,4.0" fill="#ffde00"/><polygon points="10.0,1.0 10.2,1.7 11.0,1.7 10.4,2.1 10.6,2.8 10.0,2.4 9.4,2.8 9.6,2.1 9.0,1.7 9.8,1.7" fill="#ffde00"/><polygon points="12.0,3.0 12.2,3.7 13.0,3.7 12.4,4.1 12.6,4.8 12.0,4.4 11.4,4.8 11.6,4.1 11.0,3.7 11.8,3.7" fill="#ffde00"/><polygon points="12.0,6.0 12.2,6.7 13.0,6.7 12.4,7.1 12.6,7.8 12.0,7.4 11.4,7.8 11.6,7.1 11.0,6.7 11.8,6.7" fill="#ffde00"/><polygon points="10.0,8.0 10.2,8.7 11.0,8.7 10.4,9.1 10.6,9.8 10.0,9.4 9.4,9.8 9.6,9.1 9.0,8.7 9.8,8.7" fill="#ffde00"/>',
+  MM:'<rect y="0.00" width="30" height="6.72" fill="#fecb00"/><rect y="6.67" width="30" height="6.72" fill="#34b233"/><rect y="13.33" width="30" height="6.72" fill="#ea2839"/><polygon points="15.0,4.5 16.5,8.5 20.7,8.6 17.4,11.3 18.5,15.4 15.0,13.0 11.5,15.4 12.6,11.3 9.3,8.6 13.5,8.5" fill="#fff"/>',
+  EC:'<rect width="30" height="10" fill="#ffd100"/><rect y="10" width="30" height="5" fill="#034ea2"/><rect y="15" width="30" height="5" fill="#ed1c24"/><circle cx="15" cy="10" r="2.6" fill="#8c6a3e"/>',
+  PE:'<rect x="0.00" width="10.05" height="20" fill="#d91023"/><rect x="10.00" width="10.05" height="20" fill="#fff"/><rect x="20.00" width="10.05" height="20" fill="#d91023"/>',
+  DO:'<rect width="30" height="20" fill="#fff"/><rect width="13" height="8.5" fill="#002d62"/><rect x="17" width="13" height="8.5" fill="#ce1126"/><rect y="11.5" width="13" height="8.5" fill="#ce1126"/><rect x="17" y="11.5" width="13" height="8.5" fill="#002d62"/>',
+  JM:'<rect width="30" height="20" fill="#009b3a"/><polygon points="0,0 15,10 0,20" fill="#000"/><polygon points="30,0 15,10 30,20" fill="#000"/><path d="M0 0 L30 20 M30 0 L0 20" stroke="#fed100" stroke-width="3"/>',
+  CM:'<rect x="0.00" width="10.05" height="20" fill="#007a5e"/><rect x="10.00" width="10.05" height="20" fill="#ce1126"/><rect x="20.00" width="10.05" height="20" fill="#fcd116"/><polygon points="15.0,7.4 15.6,9.1 17.5,9.2 16.0,10.3 16.5,12.1 15.0,11.1 13.5,12.1 14.0,10.3 12.5,9.2 14.4,9.1" fill="#fcd116"/>',
+});
 function flag(cc, cls){
   const art = cc && FLAG_SVG[String(cc).toUpperCase()];
   if(!art) return `<span class="flag-fb ${cls||''}">${escapeHtml(cc||'??')}</span>`;
@@ -1564,6 +1615,7 @@ function orgIdOf(p, tier){ return p.orgChain[tier===undefined?p.tier:tier]; }
 function orgShort(p, tier){ return ORGS[orgIdOf(p,tier)].short; }
 function wcOf(p){ return WEIGHT_CLASSES.find(w=>w.id===p.wc) || WEIGHT_CLASSES[3]; }
 function seasonYear(){ return G.startYear + G.season; }
+function curYear(){ return seasonYear() - (G._ff||0); }   // al adelantar años de una lista nueva, el año que se está simulando
 
 /* nunca un rival con tu mismo apellido: "Gómez noqueó a Gómez" no se entiende */
 /* nombres únicos: nadie se llama igual que otro en las listas, ni que vos o tu rival */
@@ -1604,10 +1656,16 @@ function restat(f, target){ const n = makeStats(Math.round(target), f.spec); STA
 /* ---------- ranking: lista de 15 contendientes + campeón por organización ---------- */
 function rankOvr(tier, r){ const T=TIERS[tier]; return lerp(T.r15, T.r1, (15-r)/14); }
 function listKey(p, tier){ return orgIdOf(p, tier)+'_'+p.wc; }
-function getList(p, tier){
-  tier = tier===undefined ? p.tier : tier;
-  const key = listKey(p, tier);
-  if(!G.lists[key]) G.lists[key] = tier===2 ? ufcList(p.wc) : genList(tier, p.cont);
+function getList(p, tier){ return listFor(tier===undefined ? p.tier : tier, p.wc); }
+/* la lista de cualquier liga y categoría; si nace tarde, la hacemos vivir los años que ya pasaron */
+function listFor(tier, wc){
+  const p = G.p, key = orgIdOf(p, tier)+'_'+wc;
+  if(!G.lists[key]){
+    const lst = tier===2 ? ufcList(wc) : genList(tier, p.cont);
+    lst.tier = tier; lst.wc = wc; G.lists[key] = lst;
+    for(let y=(G.season||0); y>0; y--){ G._ff = y-1; ageList(lst, false); }
+    G._ff = 0;
+  }
   return G.lists[key];
 }
 function genList(tier, cont){
@@ -1615,16 +1673,84 @@ function genList(tier, cont){
   const champ = makeOpp(randi(T.champ[0], T.champ[1]), genPerson(R()<.5?cont:null));
   const L = [];
   for(let r=1;r<=15;r++) L.push(makeOpp(rankOvr(tier,r)+rand(-1.5,1.5), genPerson(R()<.45?cont:null)));
+  [champ, ...L].forEach(f=>{ f.born = curYear() - randi(22,33); });
   return {champ, L};
 }
 function ufcList(wc){
   const ros = UFC_ROSTER[wc] || UFC_ROSTER.ligero;
-  const all = ros.map(r=>({name:r[0], cc:r[1], ...makeStats(ufcPow(r[2]))}));
-  while(all.length<16) all.push(ufcProspect());
+  /* el plantel real arranca con la edad que tiene hoy (año del juego = año real) */
+  const all = ros.map(r=>({name:r[0], cc:r[1], born:r[3]||1992, real:true, ...makeStats(ufcPow(r[2]))}));
+  while(all.length<16) all.push(ufcProspect(wc));
   return {champ:all[0], L:all.slice(1,16)};
 }
 function ufcPow(v){ return Math.round(60 + (v-60)*.9); }   /* el roster real, comprimido a la escala del juego */
-function ufcProspect(){ const id = genPerson(), free = UFC_PROSPECTS.filter(n=>!nameTaken(n)); return {name:free.length ? choice(free) : id.name, cc:id.cc, ...makeStats(randi(76,80))}; }
+/* apellidos que ya andan dando vueltas (en todas las ligas): para no tener dos "Nolan" */
+function usedSurnames(){ return new Set(Object.values(G.lists||{}).flatMap(l=>[l.champ, ...l.L]).filter(Boolean).map(f=>lastName(f.name))); }
+function freshPerson(taken, cont){ let id = genPerson(cont), k = 0; while(taken.has(lastName(id.name)) && k++<60) id = genPerson(k>20 ? null : cont); taken.add(lastName(id.name)); return id; }
+/* un prospecto que llega a la UFC: a veces uno real (de la lista), a veces uno inventado */
+function ufcProspect(wc){
+  const free = ((UFC_PROSPECTS[wc]||[])).filter(x=>!nameTaken(x[0]) && !(G.gone||[]).includes(x[0]));
+  if(free.length && R()<.7){ const x = choice(free); return {name:x[0], cc:x[1], born:x[2], real:true, pot:randi(86,95), ...makeStats(randi(76,80))}; }
+  /* inventado: que no repita apellido con nadie de la categoría */
+  const id = freshPerson(usedSurnames());
+  const pot = R()<.18 ? randi(92,97) : randi(83,92);   // de vez en cuando aparece un fenómeno
+  return {name:id.name, cc:id.cc, born:curYear()-randi(21,25), pot, ...makeStats(randi(75,79))};
+}
+/* ---------- el mundo envejece: los jóvenes crecen, los veteranos caen y se retiran ---------- */
+function ageOf(f){ if(!f.born) f.born = curYear() - randi(24,32); return curYear() - f.born; }
+function ageFighter(f, tier){
+  const a = ageOf(f), T = TIERS[tier];
+  if(!f.pot) f.pot = a<=27 ? f.ovr + randi(2,6) : f.ovr;           // techo: hasta dónde puede llegar
+  const room = f.pot - f.ovr;
+  const d = a<=28 ? (room>0 ? Math.min(room, rand(1.5,3.5)) : rand(-.5,.5)) : a<=31 ? rand(-1,.8) : a<=34 ? rand(-2.5,-.5) : rand(-4,-1.5);
+  const cap = tier===2 ? 97 : T.champ[1]+4;
+  STAT_KEYS.forEach(k=>{ f[k] = clamp(Math.round(f[k] + d + rand(-.6,.6)), 10, 99); });
+  if(ovrOf(f) > cap){ const ex = ovrOf(f)-cap; STAT_KEYS.forEach(k=>f[k]-=ex); }
+  f.ovr = ovrOf(f);
+}
+function retires(f, tier){
+  const a = ageOf(f), T = TIERS[tier];
+  if(a>=40) return true;
+  if(a>=35 && R() < .22 + (a-35)*.14) return true;
+  if(a>=31 && f.ovr < T.r15-4 && R()<.5) return true;
+  return false;
+}
+/* cada liga mantiene su nivel: si la camada envejece, los que vienen empujan (y al revés) */
+function anchorList(lst, tier){
+  const L = lst.L.filter(f=>!f.isRival); if(!L.length) return;
+  let exp = 0; for(let r=1;r<=15;r++) exp += rankOvr(tier, r); exp /= 15;
+  const cur = L.reduce((a,f)=>a+f.ovr,0)/L.length, sh = Math.round((exp-cur)*.7);
+  const T = TIERS[tier], champLo = tier===2 ? T.champ[0]-1 : T.champ[0];
+  const bump = (f, s)=>{ if(!s) return; STAT_KEYS.forEach(k=>f[k] = clamp(f[k]+s, 10, 99)); f.ovr = ovrOf(f); };
+  L.forEach(f=>bump(f, sh));
+  if(lst.champ && !lst.champ.isRival){ bump(lst.champ, sh); if(lst.champ.ovr < champLo - 3) bump(lst.champ, Math.round((champLo-3-lst.champ.ovr)*.6)); }
+}
+/* chance de que el campeón pierda el cinturón en el año: un campeón en caída no lo retiene */
+function champLoses(lst){ const gap = lst.L[0].ovr - lst.champ.ovr; return gap>=3 ? .85 : gap>0 ? .5 : .15; }
+function ageList(lst, loud){
+  const p = G.p, tier = lst.tier!==undefined ? lst.tier : 2, gone = [];
+  lst.L.forEach(f=>{ if(!f.isRival) ageFighter(f, tier); });
+  if(lst.champ && !lst.champ.isRival) ageFighter(lst.champ, tier);
+  lst.L = lst.L.filter(f=>{ if(!f.isRival && retires(f, tier)){ gone.push(f.name); return false; } return true; });
+  if(lst.champ && !lst.champ.isRival && retires(lst.champ, tier)){
+    const old = lst.champ; gone.push(old.name);
+    lst.L.sort((a,b)=>b.ovr-a.ovr); lst.champ = lst.L.shift();
+    if(loud) news(`${old.name} se retiró siendo campeón. ${lst.champ.name} se queda con el cinturón.`);
+  }
+  G.gone = (G.gone||[]).concat(gone).slice(-200);
+  while(lst.L.length<15){
+    const nu = tier===2 ? ufcProspect(lst.wc||p.wc) : {...makeOpp(rankOvr(tier,14)+rand(-2,2)), born:curYear()-randi(20,24), pot:Math.round(rankOvr(tier,14)+rand(2, TIERS[tier].champ[1]-TIERS[tier].r15+2))};
+    lst.L.push(nu);
+  }
+  anchorList(lst, tier);
+  if(loud && gone.length) news(gone.length===1 ? `${gone[0]} anunció su retiro.` : `Se retiraron ${gone.slice(0,-1).join(', ')} y ${gone[gone.length-1]}.`);
+  /* fuera de tu liga, el cinturón también cambia de manos */
+  lst.L.sort((a,b)=>b.ovr-a.ovr);
+  if(!loud && lst.champ && lst.L[0] && !lst.L[0].isRival && !lst.champ.isRival && R() < champLoses(lst)){
+    const ch = lst.L.shift(); lst.L.splice(randi(0,2), 0, lst.champ); lst.champ = ch;
+  }
+  lst.L.sort((a,b)=>b.ovr-a.ovr);
+}
 /* el jugador ocupa el puesto p.rank: se muestra antes de L[p.rank-1] */
 function dispRank(i){ const p=G.p; return (p.rank && !p.champ && i+1>=p.rank) ? i+2 : i+1; }
 function rankLabel(p){ p = p||G.p; return p.champ ? 'CAMPEÓN' : (p.rank ? '#'+p.rank : 'Sin ranking'); }
@@ -1744,20 +1870,22 @@ function syncRival(){
 }
 function worldTick(){
   const p = G.p, lst = getList(p);
-  lst.L.forEach(f=>{ if(!f.isRival) restat(f, f.ovr + rand(-1.2,1.4)); });
-  if(lst.champ && !lst.champ.isRival) restat(lst.champ, clamp(lst.champ.ovr + rand(-1.5,1), TIERS[p.tier].champ[0]-2, 97));
+  listFor(2, p.wc);                                  // la UFC de tu categoría vive aunque todavía no estés ahí
+  Object.entries(G.lists).forEach(([k,l])=>{
+    if(l.tier===undefined){ const id = k.split('_')[0]; l.tier = id==='ufc' ? 2 : Math.max(0, p.orgChain.indexOf(id)); l.wc = k.slice(id.length+1); }
+    ageList(l, l===lst);
+  });
   const seen = (G.faced||{})[lst.champ && lst.champ.name]||0;   // si ya te cruzaste mucho con el campeón, alguien se lo saca
-  if(!p.champ && lst.champ && !lst.champ.isRival && R()<(seen>=3 ? .9 : seen>=2 ? .55 : .2)){
+  if(!p.champ && lst.champ && !lst.champ.isRival && lst.L[0] && R()<Math.max(seen>=3 ? .9 : seen>=2 ? .55 : .2, champLoses(lst))){
     const ch = lst.L[0];
     if(ch && !ch.isRival){ news(`${ch.name} le ganó el título a ${lst.champ.name}.`); lst.L.splice(0,1); lst.L.splice(randi(1,3),0,lst.champ); lst.champ = ch; }
   }
-  if(R()<.55){
+  if(p.tier<2 && R()<.4){
     const i = randi(5,14), gone = lst.L[i];
     if(gone && !gone.isRival){
       lst.L.splice(i,1);
-      const nu = p.tier===2 ? ufcProspect() : makeOpp(rankOvr(p.tier,14), genPerson());
-      lst.L.push(nu);
-      news(p.tier===2 ? `${gone.name} se retiró. Debuta ${nu.name}.` : `${gone.name} dejó la organización.`);
+      lst.L.push({...makeOpp(rankOvr(p.tier,14), genPerson()), born:seasonYear()-randi(20,24)});
+      news(`${gone.name} dejó la organización.`);
     }
   }
   lst.L.sort((a,b)=>b.ovr-a.ovr);
@@ -1864,7 +1992,7 @@ function canFace(name){
 function isRecent(f){ return !!f && ((G.recent||[]).includes(f.name) || !canFace(f.name)); }
 /* si no queda nadie nuevo arriba, aparece un contendiente que se ganó la chance */
 function newContender(lst, rank){
-  const p = G.p, nu = p.tier===2 ? ufcProspect() : {...makeOpp(rankOvr(p.tier, rank)), dispRank:null};
+  const p = G.p, nu = p.tier===2 ? ufcProspect(p.wc) : {...makeOpp(rankOvr(p.tier, rank)), born:seasonYear()-randi(23,28), dispRank:null};
   restat(nu, rankOvr(p.tier, rank) + rand(-1,1)); delete nu.dispRank;
   lst.L.splice(Math.max(0, rank-1), 0, nu); lst.L = lst.L.slice(0,15);
   news(`${nu.name} viene arrasando y se metió en el #${rank}.`);
@@ -2040,9 +2168,9 @@ function moveList(){
     {id:'bajar', icon:'abajo', nm:`Bajar a peso ${dn?dn.n.toLowerCase():'—'}`,
      ds:'El corte de peso cuesta: +3 cardio, −3 mentón y −1 golpe. Arrancás en el ranking según tu hype.',
      why: !dn ? 'Ya estás en la categoría más liviana.' : p.champ ? 'Sos campeón: primero defendé o dejá el cinturón.' : cool ? 'Acabás de cambiar de categoría: esperá un año.' : null},
-    {id:'doble', icon:'cinturon', nm:'Ir por el segundo cinturón',
-     ds:'Este año peleás por el título de la categoría de arriba, a 5 rounds. Si ganás, sos doble campeón.',
-     why: lock(p.champ && p.tier===2, 'Tenés que ser campeón de la UFC.') || lock(!p.double, 'Ya sos doble campeón.') || lock(!up ? false : true, 'No hay categoría más pesada.')
+    {id:'doble', icon:'cinturon', nm:p.double ? 'Ir por el tercer cinturón' : 'Ir por el segundo cinturón',
+     ds:`Este año peleás por el título de peso ${up?up.n.toLowerCase():'—'}, a 5 rounds. Si ganás, te quedás en esa categoría como campeón${p.double ? ' y sos triple campeón' : ' y sos doble campeón'}.`,
+     why: lock(p.champ && p.tier===2, 'Tenés que ser campeón de la UFC.') || lock(!p.triple, 'Ya sos triple campeón.') || lock(!!up, 'No hay categoría más pesada.')
         || lock(p.defenses>=1 || p.fame>=HYPE_HI[2], `Defendé el cinturón una vez o llegá a ${HYPE_HI[2]} de hype.`) || lock(!(p.flags.dobleTry!==undefined && G.season-p.flags.dobleTry<2), 'Ya lo intentaste hace poco.')},
     {id:'bardeo', icon:'megafono', nm:'Bardear al campeón en redes',
      ds:`Si pega, te dan la pelea por el título este año. Si no, quedás mal parado: −6 hype. Chance hoy: ${Math.round(bardeoChance(p)*100)}% (sube con tu hype).`,
@@ -2145,8 +2273,8 @@ function setupBig(){
   } else if(forced==='doble'){
     const i = WEIGHT_CLASSES.findIndex(w=>w.id===p.wc);
     const other = WEIGHT_CLASSES[i<WEIGHT_CLASSES.length-1 ? i+1 : i-1];
-    const r = UFC_ROSTER[other.id].find(x=>canFace(x[0])) || UFC_ROSTER[other.id][0];
-    type = 'doble'; opp = {name:r[0], cc:r[1], ...makeStats(ufcPow(r[2])+3), dispRank:'C', otherWc:other.n};
+    const ol = listFor(2, other.id), r = (ol.champ && canFace(ol.champ.name)) ? ol.champ : ol.L.find(x=>!x.isRival && canFace(x.name)) || ol.L[0];
+    type = 'doble'; opp = {...r, ovr:r.ovr, dispRank:'C', otherWc:other.n, otherId:other.id};
   } else if(p.champ){
     type = 'defense';
     /* el campeón defiende contra el #1 (a veces el #2, o el rival si está arriba) */
@@ -2210,20 +2338,26 @@ function makeCard(b){
   const date = `Sáb ${randi(2,28)} de ${MESES[randi(0,11)]}`;
   const wcLab = w=>`Peso ${(WEIGHT_CLASSES.find(x=>x.id===w)||wcOf(p)).n.toLowerCase()}`;
   const mine = lst.L.filter(f=>f.name!==b.opp.name && !f.isRival);
-  const pair = (a, c, lab)=>a && c ? {a:{name:a.name, cc:a.cc}, b:{name:c.name, cc:c.cc}, lab} : null;
+  /* en un mismo afiche no se repite ningún apellido: si ya está, ese lugar lo ocupa otro */
+  const onCard = new Set([lastName(p.name), lastName(b.opp.name)]);
+  const fresh = ()=>{ const s = usedSurnames(); onCard.forEach(x=>s.add(x)); let id = freshPerson(s); if(onCard.has(lastName(id.name))) id = freshPerson(new Set(onCard)); return id; };
+  const take = x=>{ if(!x || onCard.has(lastName(x.name))) x = fresh(); onCard.add(lastName(x.name)); return x; };
+  const pair = (a, c, lab)=>{ a = take(a); c = take(c); return {a:{name:a.name, cc:a.cc}, b:{name:c.name, cc:c.cc}, lab}; };
   const others = shuffle(WEIGHT_CLASSES.map(w=>w.id).filter(w=>w!==p.wc));
   const co = [], pre = [];
   let main = null, coMain = null;
   if(p.tier===2){
-    const ros = w=>UFC_ROSTER[w].map(r=>({name:r[0], cc:r[1]})), r1 = ros(others[0]), r2 = ros(others[1]), r3 = ros(others[2]);
+    /* las otras categorías, como están HOY en tu carrera (con retiros y prospectos); en las preliminares, también desconocidos */
+    const ros = w=>{ const l = listFor(2, w); return [l.champ, ...l.L].filter(Boolean).map(f=>({name:f.name, cc:f.cc})); }, r1 = ros(others[0]), r2 = ros(others[1]), r3 = ros(others[2]);
+    const nobody = ()=>null;      // un desconocido: lo completa take()
     const head = numbered ? pair(r1[0], r1[1], 'Título · '+wcLab(others[0]).toLowerCase()) : pair(r1[2], r1[4], wcLab(others[0]));
     if(slot==='main') coMain = head; else { main = head; if(slot!=='co') coMain = pair(r2[3], r2[6], wcLab(others[1])); }
     co.push(pair(mine[2], mine[5], wcLab(p.wc)), pair(r3[5], r3[8], wcLab(others[2])));
     if(slot!=='mc') co.push(slot==='co' ? pair(r2[3], r2[6], wcLab(others[1])) : pair(r2[9], r2[12], wcLab(others[1])));
-    pre.push(pair(r3[7], r3[10], wcLab(others[2])), pair(mine[8], mine[11], wcLab(p.wc)), pair(r1[9], r1[12], wcLab(others[0])));
-    if(slot!=='pre') pre.push(pair(r2[11], r2[13], wcLab(others[1])));
+    pre.push(pair(r3[11], nobody(), wcLab(others[2])), pair(mine[12], nobody(), wcLab(p.wc)), pair(nobody(), nobody(), wcLab(others[0])));
+    if(slot!=='pre') pre.push(pair(r2[13], nobody(), wcLab(others[1])));
   } else {
-    const gen = ()=>genPerson(R()<.5 ? p.cont : null);
+    const gen = ()=>null;
     const head = lst.champ ? pair(lst.champ, mine[0], 'Título · '+wcLab(p.wc).toLowerCase()) : pair(mine[0], mine[3], wcLab(p.wc));
     if(slot==='main') coMain = pair(mine[1], mine[4], wcLab(p.wc)); else { main = head; if(slot!=='co') coMain = pair(mine[1], mine[4], wcLab(p.wc)); }
     co.push(pair(gen(), gen(), wcLab(others[0])), pair(mine[6], mine[9], wcLab(p.wc)));
@@ -2308,7 +2442,23 @@ function applyResult(opp, win, method, kind, mk){
     if(win){ p.flags.dwcs = true; vacate(); moveTier(2, debutRank(2, false)); out.notes.push({t:'¡Te ganaste el contrato con la UFC!', i:'rayo', c:'o'}); }
     else out.notes.push({t:'La puerta de la UFC se cerró… por ahora.', i:'cerrar', c:'n'});
   } else if(kind==='doble'){
-    if(win){ p.double = true; p.titles.push({tier:2, org:'UFC · '+(opp.otherWc||'2ª división'), year:seasonYear(), age:p.age}); out.notes.push({t:'¡DOBLE CAMPEÓN DE LA UFC!', i:'trofeo', c:'o'}); out.belt = true; }
+    if(win){
+      /* ganaste el cinturón de arriba: te quedás en esa categoría como campeón (y podés ir por el tercero) */
+      p.multi = (p.multi||1) + 1; p.double = true; if(p.multi>=3) p.triple = true;
+      p.titles.push({tier:2, org:'UFC · '+(opp.otherWc||'2ª división'), year:seasonYear(), age:p.age});
+      vacate();
+      const nw = opp.otherId || (WEIGHT_CLASSES[wcIdx(p)+1]||{}).id;
+      if(nw){
+        p.wc = nw; const nl = listFor(2, nw);
+        if(nl.champ && nl.champ.name===opp.name){ nl.L.unshift(nl.champ); nl.L = nl.L.slice(0,15); }
+        nl.champ = null; p.champ = true; p.rank = null; p.defenses = 0;
+        STAT_KEYS.forEach(k=>{ const g = {striking:2, chin:2, cardio:-3}[k]||0; p[k] = clamp(p[k]+g, 10, 99); });
+        syncRival();
+      }
+      out.notes.push({t: p.multi>=3 ? '¡TRIPLE CAMPEÓN DE LA UFC!' : '¡DOBLE CAMPEÓN DE LA UFC!', i:'trofeo', c:'o'});
+      out.notes.push({t:`Te quedás en peso ${wcOf(p).n.toLowerCase()} como campeón`, i:'cinturon', c:'o'});
+      out.belt = true;
+    }
   } else if(!p.champ){
     const before = p.rank;
     if(win){
@@ -2346,7 +2496,7 @@ function makeHeadline(){
   if(G.skipSeason) return `${ln} pasó el año recuperándose`;
   if(!lb) return `${ln} suma rodaje en ${org}`;
   const on = lb.opp ? lastName(lb.opp.name) : '';
-  if(lb.kind==='doble' && lb.win) return `¡HISTÓRICO! ${ln} es doble campeón de la UFC`;
+  if(lb.kind==='doble' && lb.win) return (p.multi||2)>=3 ? `¡LEYENDA! ${ln} es triple campeón de la UFC` : `¡HISTÓRICO! ${ln} es doble campeón de la UFC`;
   if(lb.kind==='title' && lb.win) return (p.tier===2 && NEVER_CHAMP.includes(p.cc)) ? `¡${ln}, el primer campeón de UFC de ${p.countryName}!` : choice([`¡${ln} es el nuevo campeón de ${lb.org}!`, `${ln} toca el cielo: campeón de ${lb.org}`]);
   if(lb.kind==='defense' && lb.win) return choice([`${ln} retiene el cinturón y agranda su leyenda`, `Nadie puede con ${ln}: otra defensa exitosa`]);
   if(lb.kind==='defense') return `Se terminó el reinado de ${ln}`;
@@ -2395,10 +2545,11 @@ function checkOffers(){
   const top = r=>p.champ || (p.rank && p.rank<=r);
   if(p.tier===0 && top(3) && !p.flags.dwcsDone && p.fame>=32) G.pending.push('dwcs');
   /* para subir de liga: ser campeón, el #1 con muchas victorias, o tener el hype para que te vengan a buscar */
-  else if(p.tier===0 && (((p.champ || (p.rank===1 && ovr>=68 && orgWins(p)>=6)) && p.fame>=10) || (top(5) && p.fame>=25))) G.pending.push('oferta1');
-  else if(p.tier===1 && (((p.champ || (p.rank && p.rank<=2 && ovr>=84 && orgWins(p)>=6)) && p.fame>=28) || (top(5) && ovr>=78 && p.fame>=48))) G.pending.push('oferta2');
+  /* o quedarte sin rivales: si ya tenés el nivel de la liga de arriba, te vienen a buscar igual */
+  else if(p.tier===0 && (((p.champ || (p.rank===1 && ovr>=68 && orgWins(p)>=6)) && p.fame>=10) || (top(5) && p.fame>=25) || (top(5) && ovr>=TIERS[1].r15+2 && orgWins(p)>=3))) G.pending.push('oferta1');
+  else if(p.tier===1 && (((p.champ || (p.rank && p.rank<=2 && ovr>=84 && orgWins(p)>=6)) && p.fame>=28) || (top(5) && ovr>=78 && p.fame>=48) || (top(5) && ovr>=TIERS[2].r15+3 && orgWins(p)>=4))) G.pending.push('oferta2');
   else if(p.tier===1 && top(5) && !p.flags.dwcsDone && p.fame>=35) G.pending.push('dwcs');
-  else if(p.tier===2 && p.champ && p.defenses>=1 && !p.flags.dobleTried && !p.double && R()<.3) G.pending.push('doble');
+  else if(p.tier===2 && p.champ && p.defenses>=1 && !p.flags.dobleTried && !p.double && WEIGHT_CLASSES[wcIdx(p)+1] && R()<.3) G.pending.push('doble');
   else if(!p.champ && p.rank && p.rank>=3 && p.rank<=7 && R()<.14) G.pending.push('shortnotice');
 }
 function nextSeason(){
@@ -2411,7 +2562,7 @@ function nextSeason(){
 function careerSummary(){
   const p = G.p;
   return {name:p.name, cc:p.cc, country:p.countryName, persona:p.persona, style:p.style, wc:p.wc,
-    w:p.record.w, l:p.record.l, ko:p.ko, sub:p.sub, titles:p.titles.slice(), def:p.defenses, ufcDef:p.ufcDef, double:p.double,
+    w:p.record.w, l:p.record.l, ko:p.ko, sub:p.sub, titles:p.titles.slice(), def:p.defenses, ufcDef:p.ufcDef, double:p.double, triple:!!p.triple,
     ufcTitle:p.titles.some(t=>t.tier===2), tier:p.tier, reachedUfc:!!p.flags.ufc || p.tier===2, defByTier:(p.defByTier||[0,0,p.ufcDef]).slice(), peak:p.peak, fame:p.fame, fans:p.fans, earned:p.earned, money:p.money,
     firstUfcAge:p.firstUfcAge||0, age:p.age, rivalBeat:!!(p.rival && p.rival.h2hW>0), rival:p.rival, champ:p.champ, flags:p.flags, years:G.season+1, look:p.look, log:(p.log||[]).slice()};
 }
@@ -2439,7 +2590,7 @@ function careerScore(c, achs){
   let s = c.w*8 - c.l*4 + (c.ko+c.sub)*4;
   c.titles.forEach(t=> s += [80,200,450][t.tier]);
   s += c.defByTier[0]*15 + c.defByTier[1]*35 + c.defByTier[2]*90;
-  if(c.double) s += 300;
+  if(c.double) s += 300; if(c.triple) s += 250;
   s += Math.max(0, c.peak-60)*6 + c.fame + c.fans + Math.min(200, Math.round(c.earned/50000));
   s += Object.values(achs).filter(Boolean).length*25;
   if(c.rivalBeat) s += 50;
@@ -2583,6 +2734,9 @@ function roundDiff(gid){
   /* el rating pesa de verdad: contra alguien mejor cuesta mucho más */
   let d = (his - mine)/10 + ((o.ovr||his) - ovrOf(p))/22;
   if(F.round>0) d += (o.cardio - p.cardio)/55 * (1 + F.round*.3);   // el cardio pesa más en los rounds de campeonato
+  /* las peleas importantes son difíciles de verdad: el top 5 y los títulos suman, y los rounds de campeonato más */
+  const titleF = ['title','defense','doble'].includes(F.type), top = titleF || F.type==='contender' || isTop5Fight(o);
+  if(titleF) d += .55 + Math.max(0, F.round-1)*.08; else if(top) d += .35 + Math.max(0, F.round-1)*.06;
   if(F.type==='regular'){ if(G.season===0) d -= .35; }     // la primera temporada, más amable
   else if(G.bigCount<=2) d -= .55;                           // tus primeras peleas grandes son más amables
   if(F.round===0) d -= F.hype;                               // bocón: el cara a cara
@@ -2590,7 +2744,8 @@ function roundDiff(gid){
   if(F.shortNotice) d += .3;
   if(F.scouted) d -= .3;
   if(wcOf(p).fast && ['bloqueo','zona','patada','duelo'].includes(gid)) d -= .12;
-  return clamp(d, -1, 1.5);
+  const floor = titleF ? -.1 : top ? -.4 : F.type==='regular' ? -.8 : -.7;    // una pelea por el título nunca es fácil
+  return clamp(d, floor, 1.5);
 }
 function statsLine(gid){
   const g = MG[gid];
@@ -2614,23 +2769,37 @@ function beginRound(){
   mgRun(F.game, F.d);
 }
 /* tier: perfect · win · lose · zero (fallaste todo) · ko (te finalizaron) */
+/* solo los juegos de golpe y de llave pueden terminar la pelea; contra los mejores, ni siquiera siempre */
+const FINISH_GAMES = {zona:'KO', patada:'KO', combo:'KO', gnp:'TKO', llave:'Sumisión'};
+function bigFightNow(){ return F.type!=='regular' && (TITLE_KINDS.includes(F.type) || F.type==='contender' || isTop5Fight(F.opp)); }
+function finishOn(gid){
+  const p = G.p, o = F.opp, g = MG[gid];
+  let fin = FINISH_GAMES[gid];
+  if(!fin && g.luck) fin = choice(['KO','KO','TKO','Sumisión']);
+  if(!fin) return null;
+  if(!(bigFightNow() || isTop5Fight(o))) return fin;
+  const [a, b] = fin==='Sumisión' ? [p.sumision, o.sumision] : fin==='TKO' ? [p.wrestling, o.chin] : [p.striking, o.chin];
+  const ch = g.luck ? .35 : clamp(.5 + (a-b)/30, .2, .85);
+  return R() < ch ? fin : null;
+}
 function roundDone(tier){
   if(!F || F.phase!=='play') return;
   const p = G.p;
+  let fin = null;
+  if(tier==='perfect'){ fin = finishOn(F.game); if(!fin) tier = 'dom'; }    // perfecto sin definir: round dominante
   if(tier==='zero') tier = (p.persona!=='guerrero' && R() < clamp(.28 + F.d*.22, .08, .6)) ? 'ko' : 'lose';
   if(tier==='ko' && p.persona==='guerrero') tier = 'lose';
-  const res = (tier==='perfect'||tier==='win') ? 'w' : 'l';
+  const res = (tier==='perfect'||tier==='win'||tier==='dom') ? 'w' : 'l';
   F.hist.push({g:F.game, tier, res});
   if(res==='w') F.meW++; else F.opW++;
   F.phase = 'roundEnd'; F.last = tier;
-  if(tier==='perfect') F.end = {win:true, method:MG[F.game].fin || 'KO'};
+  if(tier==='perfect') F.end = {win:true, method:fin};
   else if(tier==='ko') F.end = {win:false, method:F.opp.spec==='sumision' ? 'Sumisión' : (F.opp.spec==='wrestling' ? 'TKO' : 'KO')};
   else if(F.meW>=F.need) F.end = {win:true, method:(F.max===1 || F.opW===0) ? 'Decisión unánime' : 'Decisión dividida'};
   else if(F.opW>=F.need) F.end = {win:false, method:(F.max===1 || F.meW===0) ? 'Decisión unánime' : 'Decisión dividida'};
   else F.end = null;
-  if(F.end && F.end.win && !/Decisi/.test(F.end.method) && MG[F.game].luck) F.end.method = choice(['KO','KO','TKO','Sumisión']);
   F.canAmuleto = isLuck() && res==='l' && p.amuletos>0 && F.type!=='regular';
-  if(res==='w') (tier==='perfect' ? SFX.great : SFX.good)(); else (tier==='ko' ? SFX.hurt : SFX.bad)();
+  if(res==='w') (tier==='perfect'||tier==='dom' ? SFX.great : SFX.good)(); else (tier==='ko' ? SFX.hurt : SFX.bad)();
   if(tier==='perfect'){ flashScreen('y'); vibrate([30,40,60]); } else if(tier==='ko'){ flashScreen('r'); vibrate(120); }
   showRoundOverlay();
   if(UI.bot){ if(F.canAmuleto && UI.bot>=.5) setTimeout(useAmuleto, 20); else setTimeout(afterRound, 20); return; }
@@ -2738,7 +2907,7 @@ function octagonBg(){ return `<polygon points="${octPts(158)}" fill="url(#hatch)
   <polygon points="${octPts(150)}" fill="${C.paper}" stroke="${C.ink}" stroke-width="3"/>
   <polygon points="${octPts(142)}" fill="none" stroke="${C.ink}" stroke-width="1" stroke-dasharray="3 5"/>`; }
 /* caras: la del rival (o la tuya) dibujada dentro del SVG del juego */
-function contOf(cc){ const c = COUNTRIES.find(x=>x.c===cc); return c ? c.cont : null; }
+function contOf(cc){ const c = COUNTRIES.find(x=>x.c===cc) || COUNTRIES_X.find(x=>x.c===cc); return c ? c.cont : null; }
 function faceOf(f, expr){ return portrait(f.name, f===G.p ? 'me' : 'fighter', expr, {cont:contOf(f.cc), look:f===G.p ? f.look : undefined}); }
 function faceInner(f, expr){ return faceOf(f, expr).replace(/^<svg[^>]*>|<\/svg>$/g, ''); }
 /* en el modo oscuro las caras van sobre un círculo claro, como una foto pegada */
@@ -2884,8 +3053,8 @@ MG.patada = {icon:'diana', nm:'Patada a la cabeza', stat:'striking', fin:'KO', h
 MG.bloqueo = {icon:'escudo', nm:'Bloqueá', stat:'defense', fin:'KO', hint:'Tocá el carril del guante rojo',
   how:'Te tira golpes por tres carriles. Tocá el carril del <b class="r">guante rojo</b> antes de que te llegue. Los <b>rayados</b> son amagues: no los toques. Si te comés más de un golpe, el round es de él.',
   run(c){
-    let travel = byDiff(c.d, 900, 590, 470);
-    const gap = byDiff(c.d, 380, 250, 165);
+    let travel = byDiff(c.d, 900, 590, 440);
+    const gap = byDiff(c.d, 380, 250, 150);
     const NP = c.quick ? 4 : (c.d>.4 ? 6 : 5), nFeint = Math.min(c.quick ? 2 : 3, c.d>1 ? 3 : c.d>.4 ? 2 : c.d>-.4 ? 1 : 0);
     const seq = Array.from({length:NP}, ()=>({lane:randi(0,2), feint:false}));
     for(let i=0;i<nFeint;i++) seq.splice(randi(1,seq.length-1), 0, {lane:randi(0,2), feint:true});
@@ -3348,7 +3517,7 @@ MG.dados = {icon:'dados', nm:'Los dados', stat:'ovr', luck:true, hint:'Sacá el 
 MG.duelo = {icon:'rayo', nm:'El duelo', stat:'reflejos', fin:'KO', hint:'Esperá el ¡YA! y pegá primero',
   how:'Cara a cara y quietos. Cuando aparezca <b class="r">¡YA!</b>, tocá antes que él. Si te adelantás en un amague, perdés el cruce. Ganá dos de tres.',
   run(c){
-    const rivalRT = ()=>byDiff(c.d, 470, 320, 235) + rand(-50,50);
+    const rivalRT = ()=>byDiff(c.d, 470, 320, 222) + rand(-50,50);
     const feints = c.d>1.1 ? 3 : c.d>.5 ? 2 : c.d>-.2 ? 1 : 0;
     let n = 0, won = 0, phase = 'wait', goAt = 0;
     const res = [];
@@ -3409,10 +3578,10 @@ MG.duelo = {icon:'rayo', nm:'El duelo', stat:'reflejos', fin:'KO', hint:'Esperá
 MG.combo = {icon:'nota', nm:'Combo', stat:'striking', fin:'KO', hint:'Tocá cada golpe cuando cruce la línea roja',
   how:'Los golpes bajan por tres carriles: <b>jab, cross y gancho</b>. Tocá el carril justo cuando cada golpe cruce la <b class="r">línea roja</b>. Es como la música: llevá el ritmo.',
   run(c){
-    const bpm = byDiff(c.d, 96, 122, 166), beat = 60000/bpm;
+    const bpm = byDiff(c.d, 96, 122, 172), beat = 60000/bpm;
     const COMBOS = [[0,1,2,1],[0,0,1,2],[0,1,0,1],[2,1,0,1],[0,1,2,2],[1,0,1,2]];
     const lanes = c.quick ? [...choice(COMBOS)] : [...choice(COMBOS), ...choice(COMBOS)], NN = lanes.length;
-    const fall = byDiff(c.d, 1500, 1250, 1000), perf = byDiff(c.d, 70, 50, 35), good = byDiff(c.d, 140, 100, 70);
+    const fall = byDiff(c.d, 1500, 1250, 1000), perf = byDiff(c.d, 70, 50, 30), good = byDiff(c.d, 140, 100, 56);
     const start = performance.now() + 900;
     let acc = 0;
     const notes = lanes.map((l,i)=>{ const t = start + fall + acc; acc += beat*(i%4===3 ? 1.25 : .75); return {l, t, done:false}; });
@@ -3472,7 +3641,7 @@ MG.combo = {icon:'nota', nm:'Combo', stat:'striking', fin:'KO', hint:'Tocá cada
 MG.gnp = {icon:'puno', nm:'Ground & pound', stat:'wrestling', fin:'TKO', hint:'Pegale a los huecos rojos, no a la guardia',
   how:'Lo tenés de espaldas en el piso. Se abren <b class="r">huecos rojos</b> en su guardia: pegale rápido. Si le pegás a la <b>guardia rayada</b>, perdés el ritmo.',
   run(c){
-    const win = byDiff(c.d, 800, 590, 440), every = byDiff(c.d, 560, 460, 355), total = c.quick ? 6 : 8;
+    const win = byDiff(c.d, 800, 590, 420), every = byDiff(c.d, 560, 460, 345), total = c.quick ? 6 : 8;
     const SP = [[-92,-70],[0,-100],[92,-70],[-92,62],[0,100],[92,62]];
     let spawned = 0, hits = 0, bad = 0;
     const live = {};
@@ -4070,8 +4239,10 @@ function fightPlay(){
 function showRoundOverlay(){
   const st = $('stage');
   if(!st){ render(); return; }
-  const t = F.last, win = t==='perfect' || t==='win', single = F.max===1;
+  const t = F.last, win = t==='perfect' || t==='win' || t==='dom', single = F.max===1;
   let big, cls, sm;
+  if(t==='dom'){ big = single ? '¡Ganaste!' : '¡Round dominante!'; cls = 'gold'; sm = F.end ? (single ? 'Lo pasaste por arriba, pero lo ganaste en las tarjetas.' : `Lo pasaste por arriba: ganaste ${F.meW}-${F.opW}.`) : `Lo pasaste por arriba, pero sigue en pie. Vas ${F.meW}-${F.opW}.`; }
+  else
   if(t==='perfect'){ big = F.end.method==='Sumisión' ? '¡Se rindió!' : F.end.method==='TKO' ? '¡T.K.O.!' : '¡Nocaut!'; cls = 'gold'; sm = 'Perfecto: se terminó la pelea.'; }
   else if(t==='ko'){ big = F.end.method==='Sumisión' ? '¡Te hizo rendir!' : '¡Te noqueó!'; cls = 'bad'; sm = 'Fallaste todo y te castigó.'; }
   else if(win){ big = single ? '¡Ganaste!' : '¡Round tuyo!'; cls = 'ok'; sm = F.end ? (single ? 'Por decisión de los jueces.' : `Ganaste la pelea ${F.meW}-${F.opW}.`) : `Vas ${F.meW}-${F.opW}.`; }

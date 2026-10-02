@@ -539,6 +539,45 @@
   .chipx{font-size:12px;font-weight:700;border:1.5px solid var(--ink);padding:4px 7px;background:var(--white);color:var(--ink);}
   .chipx.on{background:var(--mustard);color:#1c1915;}
 
+  /* ---------- el afiche del evento (fijo en tinta, en los dos temas) ---------- */
+  .evp{background:#1c1915;color:#faf5e9;border:3px solid #1c1915;outline:2px solid #e3a92c;outline-offset:-7px;padding:14px 12px 14px;margin-bottom:12px;
+    background-image:radial-gradient(rgba(227,169,44,.12) 1.2px, transparent 1.5px);background-size:9px 9px;}
+  .evp-head{text-align:center;border-bottom:2px solid #e3a92c;padding:2px 0 8px;margin:2px 4px 8px;}
+  .evp-head b{display:block;font-family:var(--f-slab);font-size:34px;line-height:1;color:#e3a92c;letter-spacing:.01em;}
+  .evp-head span{font-family:var(--f-type);font-size:12px;color:#d6c49e;}
+  .evp-lab{text-align:center;font-family:var(--f-cond);font-weight:900;font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+  .evp-lab.title{color:#e3a92c;} .evp-lab.hot{color:#f07a5e;}
+  .evp .vside .portrait{border-color:#e3a92c;background:#e7dbbf;}
+  .evp .vside .nm{color:#faf5e9;} .evp .vside .mt{color:#d6c49e;}
+  .evp .vside.me .o{background:#faf5e9;color:#1c1915;border-color:#faf5e9;} .evp .vside.op .o{border-color:#faf5e9;}
+  .evp .vsx{color:#e3a92c;}
+  .evp-sec{font-family:var(--f-cond);font-weight:900;font-size:16px;letter-spacing:.08em;text-transform:uppercase;text-align:center;border-top:1.5px solid #e3a92c;border-bottom:1.5px solid #e3a92c;padding:4px 0 3px;margin:4px 0 10px;}
+  .evp-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px 8px;margin-bottom:10px;}
+  .evp-row.sm{grid-template-columns:repeat(auto-fit,minmax(116px,1fr));}
+  .pair{text-align:center;}
+  .pp{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+  .pp-f{position:relative;border:1.5px solid #d6c49e;background:#e7dbbf;}
+  .pp-f .portrait{display:block;width:100%;} .pp-f.flip .portrait{transform:scaleX(-1);}
+  .pp-f .flag{position:absolute;left:3px;bottom:3px;width:18px;height:12px;outline-color:#1c1915;}
+  .pn{font-family:var(--f-cond);font-weight:900;font-size:15px;line-height:1.05;margin-top:4px;text-transform:uppercase;}
+  .pn i{font-style:normal;color:#e3a92c;font-size:12px;}
+  .pl{font-family:var(--f-type);font-size:10.5px;color:#d6c49e;}
+  .evp-row.sm .pn{font-size:13px;}
+  .cartel>.tape:first-child{border-top:none;margin-top:0;padding-top:0;}
+  .fixed-warn{background:var(--red);color:var(--on-red);font-weight:700;font-size:14px;padding:8px 10px;margin:0 0 10px;border:2px solid var(--ink);}
+  /* historial */
+  .hist-sum{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13.5px;margin:2px 0 4px;}
+  .hist-sum b{font-family:var(--f-cond);font-weight:900;font-size:22px;line-height:1;}
+  .hist{margin:6px 0 12px;border:2px solid var(--ink);background:var(--white);}
+  .hist summary{cursor:pointer;font-family:var(--f-cond);font-weight:900;font-size:17px;padding:8px 10px;list-style:none;}
+  .hist summary::-webkit-details-marker{display:none;}
+  .hist summary::after{content:'+';float:right;font-family:var(--f-slab);}
+  .hist[open] summary::after{content:'−';}
+  .hrow{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:center;padding:6px 10px;border-top:1px dashed var(--ink-3);font-size:13.5px;}
+  .hrow .hn{font-weight:700;} .hrow .m{font-family:var(--f-type);font-size:11.5px;color:var(--ink-3);}
+  .htag{font-family:var(--f-cond);font-weight:900;font-size:12px;letter-spacing:.03em;border:1.5px solid var(--ink);padding:1px 5px;}
+  .htag.t{background:var(--mustard);color:#1c1915;}
+
   /* piezas que sólo aparecen en la compu */
   .f-side{display:none;}
   .stats.m-hide{display:none;}
@@ -605,6 +644,8 @@
     .medals{grid-template-columns:repeat(4,1fr);}
     .e-r .stack{display:grid;grid-template-columns:1fr 1fr;gap:10px;} .e-r .stack>*+*{margin-top:0;} .e-r .stack .btn.txt{grid-column:1/-1;}
     .modal{max-width:560px;}
+    .evp-head b{font-size:46px;} .evp .vside .portrait{max-width:180px;}
+    .evp-row{grid-template-columns:repeat(3,1fr);} .evp-row.sm{grid-template-columns:repeat(4,1fr);}
     .talk{grid-template-columns:130px 1fr;} .talk.you{grid-template-columns:1fr 80px;}
     .talk-bubble{font-size:18px;}
     .match{grid-template-columns:repeat(3,minmax(0,200px));}
@@ -791,6 +832,38 @@ const RARITY = {c:'COMÚN', r:'RARA', e:'ÉPICA', l:'LEGENDARIA'};
    M(x) escala la plata según el nivel (regional/mundial/UFC)
    ============================================================ */
 const EVENTS = [
+  /* ---------- mala suerte: a veces no hay opción buena ---------- */
+  {id:'pesaje', who:'⚖️', wn:'La comisión', role:'El pesaje', text:'Llegaste al pesaje con dos kilos de más. Si no das el peso, te multan.',
+    a:{t:'Cortar a lo bestia en el sauna', h:'🫁🗿', fx:p=>({cardio:-4, chin:-2, r:'Diste el peso de milagro. Llegaste seco como una pasa.'})},
+    b:{t:'Pagar la multa', h:'💰⭐', fx:p=>({money:-M(1500), fame:-3, r:'Pagaste una parte de la bolsa y aguantaste las cargadas en redes.'})}},
+  {id:'hackeo', who:'📱', wn:'Tu cuenta', role:'Redes', text:'Te hackearon la cuenta y publicaron estafas con tu cara. Se te van seguidores a montones.',
+    a:{t:'Grabar un video pidiendo disculpas', h:'⭐❤️', fx:p=>({fame:-4, fans:2, r:'Recuperaste la cuenta. Algunos no vuelven, pero los tuyos te bancan.'})},
+    b:{t:'Que se arregle solo', h:'⭐', fx:p=>({fame:-9, r:'Tardaste semanas en recuperarla. Perdiste un montón de seguidores.'})}},
+  {id:'gripe', who:'🩺', wn:'El médico', role:'Campamento', text:'Te agarró una gripe fuerte en la mitad del campamento.',
+    a:{t:'Entrenar igual', h:'🫁', fx:p=>({cardio:-4, r:'Entrenaste con fiebre. El aire no volvió del todo.'})},
+    b:{t:'Parar una semana', h:'🥊🤼', fx:p=>({striking:-2, wrestling:-2, r:'Te curaste, pero perdiste ritmo.'})}},
+  {id:'fuga', who:'💼', wn:'Tu contador', role:'Malas noticias', text:'Tu manager desapareció con una parte de tu plata.', cond:p=>p.money>=M(3000),
+    a:{t:'Hacer la denuncia', h:'💰❤️', fx:p=>({money:-Math.round(p.money*.3), fans:3, r:'La plata no vuelve, pero la gente te acompañó.'})},
+    b:{t:'Tragártela y entrenar', h:'💰🗿', fx:p=>({money:-Math.round(p.money*.3), chin:2, r:'Te endureció. La bronca la vas a sacar en la jaula.'})}},
+  {id:'ceja', who:'🩺', wn:'El médico', role:'Sparring', text:'Un codazo en el sparring te abrió la ceja. Doce puntos.',
+    a:{t:'Pelear igual con la ceja cosida', h:'🗿⭐', fx:p=>({chin:-2, fame:2, scar:true, r:'Te va a quedar la marca. La gente valora el coraje.'})},
+    b:{t:'Esperar a que cierre bien', h:'🥊🫁', fx:p=>({striking:-2, cardio:-1, r:'Cerró bien, pero llegaste con poco sparring.'})}},
+  {id:'boliche', who:'📱', wn:'Un video viral', role:'4 de la mañana', text:'Se viralizó un video tuyo en un boliche la semana de la pelea.',
+    a:{t:'Pedir perdón', h:'❤️⭐', fx:p=>({fans:-3, fame:-2, r:'Pediste perdón. Tu equipo no te habla hace tres días.'})},
+    b:{t:'Decir que era un doble', h:'❤️⭐', fx:p=>({fans:-6, fame:4, r:'Nadie te cree, pero todos hablan de vos.'})}},
+  {id:'espalda', who:'🩺', wn:'El kinesiólogo', role:'Lesión tonta', text:'Te diste vuelta la espalda levantando a tu sobrino.',
+    a:{t:'Infiltrarte y seguir', h:'🤼🫁', fx:p=>({wrestling:-3, cardio:-2, r:'Seguiste, pero cada derribo dolía.'})},
+    b:{t:'Hacer kinesiología', h:'💰🤼', fx:p=>({money:-M(800), wrestling:-1, r:'Caro, pero te recuperaste.'})}},
+  {id:'robo', who:'👀', wn:'La policía', role:'Robo', text:'Te robaron el auto con todo el equipo de entrenamiento adentro.',
+    a:{t:'Comprar todo nuevo', h:'💰', fx:p=>({money:-M(1000), r:'Guantes nuevos, cara de pocos amigos.'})},
+    b:{t:'Entrenar con lo que hay', h:'🥊', fx:p=>({striking:-2, r:'Guantes prestados y vendas viejas. Se notó.'})}},
+  /* ---------- tentaciones: plata fácil o atajos, con riesgo ---------- */
+  {id:'arreglo', who:'🕵️', wn:'Un hombre de traje', role:'Una propuesta', text:'Te ofrece mucha plata por perder tu próxima pelea grande. "Nadie se va a enterar".', cond:p=>!p.champ && !p.flags.fixed,
+    a:{t:'Agarrar la plata', h:'💰🎲', fx:p=>({money:M(15000), fixed:true, r:'La plata está en un bolso. Tu próxima pelea grande ya tiene dueño.'})},
+    b:{t:'Echarlo y denunciarlo', h:'❤️⭐', fx:p=>({fans:6, fame:4, r:'Saliste en las noticias como ejemplo.'})}},
+  {id:'pastillas', who:'🕵️', wn:'Un "nutricionista"', role:'Sin matrícula', text:'Te ofrece unas pastillas que "no aparecen en ningún control". Más fuerza, más aire, más todo.', cond:p=>!p.flags.pedRisk,
+    a:{t:'Tomarlas', h:'🥊🫁🎲', fx:p=>({striking:5, cardio:5, chin:3, ped:true, r:'Te sentís una máquina. Ojalá no haya control.'})},
+    b:{t:'Ni loco', h:'❤️', fx:p=>({fans:2, r:'Limpio. Como tiene que ser.'})}},
   {id:'influencer', who:'📱', wn:'Un influencer', role:'8 millones de seguidores', text:'Te desafía a una "pelea de boxeo de influencers". Es un circo, pero paga una fortuna.',
     a:{t:'Aceptar el circo', h:'💰⭐❤️', fx:p=>({money:M(6000), fame:5, fans:-6, r:'Lo dormiste en 40 segundos y cobraste como campeón. Los puristas no te lo perdonan.'})},
     b:{t:'"Soy un peleador serio"', h:'❤️', fx:p=>({fans:6, r:'La gente de las artes marciales te aplaude de pie.'})}},
@@ -1659,7 +1732,8 @@ function worldTick(){
   const p = G.p, lst = getList(p);
   lst.L.forEach(f=>{ if(!f.isRival) restat(f, f.ovr + rand(-1.2,1.4)); });
   if(lst.champ && !lst.champ.isRival) restat(lst.champ, clamp(lst.champ.ovr + rand(-1.5,1), TIERS[p.tier].champ[0]-2, 97));
-  if(!p.champ && lst.champ && !lst.champ.isRival && R()<.2){
+  const tired = ((G.faced||{})[lst.champ && lst.champ.name]||0)>=2;   // si ya te cruzaste mucho con el campeón, alguien se lo saca
+  if(!p.champ && lst.champ && !lst.champ.isRival && R()<(tired ? .5 : .2)){
     const ch = lst.L[0];
     if(ch && !ch.isRival){ news(`${ch.name} le ganó el título a ${lst.champ.name}.`); lst.L.splice(0,1); lst.L.splice(randi(1,3),0,lst.champ); lst.champ = ch; }
   }
@@ -1687,6 +1761,8 @@ function startSeason(first){
   G.cards = drawCards(); G.picked = null;
   G.event = null; G.evRes = null; G.seasonRes = null; G.big = null; G.skipSeason = false;
   G.prevBig = G.lastBig; G.lastBig = null; G.lastFight = null;
+  G.suspension = false;
+  if(p.flags.suspended){ p.flags.suspended = false; G.suspension = true; G.yearLog.susp = true; }
   G.retireAsk = false;
   G.step = 'card';
   p.peak = Math.max(p.peak, ovrOf(p));
@@ -1723,6 +1799,7 @@ function applyCard(id){
 }
 /* después de la carta: evento (o no) → temporada */
 function afterCard(){
+  if(G.suspension){ G.event = null; G.skipSeason = true; toPreview(); return; }   // suspendido: el año se va sin pelear
   G.event = drawEvent();
   if(G.event){ G.step = 'event'; }
   else toPreview();
@@ -1863,6 +1940,9 @@ function applyDelta(d){
   if(d.skipSeason){ G.skipSeason = true; chips.push({t:'Te perdés la temporada', i:'venda', c:'n'}); }
   if(d.scouted){ p.flags.scouted = true; chips.push({t:'La próxima pelea grande, más fácil', i:'ojo', c:'o'}); }
   if(d.promise){ p.flags.promise = true; chips.push({t:'Si ganás, vas por el título', i:'trofeo', c:'o'}); }
+  if(d.fixed){ p.flags.fixed = true; chips.push({t:'Tu próxima pelea grande está arreglada', i:'cerrar', c:'n'}); }
+  if(d.ped){ p.flags.pedRisk = true; chips.push({t:'Riesgo de dar positivo en el antidoping', i:'dados', c:'n'}); }
+  if(d.scar && p.look){ const l = lookObj(p.look); if(!l.ex.includes('scar')){ l.ex.push('scar'); p.look = lookStr(l); } chips.push({t:'Te quedó una cicatriz', i:'venda', c:'o'}); }
   if(STAT_KEYS.some(k=>d[k])) G.statFlash = Object.fromEntries(STAT_KEYS.filter(k=>d[k]).map(k=>[k,d[k]]));
   p.peak = Math.max(p.peak, ovrOf(p));
   return chips;
@@ -1959,8 +2039,8 @@ function setupBig(){
   } else if(p.champ){
     type = 'defense';
     /* el campeón defiende contra el #1 (a veces el #2, o el rival si está arriba) */
-    const top = lst.L.slice(0,2), rv = top.find(f=>f.isRival);
-    const f = (rv && R()<.6) ? rv : (R()<.3 && top[1] && !isRecent(top[1])) ? top[1] : top[0];
+    const top = lst.L.slice(0,5), rv = lst.L.slice(0,2).find(f=>f.isRival), fresh = top.filter(f=>!f.isRival && !isRecent(f));
+    const f = (rv && R()<.6) ? rv : (fresh[0] || top[0]);
     opp = {...f, dispRank:lst.L.indexOf(f)+1};
   } else if(forced==='title' || p.flags.promise2 || (p.rank && p.rank<=3) || (p.rank && p.rank<=5 && (p.streakW||0)>=4)){
     p.flags.promise2 = false;
@@ -1980,7 +2060,37 @@ function setupBig(){
   /* los títulos se pelean a 5 rounds; las de contendientes, los clásicos y la Serie, a 3. Un nocaut las termina antes */
   const rounds = ['title','defense','doble'].includes(type) ? 5 : ['contender','clasico','dwcs'].includes(type) ? 3 : 1;
   G.big = {type, opp, rounds, shortNotice:forced==='title'};
+  G.big.card = makeCard(G.big);
   G.step = 'preview';
+}
+/* ---------- la cartelera del evento (como el afiche de la UFC) ---------- */
+const CITIES = {ufc:['Las Vegas','Abu Dabi','Nueva York','París','Río de Janeiro','Ciudad de México','Londres','Sídney','Toronto'], pfl:['Nueva York','Riad','Atlanta','Orlando'], bellator:['París','Dublín','Los Ángeles','Milán'],
+  one:['Singapur','Bangkok','Tokio','Manila'], lux:['Buenos Aires','Córdoba','Rosario','Montevideo','Santiago'], lfa:['Sioux Falls','Phoenix','Dallas','Denver'], cw:['Londres','Dublín','Manchester','Glasgow'], ffc:['Bangkok','Lagos','Sídney','Auckland']};
+const EV_BASE = {ufc:331, pfl:12, bellator:310, one:178, lux:41, lfa:212, cw:186, ffc:77};
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function makeCard(b){
+  const p = G.p, id = orgIdOf(p), lst = getList(p), org = orgShort(p);
+  G.evNo = G.evNo || {}; G.evNo[id] = (G.evNo[id] || EV_BASE[id] || 10) + randi(2,5);
+  const numbered = id!=='ufc' || TITLE_KINDS.includes(b.type) || b.type==='contender' || b.type==='clasico';
+  const name = b.type==='dwcs' ? 'Serie de Contendientes' : numbered ? `${org} ${G.evNo[id]}` : `${org} Fight Night`;
+  const date = `Sáb ${randi(2,28)} de ${MESES[randi(0,11)]}`;
+  const wcLab = w=>`Peso ${(WEIGHT_CLASSES.find(x=>x.id===w)||wcOf(p)).n.toLowerCase()}`;
+  const mine = lst.L.filter(f=>f.name!==b.opp.name && !f.isRival);
+  const pair = (a, c, lab)=>a && c ? {a:{name:a.name, cc:a.cc}, b:{name:c.name, cc:c.cc}, lab} : null;
+  const others = shuffle(WEIGHT_CLASSES.map(w=>w.id).filter(w=>w!==p.wc));
+  const co = [], pre = [];
+  if(p.tier===2){
+    const r1 = UFC_ROSTER[others[0]].map(r=>({name:r[0], cc:r[1]})), r2 = UFC_ROSTER[others[1]].map(r=>({name:r[0], cc:r[1]})), r3 = UFC_ROSTER[others[2]].map(r=>({name:r[0], cc:r[1]}));
+    co.push(TITLE_KINDS.includes(b.type) ? pair(r1[0], r1[1], 'Título · '+wcLab(others[0]).toLowerCase()) : pair(r1[2], r1[4], wcLab(others[0])));
+    co.push(pair(mine[2], mine[5], wcLab(p.wc)));
+    co.push(pair(r2[3], r2[6], wcLab(others[1])));
+    pre.push(pair(r3[7], r3[10], wcLab(others[2])), pair(mine[8], mine[11], wcLab(p.wc)), pair(r1[9], r1[12], wcLab(others[0])), pair(r2[11], r2[13], wcLab(others[1])));
+  } else {
+    const gen = ()=>genPerson(R()<.5 ? p.cont : null);
+    co.push(pair(mine[1], mine[4], wcLab(p.wc)), pair(gen(), gen(), wcLab(others[0])), pair(mine[6], mine[9], wcLab(p.wc)));
+    pre.push(pair(gen(), gen(), wcLab(others[1])), pair(mine[10], mine[13], wcLab(p.wc)), pair(gen(), gen(), wcLab(others[2])), pair(gen(), gen(), wcLab(others[0])));
+  }
+  return {name, date, city:choice(CITIES[id] || ['Las Vegas']), co:co.filter(Boolean), pre:pre.filter(Boolean)};
 }
 function bigLabel(b){
   const p = G.p, org = orgShort(p);
@@ -1995,6 +2105,7 @@ function applyResult(opp, win, method, kind, mk){
   const finish = !/Decisi/.test(method);
   const out = {win, method, kind, opp, finish, notes:[], money:0, fame:0, fans:0, rank:null, org:orgShort(p)};
   p.streakW = win ? (p.streakW||0)+1 : 0;
+  (p.log = p.log || []).push({y:seasonYear(), a:p.age, n:opp.name, cc:opp.cc, r:opp.dispRank||null, o:opp.ovr, k:kind, w:win, m:method, org:orgShort(p), ev:(kind!=='sim' && G.big && G.big.card) ? G.big.card.name : null});
   if(win){ p.record.w++; G.yearLog.w++; p.streakL = 0; if(method==='Sumisión') p.sub++; else if(finish) p.ko++; }
   else { p.record.l++; G.yearLog.l++; p.streakL++; }
   /* plata */
@@ -2039,7 +2150,7 @@ function applyResult(opp, win, method, kind, mk){
     } else { p.rank = randi(4,7); out.rank = {from:null, to:p.rank}; }
   } else if(kind==='defense'){
     if(win){ p.defenses++; p.defByTier[p.tier]++; if(p.tier===2) p.ufcDef++; out.notes.push({t:`Defensa exitosa número ${p.defenses}`, i:'escudo', c:'o'});
-      if(oi>=0){ const [f] = lst.L.splice(oi,1); lst.L.splice(Math.min(lst.L.length, oi+2),0,f); } }
+      if(oi>=0){ const [f] = lst.L.splice(oi,1); lst.L.splice(Math.min(lst.L.length, oi+randi(4,7)),0,f); } }   // el retador vencido cae lejos
     else {
       p.champ = false; p.rank = randi(1,2);
       if(oi>=0) lst.L.splice(oi,1);
@@ -2081,6 +2192,9 @@ function applyResult(opp, win, method, kind, mk){
 const NEWSPAPERS = ['DIARIO OCTÓGONO','LA PIÑA DEPORTIVA','EL CRONISTA DE LA JAULA','TODO MMA','GUANTE DE ORO'];
 function makeHeadline(){
   const p = G.p, lb = G.lastBig, ln = lastName(p.name), org = orgShort(p);
+  if(G.yearLog.scandal==='doping') return `Escándalo: ${ln} dio positivo en el antidoping`;
+  if(G.yearLog.scandal==='arreglo') return `Escándalo: ${ln} arregló una pelea y lo suspenden`;
+  if(G.yearLog.susp) return `${ln} cumplió su suspensión y quiere volver`;
   if(G.skipSeason) return `${ln} pasó el año recuperándose`;
   if(!lb) return `${ln} suma rodaje en ${org}`;
   const on = lb.opp ? lastName(lb.opp.name) : '';
@@ -2096,8 +2210,23 @@ function makeHeadline(){
   if(lb.kind==='title') return `${ln} se quedó en la puerta del título`;
   return `Golpe duro para ${ln}: cayó ante ${on}`;
 }
+/* lo que hiciste por debajo de la mesa puede salir a la luz */
+function scandalCheck(){
+  const p = G.p, y = G.yearLog;
+  if(p.flags.pedRisk && !G.skipSeason){
+    p.flags.pedRisk = false;
+    if(R()<.4){ p.flags.suspended = true; p.fame = clamp(p.fame-15,0,100); p.fans = clamp(p.fans-10,0,100); ['striking','cardio'].forEach(k=>p[k]=clamp(p[k]-3,10,99));
+      y.scandal = 'doping'; y.news.unshift('Diste positivo en el control antidoping: un año de suspensión.'); }
+    else y.news.push('Pasaste el control antidoping. Por ahora.');
+  }
+  if(p.flags.fixRisk){
+    p.flags.fixRisk = false;
+    if(R()<.3){ p.flags.suspended = true; p.fame = clamp(p.fame-20,0,100); p.fans = clamp(p.fans-15,0,100); y.scandal = 'arreglo'; y.news.unshift('Investigaron tu pelea arreglada: un año de suspensión.'); }
+  }
+}
 function finishSeason(){
   const p = G.p, y = G.yearLog;
+  scandalCheck();
   y.ovr1 = ovrOf(p); y.rank1 = rankLabel(p); y.headline = makeHeadline(); y.paper = choice(NEWSPAPERS);
   y.money = p.money - y.money0; y.org = orgShort(p);
   y.gold = !!(G.lastBig && G.lastBig.win && TITLE_KINDS.includes(G.lastBig.kind) && G.lastBig.kind!=='dwcs');
@@ -2131,7 +2260,7 @@ function careerSummary(){
   return {name:p.name, cc:p.cc, country:p.countryName, persona:p.persona, style:p.style, wc:p.wc,
     w:p.record.w, l:p.record.l, ko:p.ko, sub:p.sub, titles:p.titles.slice(), def:p.defenses, ufcDef:p.ufcDef, double:p.double,
     ufcTitle:p.titles.some(t=>t.tier===2), tier:p.tier, reachedUfc:!!p.flags.ufc || p.tier===2, defByTier:(p.defByTier||[0,0,p.ufcDef]).slice(), peak:p.peak, fame:p.fame, fans:p.fans, earned:p.earned, money:p.money,
-    firstUfcAge:p.firstUfcAge||0, age:p.age, rivalBeat:!!(p.rival && p.rival.h2hW>0), rival:p.rival, champ:p.champ, flags:p.flags, years:G.season+1, look:p.look};
+    firstUfcAge:p.firstUfcAge||0, age:p.age, rivalBeat:!!(p.rival && p.rival.h2hW>0), rival:p.rival, champ:p.champ, flags:p.flags, years:G.season+1, look:p.look, log:(p.log||[]).slice()};
 }
 function achievementsOf(c){
   const on = {};
@@ -2211,6 +2340,10 @@ function startBig(useArenga, mode){
        game:null, phase:null, shortNotice:!!b.shortNotice, scouted:!!p.flags.scouted};
   p.flags.scouted = false;
   G.bigCount++;
+  if(p.flags.fixed){                      // la pelea estaba arreglada: salís a perder
+    p.flags.fixed = false; p.flags.fixRisk = true; F.fixedFight = true;
+    return finishBig(false, 'Decisión unánime');
+  }
   if(useArenga && p.arenga>0 && !TITLE_KINDS.includes(b.type)){
     p.arenga--; F.arenga = true; SFX.crowd();
     return finishBig(true, R()<.45 ? (p.style==='sumision' ? 'Sumisión' : 'KO') : 'Decisión unánime');
@@ -3607,25 +3740,40 @@ function panelPreview(){
   const how = fm==='luck' ? 'Sos cabulero: va al instinto, con juegos de suerte. Tus stats deciden el tamaño de tus chances.'
     : fm==='skill' ? fmt : fmt+' ¿Cómo la encarás? <b>Con técnica</b> son minijuegos de habilidad; <b>al instinto</b>, juegos de suerte donde tus stats deciden tus chances.';
   const oRank = o.dispRank==='C' ? 'Campeón' : (o.dispRank ? '#'+o.dispRank : 'Sin ranking');
+  const card = b.card || {name:bigLabel(b), date:'', city:'', co:[], pre:[]};
   return `<section class="step">
     ${conseqHtml()}
     ${seasonResHtml()}
-    <div class="cartel">
-      <div class="cartel-tag ${bigClass(b)}">${bigLabel(b)}</div>
+    <div class="evp">
+      <div class="evp-head"><b>${escapeHtml(card.name)}</b><span>${card.date} · ${escapeHtml(card.city)}</span></div>
+      <div class="evp-lab ${bigClass(b)}">${bigLabel(b).split(' · ')[0]}${['title','defense'].includes(b.type) ? ' de peso '+wcOf(p).n.toLowerCase() : ''}</div>
       <div class="vsrow">
-        <div class="vside me">${meFace('angry')}<div class="nm">${escapeHtml(p.name)}</div><div class="mt">${p.record.w}-${p.record.l} · ${rankLabel(p)}</div><div class="o">${me}</div></div>
+        <div class="vside me">${meFace('angry')}<div class="nm">${escapeHtml(p.name)}</div><div class="mt">${flag(p.cc)} ${p.record.w}-${p.record.l} · ${rankLabel(p)}</div><div class="o">${me}</div></div>
         <div class="vsx">vs</div>
-        <div class="vside op">${oppFace(o, o.isRival ? 'angry' : 'smirk')}<div class="nm">${escapeHtml(o.name)}</div><div class="mt">${o.isRival ? 'Tu rival · ' : ''}${oRank}</div><div class="o">${o.ovr}</div></div>
+        <div class="vside op">${oppFace(o, o.isRival ? 'angry' : 'smirk')}<div class="nm">${escapeHtml(o.name)}</div><div class="mt">${flag(o.cc)} ${o.isRival ? 'Tu rival · ' : ''}${oRank}</div><div class="o">${o.ovr}</div></div>
       </div>
+    </div>
+    <div class="cartel">
+      ${p.flags.fixed ? '<p class="fixed-warn">Esta pelea está arreglada: agarraste la plata y vas a perder. Si se enteran, te suspenden.</p>' : ''}
       <div class="tape">${STAT_KEYS.map(k=>`<div class="tape-row"><span class="a ${p[k]>o[k]?'hi':''}">${p[k]}</span><div class="tbar me"><i style="width:${p[k]}%"></i></div><span class="l">${STAT_LABEL[k]}</span><div class="tbar op"><i style="width:${o[k]}%"></i></div><span class="b ${o[k]>p[k]?'hi':''}">${o[k]}</span></div>`).join('')}</div>
       <div class="odds"><span>Vos ${pw}%</span><div class="odds-bar"><i style="width:${pw}%"></i></div><span>${100-pw}%</span></div>
       <div class="dline"><span>Dificultad</span>${diffMeter(estD(o, true))}<span class="rds">${b.rounds} ${b.rounds===1?'round':'rounds'}</span></div>
       <p class="how">${how}${p.persona==='bocon' ? ' Antes, el cara a cara.' : ''}${b.shortNotice ? ' <b class="r">Sin campamento: todo un poco más difícil.</b>' : ''}${p.flags.scouted ? ' <b class="g">Lo estudiaste: todo un poco más fácil.</b>' : ''}</p>
-      ${fm ? `<button class="btn ${titleish?'gold':''}" data-k="enter" onclick="goFight(false)">¡A pelear!</button>`
+      ${p.flags.fixed ? `<button class="btn" data-k="enter" onclick="goFight(false)">Salir y dejarse ganar</button>`
+        : fm ? `<button class="btn ${titleish?'gold':''}" data-k="enter" onclick="goFight(false)">¡A pelear!</button>`
         : `<div class="row2"><button class="btn" data-k="1" onclick="goFight(false,'skill')">Con técnica</button><button class="btn gold" data-k="2" onclick="goFight(false,'luck')">Al instinto</button></div>`}
-      ${canArenga ? `<button class="btn txt" style="width:100%" onclick="goFight(true)">Usar la arenga y ganarla sí o sí (te ${p.arenga>1?'quedan':'queda'} ${p.arenga})</button>` : ''}
+      ${canArenga && !p.flags.fixed ? `<button class="btn txt" style="width:100%" onclick="goFight(true)">Usar la arenga y ganarla sí o sí (te ${p.arenga>1?'quedan':'queda'} ${p.arenga})</button>` : ''}
     </div>
+    ${(card.co.length || card.pre.length) ? `<div class="evp evp-under">
+      <div class="evp-sec">Cartelera principal</div><div class="evp-row">${card.co.map(pairHtml).join('')}</div>
+      <div class="evp-sec">Preliminares</div><div class="evp-row sm">${card.pre.map(pairHtml).join('')}</div>
+    </div>` : ''}
   </section>`;
+}
+/* una pelea del resto de la cartelera: dos caras, los apellidos y la categoría */
+function pairHtml(x){
+  const f = (s, flip)=>`<div class="pp-f ${flip?'flip':''}">${portrait(s.name, 'fighter', 'idle', {cont:contOf(s.cc)})}${flag(s.cc)}</div>`;
+  return `<div class="pair"><div class="pp">${f(x.a)}${f(x.b, true)}</div><div class="pn">${escapeHtml(lastName(x.a.name))} <i>vs</i> ${escapeHtml(lastName(x.b.name))}</div><div class="pl">${escapeHtml(x.lab)}</div></div>`;
 }
 function goFight(arenga, mode){ if(G.step!=='preview') return; SFX.unlock(); startBig(arenga, mode); }
 function beltSvg(){
@@ -3817,6 +3965,7 @@ function scrEnd(){
       <div class="marks">${(f.marks||[]).map(m=>`<i class="${m}"></i>`).join('')}</div>
       <p class="note-line" style="text-align:center;margin:-6px 0 12px">Verde: ganaste la pelea del año. Rojo: la perdiste. Amarillo: título. Rayado: sin pelea.</p>
       <button class="btn gold" id="shareBtn" data-k="enter" onclick="shareCareer()">Copiar para compartir</button></div>
+    ${historyHtml(c)}
     <div class="wrap" style="padding-bottom:0"><div class="sec-h"><h2>Logros</h2><small>${nAch} de ${ACHIEVEMENTS.length}</small></div></div>
     <div class="medals">${ACHIEVEMENTS.map(a=>`<div class="medal ${f.achs[a.id]?'on':''}">${ico(a.icon)}<div class="t">${a.t}</div></div>`).join('')}</div>
     <div class="wrap stack">
@@ -3825,6 +3974,21 @@ function scrEnd(){
       <button class="btn txt" style="width:100%" onclick="UI.screen='menu';render()">Volver al afiche</button>
     </div>
     <div class="wrap"><div class="sec-h"><h2>Salón de la fama</h2><small>En este dispositivo</small></div>${hofHtml(f.hofPos)}</div></div></div>`;
+}
+/* tu historial: todas las peleas, con el resumen de cómo ganaste */
+function historyHtml(c){
+  const log = c.log || []; if(!log.length) return '';
+  const W = log.filter(x=>x.w), ko = W.filter(x=>/KO/.test(x.m)).length, sub = W.filter(x=>x.m==='Sumisión').length, dec = W.length - ko - sub;
+  const best = W.slice().sort((a,b)=>(b.o||0)-(a.o||0))[0];
+  const tag = k=>({title:'Título', defense:'Defensa', doble:'2º cinturón', dwcs:'Serie', contender:'Contendientes', clasico:'Clásico', estelar:'Estelar', sim:'Cartelera'})[k] || '';
+  return `<div class="wrap" style="padding-bottom:0"><div class="sec-h"><h2>Tu historial</h2><small>${log.length} peleas</small></div>
+    <div class="hist-sum"><span><b>${W.length}</b> victorias</span><span><b>${ko}</b> por KO</span><span><b>${sub}</b> por sumisión</span><span><b>${dec}</b> por decisión</span><span><b>${log.length-W.length}</b> derrotas</span></div>
+    ${best ? `<p class="note-line">Tu mejor victoria: a ${flag(best.cc)} <b>${escapeHtml(best.n)}</b> (OVR ${best.o}) en ${best.y}.</p>` : ''}
+    <details class="hist"><summary>Ver todas las peleas</summary>
+      ${log.slice().reverse().map(x=>`<div class="hrow ${x.w?'w':'l'}"><span class="wl ${x.w?'w':'l'}">${x.w?'G':'P'}</span>
+        <div style="min-width:0"><div class="hn">${flag(x.cc)} ${escapeHtml(x.n)}${x.r ? ` <span class="m">${x.r==='C'?'campeón':'#'+x.r}</span>` : ''}</div>
+        <div class="m">${methodTxt(x.m)} · ${x.ev ? escapeHtml(x.ev) : x.org} · ${x.y}</div></div><span class="htag ${['title','defense','doble'].includes(x.k)?'t':''}">${tag(x.k)}</span></div>`).join('')}
+    </details></div>`;
 }
 function hofHtml(hi){
   const hof = LS.get('idolo_mma_hof', []);

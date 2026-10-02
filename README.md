@@ -25,6 +25,10 @@ Se juega en el celular y en la compu (en pantalla ancha se arma en columnas; con
 
 ### Lo nuevo
 
+- **El afiche de la noche.** Antes de cada pelea grande ves la cartelera como un póster de evento: nombre (UFC 331, Fight Night, Bellator 312...), fecha y ciudad, vos contra el rival con banderas y rating, y abajo la cartelera principal y las preliminares con otros peleadores y otras categorías.
+- **Eventos con suerte buena y mala.** Problemas con la balanza, una gripe en pleno campamento, te hackean las redes, se te escapa el manager con la plata, un corte en la ceja que te deja cicatriz. Y tentaciones: **un hombre de traje te paga por perder** tu próxima pelea grande, o **un "suplemento" ilegal** que te sube golpe, cardio y mentón. Si te descubren (al cerrar el año), te **suspenden una temporada** y perdés fama y seguidores.
+- **Menos rivales repetidos.** El campeón rota de retador (no siempre el mismo #1), el retador que perdió baja varios puestos y el título cambia de manos más seguido si ya te cruzaste dos veces con el mismo campeón. En una carrera entera, como mucho repetís 3 veces con alguien (sin contar a tu rival personal).
+- **Tu historial al final.** El cierre de carrera muestra tus victorias por KO, sumisión y decisión, tu mejor victoria y la lista de todas tus peleas con el evento, el método y el tipo de pelea.
 - **Elegís contra quién peleás.** En cada cartelera el matchmaker te ofrece un rival **para arriba** (más riesgo, más premio y un salto grande en el ranking), uno **en tu rango** y uno **para asegurar** (si perdés, caés fuerte). Si estás en el top 3, podés **esperar la pelea por el título**.
 - **El ranking tiene sentido.** El top 3, o un top 5 con 4 victorias seguidas, va por el título. El campeón no pelea en la cartelera: defiende contra el #1 (a veces el #2).
 - **Rounds según la importancia.** Los títulos se pelean a **5 rounds** y las peleas de contendientes, los clásicos y la Serie de Contendientes a **3**. Un round perfecto sigue siendo nocaut.

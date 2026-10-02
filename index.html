@@ -1103,7 +1103,7 @@ const LEGENDS = [
   {n:'Diego Sánches', d:'Nunca tocó el cinturón de la UFC, pero se ganó el corazón de todos.', t:c=>c.tier===2&&c.fans>=85&&c.w>=15},
   {n:'Donald Cerróne', d:'Cowboy: veterano de mil batallas en la UFC. Siempre dispuesto a pelear.', t:c=>c.tier===2&&c.w>=18},
   {n:'Patrício Pitból', d:'El rey fuera de la UFC: le faltó el octógono más famoso, le sobró talento.', t:c=>c.titles.some(t=>t.tier===1)},
-  {n:'Kimbo Slíce', d:'Mucho ruido en internet y poco palmarés. Pero qué show.', t:c=>c.persona==='bocon'&&c.fame>=60},
+  {n:'Kimbo Slíce', d:'Mucho ruido en internet y poco palmarés. Pero qué show.', t:c=>c.persona==='bocon'&&c.fame>=45},
   {n:'un ídolo de barrio', d:'Cada cartelera local agotaba entradas. Tu gimnasio lleva tu nombre.', t:c=>c.titles.length>0},
   {n:'un laburante del octógono', d:'Nunca brillaste del todo, pero siempre dejaste todo.', t:c=>c.w>c.l},
   {n:'un sparring de lujo', d:'Tu cara está en el póster… del gimnasio. Y la gente te quiere igual.', t:c=>true},
@@ -2884,9 +2884,9 @@ MG.patada = {icon:'diana', nm:'Patada a la cabeza', stat:'striking', fin:'KO', h
 MG.bloqueo = {icon:'escudo', nm:'Bloqueá', stat:'defense', fin:'KO', hint:'Tocá el carril del guante rojo',
   how:'Te tira golpes por tres carriles. Tocá el carril del <b class="r">guante rojo</b> antes de que te llegue. Los <b>rayados</b> son amagues: no los toques. Si te comés más de un golpe, el round es de él.',
   run(c){
-    let travel = byDiff(c.d, 900, 600, 505);
-    const gap = byDiff(c.d, 380, 260, 180);
-    const NP = c.quick ? 3 : 5, nFeint = Math.min(c.quick ? 1 : 3, c.d>1 ? 3 : c.d>.4 ? 2 : c.d>-.4 ? 1 : 0);
+    let travel = byDiff(c.d, 900, 590, 470);
+    const gap = byDiff(c.d, 380, 250, 165);
+    const NP = c.quick ? 4 : (c.d>.4 ? 6 : 5), nFeint = Math.min(c.quick ? 2 : 3, c.d>1 ? 3 : c.d>.4 ? 2 : c.d>-.4 ? 1 : 0);
     const seq = Array.from({length:NP}, ()=>({lane:randi(0,2), feint:false}));
     for(let i=0;i<nFeint;i++) seq.splice(randi(1,seq.length-1), 0, {lane:randi(0,2), feint:true});
     let idx = -1, cur = null, t0 = 0, hits = 0;
@@ -2997,8 +2997,10 @@ MG.llave = {icon:'piso', nm:'Cerrá la llave', stat:'sumision', fin:'Sumisión',
 MG.cadena = {icon:'lucha', nm:'Cadena de lucha', stat:'wrestling', fin:'TKO', hint:'Memorizá la cadena y repetila',
   how:'Mirá la cadena de movimientos que se ilumina y <b>repetila en el mismo orden</b> (también con las flechas del teclado). Si la hacés rápido, es un slam.',
   run(c){
-    const len = Math.max(3, Math.round(byDiff(c.d, 3, 4, 6)) - (c.quick ? 1 : 0)), show = byDiff(c.d, 580, 450, 320), limit = len*byDiff(c.d, 1200, 900, 650);
-    const seq = []; for(let i=0;i<len;i++){ let v; do{ v = randi(0,3); } while(i>0 && v===seq[i-1] && R()<.6); seq.push(v); }
+    const len = Math.max(4, Math.round(byDiff(c.d, 4, 5, 7)) - (c.quick ? 1 : 0)), show = byDiff(c.d, 540, 400, 270), limit = len*byDiff(c.d, 1100, 820, 600);
+    const seq = []; for(let i=0;i<len;i++){ let v; do{ v = randi(0,3); } while(i>0 && v===seq[i-1] && R()<(c.d>.4 ? .2 : .6)); seq.push(v); }
+    /* desde dificultad media, a veces hay que repetirla al revés (se avisa antes de mostrarla) */
+    const rev = c.d>-.1 && R() < byDiff(c.d, 0, .3, .55);
     const PADS = [{a:0, n:'CAMBIO DE NIVEL', x:0, y:-84, col:C.mustard}, {a:90, n:'DOBLE PIERNA', x:84, y:0, col:C.blue},
                   {a:180, n:'SPRAWL', x:0, y:84, col:C.red}, {a:270, n:'CLINCH', x:-84, y:0, col:C.green}];
     let phase = 'show', inp = 0, t0 = 0;
@@ -3010,27 +3012,28 @@ MG.cadena = {icon:'lucha', nm:'Cadena de lucha', stat:'wrestling', fin:'TKO', hi
         <text y="28" font-size="11" text-anchor="middle" fill="${C.ink}" letter-spacing=".5">${p.n}</text></g>`).join('')}
       ${faceG('cF', -30, -30, 60)}
     </svg>`;
-    c.act.innerHTML = `<div class="mini" id="cInfo">Mirá bien…</div>`;
+    c.act.innerHTML = `<div class="mini" id="cInfo">${rev ? 'Mirá bien… <u>después la repetís AL REVÉS</u>' : 'Mirá bien…'}</div>`;
     const info = $('cInfo'), cF = $('cF');
+    c.stage.dataset.rev = rev ? '1' : '0';
     c.face(cF, 'smirk');
     function lit(i, on){ const g = $('cP'+i), r = g.querySelector('.fill'); r.setAttribute('opacity', on?1:.18); g.querySelectorAll('text,.arw').forEach(t=>t.setAttribute('fill', on && i!==0 ? C.paper : C.ink)); g.setAttribute('data-lit', on?1:0); }
     function pipsNow(){ c.hud.innerHTML = seq.map((v,i)=>`<span class="pip ${i<inp?'ok':''}"></span>`).join(''); }
     pipsNow();
     let k = 0;
     function play(){
-      if(k>=seq.length){ phase = 'input'; t0 = performance.now(); info.innerHTML = '<b>¡Tu turno!</b> Repetí la cadena'; c.face(cF,'angry'); return; }
+      if(k>=seq.length){ phase = 'input'; t0 = performance.now(); info.innerHTML = rev ? '<b>¡Al revés!</b> De la última a la primera' : '<b>¡Tu turno!</b> Repetí la cadena'; c.face(cF,'angry'); return; }
       const i = seq[k]; lit(i,true); SFX.simon(i);
       mgAfter(show*.72, ()=>{ lit(i,false); k++; mgAfter(show*.28, play); });
     }
-    mgAfter(650, play);
+    mgAfter(rev ? 1300 : 650, play);
     function press(i){
       if(phase!=='input') return;
       lit(i,true); SFX.simon(i); mgAfter(140, ()=>lit(i,false));
-      if(seq[inp]===i){
+      if((rev ? seq[seq.length-1-inp] : seq[inp])===i){
         inp++; pipsNow();
         if(inp>=seq.length){
           phase = 'done';
-          const fast = (performance.now()-t0) < limit*.42;
+          const fast = (performance.now()-t0) < limit*.38;
           c.pop(fast ? '¡SLAM!' : '¡ADENTRO!', fast ? 'gold' : 'ok'); (fast ? SFX.crit : SFX.hit)(); hitStop(80); shake(c.stage);
           c.face(cF, fast ? 'ko' : 'hit');
           return c.done(fast ? 'perfect' : 'win');
@@ -3345,8 +3348,8 @@ MG.dados = {icon:'dados', nm:'Los dados', stat:'ovr', luck:true, hint:'Sacá el 
 MG.duelo = {icon:'rayo', nm:'El duelo', stat:'reflejos', fin:'KO', hint:'Esperá el ¡YA! y pegá primero',
   how:'Cara a cara y quietos. Cuando aparezca <b class="r">¡YA!</b>, tocá antes que él. Si te adelantás en un amague, perdés el cruce. Ganá dos de tres.',
   run(c){
-    const rivalRT = ()=>byDiff(c.d, 470, 330, 250) + rand(-60,60);
-    const feints = c.d>.8 ? 2 : c.d>-.2 ? 1 : 0;
+    const rivalRT = ()=>byDiff(c.d, 470, 320, 235) + rand(-50,50);
+    const feints = c.d>1.1 ? 3 : c.d>.5 ? 2 : c.d>-.2 ? 1 : 0;
     let n = 0, won = 0, phase = 'wait', goAt = 0;
     const res = [];
     c.stage.innerHTML = `<svg viewBox="-160 -160 320 320">${SVG_DEFS}
@@ -3406,7 +3409,7 @@ MG.duelo = {icon:'rayo', nm:'El duelo', stat:'reflejos', fin:'KO', hint:'Esperá
 MG.combo = {icon:'nota', nm:'Combo', stat:'striking', fin:'KO', hint:'Tocá cada golpe cuando cruce la línea roja',
   how:'Los golpes bajan por tres carriles: <b>jab, cross y gancho</b>. Tocá el carril justo cuando cada golpe cruce la <b class="r">línea roja</b>. Es como la música: llevá el ritmo.',
   run(c){
-    const bpm = byDiff(c.d, 96, 116, 140), beat = 60000/bpm;
+    const bpm = byDiff(c.d, 96, 122, 166), beat = 60000/bpm;
     const COMBOS = [[0,1,2,1],[0,0,1,2],[0,1,0,1],[2,1,0,1],[0,1,2,2],[1,0,1,2]];
     const lanes = c.quick ? [...choice(COMBOS)] : [...choice(COMBOS), ...choice(COMBOS)], NN = lanes.length;
     const fall = byDiff(c.d, 1500, 1250, 1000), perf = byDiff(c.d, 70, 50, 35), good = byDiff(c.d, 140, 100, 70);
@@ -3460,7 +3463,7 @@ MG.combo = {icon:'nota', nm:'Combo', stat:'striking', fin:'KO', hint:'Tocá cada
         if(now - n.t > good){ judge(n, 999); g.setAttribute('opacity',.25); }
       });
       if(notes.every(n=>n.done)){
-        const k = NN/8; c.done(score>=14*k ? 'perfect' : score>=11*k ? 'win' : score>=5*k ? 'lose' : 'zero'); return false;
+        const k = NN/8; c.done(score>=15*k ? 'perfect' : score>=11*k ? 'win' : score>=5*k ? 'lose' : 'zero'); return false;
       }
     });
   }};
@@ -3469,7 +3472,7 @@ MG.combo = {icon:'nota', nm:'Combo', stat:'striking', fin:'KO', hint:'Tocá cada
 MG.gnp = {icon:'puno', nm:'Ground & pound', stat:'wrestling', fin:'TKO', hint:'Pegale a los huecos rojos, no a la guardia',
   how:'Lo tenés de espaldas en el piso. Se abren <b class="r">huecos rojos</b> en su guardia: pegale rápido. Si le pegás a la <b>guardia rayada</b>, perdés el ritmo.',
   run(c){
-    const win = byDiff(c.d, 800, 600, 470), every = byDiff(c.d, 560, 470, 380), total = c.quick ? 5 : 8;
+    const win = byDiff(c.d, 800, 590, 440), every = byDiff(c.d, 560, 460, 355), total = c.quick ? 6 : 8;
     const SP = [[-92,-70],[0,-100],[92,-70],[-92,62],[0,100],[92,62]];
     let spawned = 0, hits = 0, bad = 0;
     const live = {};

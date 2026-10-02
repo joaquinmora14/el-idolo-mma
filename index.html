@@ -1640,10 +1640,10 @@ function newPlayer(cfg){
   if(cfg.style==='sumision') s.wrestling += 4;
   if(cfg.persona==='guerrero') s.chin += 8;
   STAT_KEYS.forEach(k=>s[k] += randi(-1,1));
-  if(cfg.daily) STAT_KEYS.forEach(k=>s[k] += 4);     // el del desafío es un fenómeno: arranca mejor y crece más rápido
+  if(cfg.daily) STAT_KEYS.forEach(k=>s[k] += 3);     // el del desafío es un fenómeno: arranca mejor y crece más rápido
   const p = {
     name:cfg.name, cc:c.c, countryName:c.n, cont:c.cont, wc:cfg.wc, style:cfg.style, persona:cfg.persona,
-    ...s, age:19, fame:cfg.daily ? 14 : 5, fans:20, money:1000, earned:1000,
+    ...s, age:19, fame:5, fans:20, money:1000, earned:1000,
     orgChain:ORG_CHAIN[c.cont], tier:0, rank:null, champ:false,
     record:{w:0,l:0}, ko:0, sub:0, streakL:0,
     titles:[], defenses:0, defByTier:[0,0,0], ufcDef:0, double:false, firstUfcAge:null,
@@ -1688,7 +1688,7 @@ function growthPoints(age, persona){
 function applyGrowth(p){
   const u = p.upg || {};
   let pts = growthPoints(p.age, p.persona);
-  if(p.prodigy) pts = pts>0 ? pts+3 : pts===0 ? 2 : Math.ceil(pts*.6);   // fenómeno: crece más y se cae menos
+  if(p.prodigy) pts = pts>0 ? pts+2 : pts===0 ? 1 : pts+1;   // fenómeno: crece un poco más y se cae un poco menos
   if(pts<0) pts = Math.min(0, pts + (u.fisico||0));
   const out = {};
   if(pts>0 && u.coach){ const b = p[p.style]; p[p.style] = clamp(p[p.style]+u.coach, 10, 99); if(p[p.style]!==b) out[p.style] = p[p.style]-b; }

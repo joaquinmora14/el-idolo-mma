@@ -1,6 +1,6 @@
 # El Ídolo: MMA
 
-**Del gimnasio del barrio al cinturón de la UFC en seis minutos.** Armá la carrera de un peleador
+**Del gimnasio del barrio al cinturón de la UFC en unos ocho minutos.** Armá la carrera de un peleador
 de MMA: una carta de mejora por año, decisiones sin vuelta atrás y peleas que se ganan jugando
 minijuegos.
 
@@ -19,9 +19,22 @@ Abrí `index.html` en cualquier navegador (en el celular se juega de diez).
 - **Desafío del día**: todos arrancan con el mismo peleador y la misma suerte. Al final copiás tu
   resultado en cuadraditos, como en Wordle, y lo comparás con tus amigos.
 
-Una carrera completa dura **unos 6 minutos**: de los 22 años al retiro, entre 12 y 15 temporadas, y **todas las peleas se juegan**. A los 33 te preguntan si seguís; a los 38 se termina.
+Una carrera completa dura **unos 8 minutos**: de los 22 años al retiro, entre 12 y 15 temporadas, y **todas las peleas se juegan**. A los 33 te preguntan si seguís; a los 38 se termina.
 
 Se juega en el celular y en la compu (en pantalla ancha se arma en columnas; con la tecla F, pantalla completa). Tiene **modo oscuro**: sigue al del sistema y se cambia con el botón de la luna.
+
+### Lo nuevo
+
+- **Elegís contra quién peleás.** En cada cartelera el matchmaker te ofrece un rival **para arriba** (más riesgo, más premio y un salto grande en el ranking), uno **en tu rango** y uno **para asegurar** (si perdés, caés fuerte). Si estás en el top 3, podés **esperar la pelea por el título**.
+- **El ranking tiene sentido.** El top 3, o un top 5 con 4 victorias seguidas, va por el título. El campeón no pelea en la cartelera: defiende contra el #1 (a veces el #2).
+- **Rounds según la importancia.** Los títulos se pelean a **5 rounds** y las peleas de contendientes, los clásicos y la Serie de Contendientes a **3**. Un round perfecto sigue siendo nocaut.
+- **Ganarle a alguien mejor cuesta de verdad.** La dificultad depende mucho más de la diferencia de rating, y se ve antes de cada pelea con un medidor que va de "muy fácil" a "brutal".
+- **La tienda.** En qué gastar la plata:
+  - mejoras para toda la carrera: entrenador de cabecera, preparador físico, auto importado, la casa para tu vieja y tu propio gimnasio (deja plata todos los años);
+  - una vez por temporada: analista de video, sparrings, prensa, un asado para la hinchada y amuletos.
+- **Tu cara.** Elegís piel, peinado, color, barba y marcas (cicatriz, tatuajes, nariz rota, orejas de luchador), y la podés cambiar en cualquier momento tocando tu foto. Un nocaut duro te puede dejar una cicatriz.
+- **Charlas de videojuego.** Las ofertas y la Serie de Contendientes se presentan como una conversación con Dana Whait (o el dueño de cada liga). Le contestás y él te responde.
+- **Festejo al firmar.** Cuando firmás con una liga nueva aparece el contrato con tu firma y hay confeti.
 
 ---
 

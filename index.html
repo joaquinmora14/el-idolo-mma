@@ -468,6 +468,7 @@
   .shop-row .si span{display:block;font-size:12.5px;line-height:1.35;color:var(--ink-2);margin-top:2px;}
   .shop-row .btn.sm{width:auto;min-width:96px;font-size:16px;padding:8px 8px 7px;}
   .shop-row.max .si, .shop-row.used .si{opacity:.6;}
+  .figu .fx .cap{font-family:var(--f-body);font-size:10.5px;color:var(--ink-3);font-weight:600;line-height:1.2;display:inline-block;margin-top:2px;}
   .shop-row .si .why{display:flex;gap:5px;align-items:center;color:var(--red);font-weight:600;} .shop-row .si .why .ico{width:12px;height:12px;flex:none;}
   .moves-btn small{display:inline-block;background:var(--red);color:var(--on-red);font-family:var(--f-cond);font-size:14px;padding:1px 6px 0;margin-left:4px;vertical-align:2px;}
   .move-res{display:flex;gap:8px;align-items:flex-start;border:2px solid var(--ink);padding:9px 10px;margin-top:10px;font-size:14px;line-height:1.35;background:var(--paper-2);}
@@ -850,7 +851,7 @@ const CARDS = [
   {id:'arenga2', r:'e', icon:'megafono', ico:'', nm:'La arenga del viejo', fn:p=>{p.arenga++;}, fx:'+1 arenga'},
 
   {id:'leyenda', r:'l', icon:'corona', ico:'', nm:'Leyenda en tu esquina', g:{striking:5, wrestling:5, sumision:5, cardio:5, chin:5}},
-  {id:'gracia', r:'l', icon:'rayo', ico:'', nm:'Estado de gracia', fn:p=>{const k=bestStat(p); p[k]=clamp(p[k]+12,1,99);}, fxf:p=>'+12 '+STAT_LABEL[bestStat(p)].toLowerCase()},
+  {id:'gracia', r:'l', icon:'rayo', ico:'', nm:'Estado de gracia', fn:p=>{ raise(p, bestStat(p), 12); }, fxf:p=>'+'+effGain(p[bestStat(p)], 12)+' '+STAT_LABEL[bestStat(p)].toLowerCase()},
   {id:'genetica', r:'l', icon:'cardio', ico:'', nm:'Genética de otro planeta', g:{cardio:10, chin:10}},
   {id:'prodigio', r:'l', icon:'estrella', ico:'', nm:'Prodigio', g:{striking:7, wrestling:7, sumision:7}},
 ];
@@ -1067,7 +1068,7 @@ const SHOP = [
   {id:'coach', icon:'ajedrez', nm:'Entrenador de cabecera', ds:'Cada año crecés 1 punto más en tu estilo.', max:3, price:[5000,12000,24000]},
   {id:'fisico', icon:'cardio', nm:'Preparador físico', ds:'Los años pesan menos: 1 punto menos de desgaste por año.', max:2, price:[9000,22000]},
   {id:'video', icon:'ojo', nm:'Analista de video', ds:'Estudia a tu próximo rival grande: esa pelea, más fácil.', use:true, price:[2500]},
-  {id:'sparring', icon:'guante', nm:'Sparrings de nivel', ds:'+2 de golpe, lucha y piso.', use:true, price:[4500], lim:2},
+  {id:'sparring', icon:'guante', nm:'Sparrings de nivel', ds:'+2 de golpe, lucha y piso (cerca de tu techo, rinde menos). Uno por temporada.', use:true, price:[4500], lim:1},
   {id:'prensa', icon:'megafono', nm:'Agencia de prensa', ds:'+8 de hype.', use:true, price:[3000]},
   {id:'asado', icon:'corazon', nm:'Asado para la hinchada', ds:'+6 de hinchada.', use:true, price:[2000]},
   {id:'amuleto', icon:'trebol', nm:'Amuleto bendecido', ds:'+1 amuleto.', use:true, price:[3500], cond:p=>p.persona==='cabulero'},
@@ -1609,6 +1610,18 @@ function ovrOf(s){
   const f = [s.striking, s.wrestling, s.sumision].sort((a,b)=>b-a);
   return clamp(Math.round(.42*f[0] + .18*f[1] + .10*f[2] + .15*s.cardio + .15*s.chin), 1, 99);
 }
+/* subir cuesta más arriba: cada punto por encima de 86 rinde menos (arriba de 93, casi nada) */
+function statW(x){ return x<86 ? 1 : x<90 ? .6 : x<93 ? .35 : x<96 ? .18 : .08; }
+function effRaw(cur, v){ let x = cur, g = 0; for(let i=0;i<v;i++){ const w = statW(x); g += w; x += w; } return g; }
+function effGain(cur, v){ return v<=0 ? v : Math.round(effRaw(cur, v)); }
+/* lo que no llega a un punto entero se guarda: cerca del techo, un punto puede llevar dos o tres mejoras */
+function raise(p, k, v){
+  if(v<=0) return 0;
+  p.xp = p.xp || {}; const b = p[k];
+  const g = effRaw(p[k], v) + (p.xp[k]||0), whole = Math.floor(g);
+  p.xp[k] = g - whole; p[k] = clamp(p[k] + whole, 10, 99);
+  return p[k]-b;
+}
 function bestStat(p){ return ['striking','wrestling','sumision'].reduce((a,b)=>p[b]>p[a]?b:a); }
 function ovrClass(o){ return o>=90?'t4':o>=80?'t3':o>=70?'t2':o>=58?'t1':''; }
 function orgIdOf(p, tier){ return p.orgChain[tier===undefined?p.tier:tier]; }
@@ -1776,7 +1789,7 @@ function newPlayer(cfg){
   STAT_KEYS.forEach(k=>s[k] += randi(-1,1));
   if(cfg.daily) STAT_KEYS.forEach(k=>s[k] += 3);     // el del desafío es un fenómeno: arranca mejor y crece más rápido
   const p = {
-    name:cfg.name, cc:c.c, countryName:c.n, cont:c.cont, wc:cfg.wc, style:cfg.style, persona:cfg.persona,
+    name:cfg.name, cc:c.c, countryName:c.n, cont:c.cont, wc:cfg.wc, wc0:cfg.wc, style:cfg.style, persona:cfg.persona,
     ...s, age:19, fame:5, fans:20, money:1000, earned:1000,
     orgChain:ORG_CHAIN[c.cont], tier:0, rank:null, champ:false,
     record:{w:0,l:0}, ko:0, sub:0, streakL:0,
@@ -1825,9 +1838,10 @@ function applyGrowth(p){
   if(p.prodigy) pts = pts>0 ? pts+2 : pts===0 ? 1 : pts+1;   // fenómeno: crece un poco más y se cae un poco menos
   if(pts<0) pts = Math.min(0, pts + (u.fisico||0));
   const out = {};
-  if(pts>0 && u.coach){ const b = p[p.style]; p[p.style] = clamp(p[p.style]+u.coach, 10, 99); if(p[p.style]!==b) out[p.style] = p[p.style]-b; }
+  if(pts>0 && u.coach){ const g = raise(p, p.style, u.coach); if(g) out[p.style] = g; }
   for(let i=0;i<Math.abs(pts);i++){
     const k = pts>0 ? (R()<.4 ? p.style : choice(STAT_KEYS)) : (R()<.5 ? choice(['cardio','chin']) : choice(STAT_KEYS));
+    if(pts>0 && R() > statW(p[k])) continue;          // cerca del techo, crecer solo cuesta más
     const b = p[k]; p[k] = clamp(p[k]+Math.sign(pts), 10, 99);
     if(p[k]!==b) out[k] = (out[k]||0) + Math.sign(pts);
   }
@@ -1936,16 +1950,20 @@ function cardCost(c){ return c.cost ? c.cost[G.p.tier] : 0; }
 function cardFx(c){
   if(c.fx) return c.fx;
   if(c.fxf) return c.fxf(G.p);
-  return Object.entries(c.g).map(([k,v])=>`<span class="${v<0?'neg':''}">${v>0?'+':'−'}${Math.abs(v)} ${STAT_LABEL[k].toLowerCase()}</span>`).join('<br>');
+  /* se muestra lo que de verdad vas a ganar (arriba de 82 cuesta más) */
+  let capped = false;
+  const rows = Object.entries(c.g).map(([k,v])=>{ const e = v>0 ? effGain(G.p[k], v) : v; if(v>0 && e<v) capped = true; return `<span class="${v<0?'neg':''}">${e>=0?'+':'−'}${Math.abs(e)} ${STAT_LABEL[k].toLowerCase()}</span>`; });
+  return rows.join('<br>') + (capped ? '<br><span class="cap">cerca de tu techo: rinde menos</span>' : '');
 }
 function applyCard(id){
   const p = G.p, c = cardById(id), cost = cardCost(c);
   if(cost && p.money < cost) return false;
   p.money -= cost;
-  if(c.g) Object.entries(c.g).forEach(([k,v])=>{ p[k] = clamp(p[k]+v, 10, 99); });
+  const fl = {};
+  if(c.g) Object.entries(c.g).forEach(([k,v])=>{ if(v>0) fl[k] = raise(p, k, v); else { p[k] = clamp(p[k]+v, 10, 99); fl[k] = v; } });
   if(c.fn) c.fn(p);
   G.picked = id;
-  G.statFlash = c.g ? Object.assign({}, c.g) : {};
+  G.statFlash = fl;
   p.peak = Math.max(p.peak, ovrOf(p));
   return true;
 }
@@ -2102,7 +2120,7 @@ function applyDelta(d){
   if(d.money){ p.money += d.money; if(d.money>0) p.earned += d.money; chips.push({t:(d.money>0?'+':'')+fmtMoney(d.money), i:'plata', c:d.money>0?'p':'n'}); }
   if(d.fame){ const b=p.fame; p.fame = clamp(p.fame+d.fame,0,100); if(p.fame!==b) chips.push({t:`${sg(p.fame-b)} hype`, i:'estrella', c:d.fame>0?'p':'n'}); }
   if(d.fans){ const b=p.fans; p.fans = clamp(p.fans+d.fans,0,100); if(p.fans!==b) chips.push({t:`${sg(p.fans-b)} hinchada`, i:'corazon', c:d.fans>0?'p':'n'}); }
-  STAT_KEYS.forEach(k=>{ if(d[k]){ const b=p[k]; p[k]=clamp(p[k]+d[k],10,99); if(p[k]!==b) chips.push({t:`${sg(p[k]-b)} ${STAT_LABEL[k].toLowerCase()}`, i:STAT_ICON[k], c:d[k]>0?'p':'n'}); } });
+  STAT_KEYS.forEach(k=>{ if(d[k]){ const b=p[k]; if(d[k]>0) raise(p, k, d[k]); else p[k]=clamp(p[k]+d[k],10,99); if(p[k]!==b) chips.push({t:`${sg(p[k]-b)} ${STAT_LABEL[k].toLowerCase()}`, i:STAT_ICON[k], c:d[k]>0?'p':'n'}); } });
   if(d.amuletos){ const b=p.amuletos; p.amuletos = Math.max(0,p.amuletos+d.amuletos); if(p.amuletos!==b) chips.push({t:`${sg(p.amuletos-b)} amuleto`, i:'trebol', c:d.amuletos>0?'p':'n'}); }
   if(d.skipSeason){ G.skipSeason = true; chips.push({t:'Te perdés la temporada', i:'venda', c:'n'}); }
   if(d.scouted){ p.flags.scouted = true; chips.push({t:'La próxima pelea grande, más fácil', i:'ojo', c:'o'}); }
@@ -2133,9 +2151,9 @@ function buyItem(id){
   if(!it.use) p.upg[id] = shopLvl(id)+1;
   const add = (k,v,lo,hi)=>{ p[k] = clamp(p[k]+v, lo, hi); };
   switch(id){
-    case 'fisico': add('cardio',1,10,99); G.statFlash = {cardio:1}; break;
+    case 'fisico': G.statFlash = {cardio:raise(p,'cardio',1)}; break;
     case 'video': p.flags.scouted = true; break;
-    case 'sparring': ['striking','wrestling','sumision'].forEach(k=>add(k,2,10,99)); G.statFlash = {striking:2, wrestling:2, sumision:2}; break;
+    case 'sparring': G.statFlash = {}; ['striking','wrestling','sumision'].forEach(k=>{ G.statFlash[k] = raise(p,k,2); }); break;
     case 'prensa': add('fame',8,0,100); break;
     case 'asado': add('fans',6,0,100); break;
     case 'amuleto': p.amuletos++; break;
@@ -2165,6 +2183,10 @@ function moveTier(t, rank){
 
 /* ---------- movidas de carrera: decisiones tuyas en la pretemporada ---------- */
 function wcIdx(p){ return WEIGHT_CLASSES.findIndex(w=>w.id===p.wc); }
+/* subir de categoría te hace pelota: son más grandes, pegan más y te cansan; bajar cuesta el corte de peso */
+const WC_UP = {striking:-3, wrestling:-3, sumision:-2, chin:-5, cardio:-4}, WC_DOWN = {cardio:-4, chin:-3, striking:-2};
+function natIdx(p){ if(!p.wc0) p.wc0 = p.wc; return WEIGHT_CLASSES.findIndex(w=>w.id===p.wc0); }
+function sizeGap(p){ return wcIdx(p) - natIdx(p); }      // >0: peleás más pesado que tu peso natural
 function bardeoChance(p){ return clamp(.08 + (p.fame-20)/60 + (p.persona==='bocon' ? .15 : 0), .05, .9); }
 function moveList(){
   const p = G.p, i = wcIdx(p), up = WEIGHT_CLASSES[i+1], dn = WEIGHT_CLASSES[i-1];
@@ -2172,13 +2194,13 @@ function moveList(){
   const lock = (c, why)=>c ? null : why;
   const all = [
     {id:'subir', icon:'arriba', nm:p.champ ? `Dejar el cinturón y subir a peso ${up?up.n.toLowerCase():'—'}` : `Subir a peso ${up?up.n.toLowerCase():'—'}`,
-     ds:'Rivales más grandes: +2 golpe y +2 mentón, −3 cardio. Arrancás en el ranking según tu hype.',
+     ds:`Son más grandes y te van a hacer pelota: −5 mentón, −4 cardio, −3 golpe, −3 lucha y −2 piso, y mientras pelees arriba de tu peso natural (${(WEIGHT_CLASSES[natIdx(p)]||wcOf(p)).n.toLowerCase()}) todas tus peleas son más difíciles. Arrancás en el ranking según tu hype.`,
      why: !up ? 'Ya estás en la categoría más pesada.' : cool ? 'Acabás de cambiar de categoría: esperá un año.' : null},
     {id:'bajar', icon:'abajo', nm:`Bajar a peso ${dn?dn.n.toLowerCase():'—'}`,
-     ds:'El corte de peso cuesta: +3 cardio, −3 mentón y −1 golpe. Arrancás en el ranking según tu hype.',
+     ds:'El corte de peso cuesta: −4 cardio, −3 mentón y −2 golpe, y si quedás debajo de tu peso natural, cada pelea te cuesta un poco más. Arrancás en el ranking según tu hype.',
      why: !dn ? 'Ya estás en la categoría más liviana.' : p.champ ? 'Sos campeón: primero defendé o dejá el cinturón.' : cool ? 'Acabás de cambiar de categoría: esperá un año.' : null},
     {id:'doble', icon:'cinturon', nm:p.double ? 'Ir por el tercer cinturón' : 'Ir por el segundo cinturón',
-     ds:`Este año peleás por el título de peso ${up?up.n.toLowerCase():'—'}, a 5 rounds. Si ganás, te quedás en esa categoría como campeón${p.double ? ' y sos triple campeón' : ' y sos doble campeón'}.`,
+     ds:`Este año peleás por el título de peso ${up?up.n.toLowerCase():'—'}, a 5 rounds, contra alguien más grande. Si ganás, te quedás en esa categoría como campeón${p.double ? ' y sos triple campeón' : ' y sos doble campeón'}, pero el cambio de peso te cuesta stats.`,
      why: lock(p.champ && p.tier===2, 'Tenés que ser campeón de la UFC.') || lock(!p.triple, 'Ya sos triple campeón.') || lock(!!up, 'No hay categoría más pesada.')
         || lock(p.defenses>=1 || p.fame>=HYPE_HI[2], `Defendé el cinturón una vez o llegá a ${HYPE_HI[2]} de hype.`) || lock(!(p.flags.dobleTry!==undefined && G.season-p.flags.dobleTry<2), 'Ya lo intentaste hace poco.')},
     {id:'bardeo', icon:'megafono', nm:'Bardear al campeón en redes',
@@ -2197,7 +2219,7 @@ function changeWc(dir){
   const f = p.fame, h = HYPE_HI[p.tier];
   p.rank = wasChamp ? randi(2,4) : f>=h ? randi(5,8) : (p.rank && p.rank<=5) ? randi(8,11) : f>=h*.6 ? randi(11,15) : null;
   p.streakW = 0; p.orgW = Math.min(orgWins(p), 2);
-  const g = dir>0 ? {striking:2, chin:2, cardio:-3} : {cardio:3, chin:-3, striking:-1};
+  const g = dir>0 ? WC_UP : WC_DOWN;
   Object.entries(g).forEach(([k,v])=>{ p[k] = clamp(p[k]+v, 10, 99); });
   G.statFlash = g;
   syncRival();
@@ -2461,7 +2483,7 @@ function applyResult(opp, win, method, kind, mk){
         p.wc = nw; const nl = listFor(2, nw);
         if(nl.champ && nl.champ.name===opp.name){ nl.L.unshift(nl.champ); nl.L = nl.L.slice(0,15); }
         nl.champ = null; p.champ = true; p.rank = null; p.defenses = 0;
-        STAT_KEYS.forEach(k=>{ const g = {striking:2, chin:2, cardio:-3}[k]||0; p[k] = clamp(p[k]+g, 10, 99); });
+        Object.entries(WC_UP).forEach(([k,g])=>{ p[k] = clamp(p[k]+g, 10, 99); });
         syncRival();
       }
       out.notes.push({t: p.multi>=3 ? '¡TRIPLE CAMPEÓN DE LA UFC!' : '¡DOBLE CAMPEÓN DE LA UFC!', i:'trofeo', c:'o'});
@@ -2720,6 +2742,7 @@ function pickGame(){
   let opts = pool.filter(g=>!F.used.includes(g));
   if(F.round===0){ const fresh = opts.filter(g=>!G.lastGames.includes(g)); if(fresh.length) opts = fresh; }
   if(!opts.length) opts = pool;
+  if(F.used.includes('tateti') && opts.length>1) opts = opts.filter(g=>g!=='tateti');   // el ta-te-ti, una sola vez por pelea
   const g = choice(opts);
   F.used.push(g);
   if(F.round===0){ G.lastGames.push(g); if(G.lastGames.length>3) G.lastGames.shift(); }
@@ -2741,7 +2764,10 @@ function roundDiff(gid){
   const p = G.p, o = F.opp;
   const [mine, his] = statPair(gid);
   /* el rating pesa de verdad: contra alguien mejor cuesta mucho más */
-  let d = (his - mine)/10 + ((o.ovr||his) - ovrOf(p))/22;
+  /* el rating pesa de verdad: si el rival es mejor, cuesta el doble que si sos mejor vos */
+  const gap = (o.ovr||his) - ovrOf(p);
+  let d = (his - mine)/10 + (gap>0 ? gap/11 : gap/20);
+  const sg = sizeGap(p); if(sg>0) d += .3*sg; else if(sg<0) d += .12*(-sg);   // más grandes que vos / el corte de peso
   if(F.round>0) d += (o.cardio - p.cardio)/55 * (1 + F.round*.3);   // el cardio pesa más en los rounds de campeonato
   /* las peleas importantes son difíciles de verdad: el top 5 y los títulos suman, y los rounds de campeonato más */
   const titleF = ['title','defense','doble'].includes(F.type), top = titleF || F.type==='contender' || isTop5Fight(o);
@@ -2771,7 +2797,7 @@ function luckP(d){ return clamp(sigmoid(-1.15*d), .15, .9); }
 function beginRound(){
   if(!F || F.phase!=='intro') return;
   G.seenGames[F.game] = true;
-  F.phase = 'play';
+  F.phase = 'play'; F.coin = false;
   F.d = roundDiff(F.game);
   render();
   SFX.bell();
@@ -2781,15 +2807,13 @@ function beginRound(){
 /* solo los juegos de golpe y de llave pueden terminar la pelea; contra los mejores, ni siquiera siempre */
 const FINISH_GAMES = {zona:'KO', patada:'KO', combo:'KO', gnp:'TKO', llave:'Sumisión'};
 function bigFightNow(){ return F.type!=='regular' && (TITLE_KINDS.includes(F.type) || F.type==='contender' || isTop5Fight(F.opp)); }
+/* termina la pelea solo un juego ofensivo hecho perfecto (pegarle a la cabeza, timear el golpe, la llave, el combo, el ground & pound).
+   Los de suerte pueden terminar peleas cortas, nunca una de 5 rounds */
 function finishOn(gid){
-  const p = G.p, o = F.opp, g = MG[gid];
-  let fin = FINISH_GAMES[gid];
-  if(!fin && g.luck) fin = choice(['KO','KO','TKO','Sumisión']);
-  if(!fin) return null;
-  if(!(bigFightNow() || isTop5Fight(o))) return fin;
-  const [a, b] = fin==='Sumisión' ? [p.sumision, o.sumision] : fin==='TKO' ? [p.wrestling, o.chin] : [p.striking, o.chin];
-  const ch = g.luck ? .35 : clamp(.5 + (a-b)/30, .2, .85);
-  return R() < ch ? fin : null;
+  const g = MG[gid];
+  if(FINISH_GAMES[gid]) return FINISH_GAMES[gid];
+  if(g.luck && F.max<5) return choice(['KO','KO','TKO','Sumisión']);
+  return null;
 }
 function roundDone(tier){
   if(!F || F.phase!=='play') return;
@@ -3247,7 +3271,7 @@ function tttScore(b, turn){
   return best;
 }
 MG.tateti = {icon:'ajedrez', nm:'Ta-te-ti de la jaula', stat:'ovr', fin:'Sumisión', hint:'Tres en línea antes que él',
-  how:'Ajedrez en el octógono: hacé <b>tres en línea</b> con tus <b class="r">círculos rojos</b> antes que él con sus cruces. Si empatan, deciden los jueces.',
+  how:'Ajedrez en el octógono: hacé <b>tres en línea</b> con tus <b class="r">círculos rojos</b> antes que él con sus cruces. Si empatan, el round se sortea con una moneda.',
   run(c){
     const q = byDiff(c.d, .3, .62, .93), rivalFirst = c.d>.9;
     const b = Array(9).fill(0);
@@ -3276,10 +3300,10 @@ MG.tateti = {icon:'ajedrez', nm:'Ta-te-ti de la jaula', stat:'ovr', fin:'Sumisi�
       if(r.w===1){ c.pop('¡ENCERRADO!','gold'); hitStop(80); shake(c.stage); c.done('perfect'); }
       else if(r.w===2){ c.pop('TE ENCERRÓ','bad', true); c.done('lose'); }
       else {
-        info.textContent = 'Empate en el clinch… deciden los jueces';
-        mgAfter(900, ()=>{ const ok = R() < byDiff(c.d, .72, .5, .28);
-          info.innerHTML = ok ? '<b>Los jueces: 29-28 para vos</b>' : '<b class="r">Los jueces: 29-28 para él</b>';
-          c.pop(ok?'29-28':'28-29', ok?'ok':'bad'); c.done(ok ? 'win' : 'lose'); });
+        info.textContent = 'Empate. Se sortea el round: tirando la moneda…';
+        mgAfter(1100, ()=>{ const ok = R() < .5;
+          info.innerHTML = ok ? '<b>Salió cara: el round es tuyo</b>' : '<b class="r">Salió ceca: el round es de él</b>';
+          c.pop(ok?'¡CARA!':'CECA', ok?'ok':'bad'); F.coin = true; c.done(ok ? 'win' : 'lose'); });
       }
       return true;
     }
@@ -3765,7 +3789,18 @@ function meFace(expr, cls){ const p = G.p; return portrait(p.name, 'me', expr||'
 /* dificultad visible: seis rayas, de muy fácil a brutal */
 function diffLevel(d){ return d<-.5 ? 1 : d<-.15 ? 2 : d<.25 ? 3 : d<.7 ? 4 : d<1.1 ? 5 : 6; }
 function diffMeter(d){ const n = diffLevel(d); return `<span class="dm lv${n}" title="Dificultad">${Array.from({length:6},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}<b>${diffLabel(d)}</b></span>`; }
-function estD(o, big){ let d = (o.ovr - ovrOf(G.p))*.145; if(big && G.bigCount<2) d -= .55; if(!big && G.season===0) d -= .35; return clamp(d, -1, 1.5); }
+/* lo mismo que va a pasar en la pelea (roundDiff), estimado antes: rating, tamaño, importancia y el piso */
+function estD(o, big){
+  const p = G.p, gap = o.ovr - ovrOf(p), b = big ? G.big : null;
+  let d = gap/10 + (gap>0 ? gap/11 : gap/20);
+  const sg = sizeGap(p); if(sg>0) d += .3*sg; else if(sg<0) d += .12*(-sg);
+  const titleF = b && ['title','defense','doble'].includes(b.type), top = titleF || (b && b.type==='contender') || isTop5Fight(o);
+  if(titleF) d += .55; else if(top) d += .35;
+  if(big && G.bigCount<2) d -= .55; if(!big && G.season===0) d -= .35;
+  if(b && b.shortNotice) d += .3; if(big && p.flags.scouted) d -= .3;
+  const floor = titleF ? -.1 : top ? -.4 : big ? -.7 : -.8;
+  return clamp(d, floor, 1.5);
+}
 function oppFace(o, expr){ return portrait(o.name, 'fighter', expr||'idle', {cont:contOf(o.cc)}); }
 /* los íconos de "qué se juega" en cada decisión */
 const HINT_ICON = {'💰':'plata','⭐':'estrella','❤':'corazon','🥊':'guante','🤼':'lucha','🥋':'piso','🫁':'cardio','🗿':'menton','🛡':'escudo','🎲':'dado','🩹':'venda',
@@ -3913,7 +3948,7 @@ function ficha(showStats){
     <div class="ficha-photo" role="button" tabindex="0" title="Cambiar tu look" onclick="openModal('look')">${meFace(expr)}<div class="ovr-stamp ${ovrClass(o)}"><b>${o}</b><span>OVR</span></div></div>
     <div style="min-width:0">
       <div class="ficha-name">${flag(p.cc,'lg')}<span>${escapeHtml(p.name)}</span></div>
-      <div class="ficha-meta">${p.age} años · ${wcOf(p).n} · ${st.nm.charAt(0)+st.nm.slice(1).toLowerCase()} · ${ps.nm.charAt(0)+ps.nm.slice(1).toLowerCase()}${G.daily ? ` · Fenómeno · Desafío N.º ${dailyNo(G.daily)}` : ''}</div>
+      <div class="ficha-meta">${p.age} años · ${wcOf(p).n}${sizeGap(p) ? ` (natural: ${WEIGHT_CLASSES[natIdx(p)].n.toLowerCase()})` : ''} · ${st.nm.charAt(0)+st.nm.slice(1).toLowerCase()} · ${ps.nm.charAt(0)+ps.nm.slice(1).toLowerCase()}${G.daily ? ` · Fenómeno · Desafío N.º ${dailyNo(G.daily)}` : ''}</div>
       <div class="ficha-org">${p.champ ? `<span class="champ">Campeón de ${orgShort(p)}</span>` : `${orgShort(p)} · ${rankLabel(p)}`}</div>
     </div>
   </div>
@@ -4104,7 +4139,7 @@ function panelPreview(){
       <div class="tape">${STAT_KEYS.map(k=>`<div class="tape-row"><span class="a ${p[k]>o[k]?'hi':''}">${p[k]}</span><div class="tbar me"><i style="width:${p[k]}%"></i></div><span class="l">${STAT_LABEL[k]}</span><div class="tbar op"><i style="width:${o[k]}%"></i></div><span class="b ${o[k]>p[k]?'hi':''}">${o[k]}</span></div>`).join('')}</div>
       <div class="odds"><span>Vos ${pw}%</span><div class="odds-bar"><i style="width:${pw}%"></i></div><span>${100-pw}%</span></div>
       <div class="dline"><span>Dificultad</span>${diffMeter(estD(o, true))}<span class="rds">${b.rounds} ${b.rounds===1?'round':'rounds'}</span></div>
-      <p class="how">${how}${p.persona==='bocon' ? ' Antes, el cara a cara.' : ''}${b.shortNotice ? ' <b class="r">Sin campamento: todo un poco más difícil.</b>' : ''}${p.flags.scouted ? ' <b class="g">Lo estudiaste: todo un poco más fácil.</b>' : ''}</p>
+      <p class="how">${how}${p.persona==='bocon' ? ' Antes, el cara a cara.' : ''}${b.shortNotice ? ' <b class="r">Sin campamento: todo un poco más difícil.</b>' : ''}${p.flags.scouted ? ' <b class="g">Lo estudiaste: todo un poco más fácil.</b>' : ''}${sizeGap(p)>0 ? ` <b class="r">Peleás ${sizeGap(p)>1 ? sizeGap(p)+' categorías' : 'una categoría'} arriba de tu peso natural: son más grandes y todo cuesta más.</b>` : sizeGap(p)<0 ? ' <b class="r">El corte de peso te pasa factura: un poco más difícil.</b>' : ''}</p>
       ${p.flags.fixed ? `<button class="btn" data-k="enter" onclick="goFight(false)">Salir y dejarse ganar</button>`
         : fm ? `<button class="btn ${titleish?'gold':''}" data-k="enter" onclick="goFight(false)">¡A pelear!</button>`
         : `<div class="row2"><button class="btn" data-k="1" onclick="goFight(false,'skill')">Con técnica</button><button class="btn gold" data-k="2" onclick="goFight(false,'luck')">Al instinto</button></div>`}
@@ -4250,9 +4285,10 @@ function showRoundOverlay(){
   if(!st){ render(); return; }
   const t = F.last, win = t==='perfect' || t==='win' || t==='dom', single = F.max===1;
   let big, cls, sm;
-  if(t==='dom'){ big = single ? '¡Ganaste!' : '¡Round dominante!'; cls = 'gold'; sm = F.end ? (single ? 'Lo pasaste por arriba, pero lo ganaste en las tarjetas.' : `Lo pasaste por arriba: ganaste ${F.meW}-${F.opW}.`) : `Lo pasaste por arriba, pero sigue en pie. Vas ${F.meW}-${F.opW}.`; }
+  if(F.coin && (t==='win' || t==='lose')){ big = t==='win' ? '¡Salió cara!' : 'Salió ceca'; cls = t==='win' ? 'ok' : 'bad'; sm = `Empate en el ta-te-ti: el round se sorteó${t==='win' ? ' y es tuyo' : ' y es de él'}. ${F.end ? (F.end.win ? 'Ganaste' : 'Perdiste')+` ${F.meW}-${F.opW}.` : `Van ${F.meW}-${F.opW}.`}`; }
+  else if(t==='dom'){ big = single ? '¡Ganaste!' : '¡Round dominante!'; cls = 'gold'; sm = F.end ? (single ? 'Lo pasaste por arriba, pero lo ganaste en las tarjetas.' : `Lo pasaste por arriba: ganaste ${F.meW}-${F.opW}.`) : `Lo pasaste por arriba, pero sigue en pie. Vas ${F.meW}-${F.opW}.`; }
   else
-  if(t==='perfect'){ big = F.end.method==='Sumisión' ? '¡Se rindió!' : F.end.method==='TKO' ? '¡T.K.O.!' : '¡Nocaut!'; cls = 'gold'; sm = 'Perfecto: se terminó la pelea.'; }
+  if(t==='perfect'){ const sub = F.end.method==='Sumisión'; big = sub ? '¡Sumisión!' : F.end.method==='TKO' ? '¡T.K.O.!' : '¡Nocaut!'; cls = 'gold'; sm = sub ? 'Perfecto: ganaste por sumisión.' : 'Perfecto: se terminó la pelea.'; }
   else if(t==='ko'){ big = F.end.method==='Sumisión' ? '¡Te hizo rendir!' : '¡Te noqueó!'; cls = 'bad'; sm = 'Fallaste todo y te castigó.'; }
   else if(win){ big = single ? '¡Ganaste!' : '¡Round tuyo!'; cls = 'ok'; sm = F.end ? (single ? 'Por decisión de los jueces.' : `Ganaste la pelea ${F.meW}-${F.opW}.`) : `Vas ${F.meW}-${F.opW}.`; }
   else { big = single ? 'Perdiste' : 'Round de él'; cls = 'bad'; sm = F.end ? (single ? 'Los jueces vieron ganar al rival.' : `Perdiste ${F.meW}-${F.opW}.`) : `Van ${F.meW}-${F.opW}.`; }
@@ -4270,14 +4306,14 @@ function showRoundOverlay(){
 /* ---------- KO ---------- */
 function scrKO(){
   const lb = G.lastBig, p = G.p, o = lb.opp, win = lb.win, m = lb.method;
-  const big = win ? (m==='Sumisión' ? '¡Se rindió!' : m==='TKO' ? '¡T.K.O.!' : '¡K.O.!') : (m==='Sumisión' ? 'Te rendiste' : 'Te durmieron');
+  const big = win ? (m==='Sumisión' ? '¡Sumisión!' : m==='TKO' ? '¡T.K.O.!' : '¡K.O.!') : (m==='Sumisión' ? 'Sumisión' : 'Te durmieron');
   const loserFace = win ? oppFace(o, m==='Sumisión' ? 'tap' : 'ko') : meFace(m==='Sumisión' ? 'tap' : 'ko');
   return `<div class="ko ${win?'':'lost'}" onclick="afterKO()">
     <div class="ko-in">
       <div class="ko-m">${win ? 'Victoria' : 'Derrota'} por ${escapeHtml(methodTxt(m))}</div>
       <div class="ko-big ${big.length>7?'long':''}">${big}</div>
       <div class="ko-por">${loserFace}</div>
-      <div class="ko-s">${win ? `${escapeHtml(p.name)} liquidó a ${escapeHtml(o.name)}.` : `${escapeHtml(o.name)} te ganó antes de tiempo.`}</div>
+      <div class="ko-s">${m==='Sumisión' ? (win ? `${escapeHtml(p.name)} le ganó por sumisión a ${escapeHtml(o.name)}.` : `${escapeHtml(o.name)} te ganó por sumisión.`) : win ? `${escapeHtml(p.name)} liquidó a ${escapeHtml(o.name)}.` : `${escapeHtml(o.name)} te ganó antes de tiempo.`}</div>
       <div class="ko-skip">Tocá para seguir</div>
       <button data-k="enter" style="position:absolute;opacity:0;pointer-events:none" tabindex="-1" onclick="event.stopPropagation();afterKO()">seguir</button>
     </div></div>`;
@@ -4452,7 +4488,7 @@ function botStep(){
   UI._bt = setTimeout(()=>{
     try{
       if(UI.screen==='career'){
-        if(G.step==='card'){ if(!G.picked){ botShop(); const mv = moveList().filter(m=>!m.why); if(mv.length && Math.random()<.25) doMove(choice(mv).id); pickCard(botPickCard()); } }
+        if(G.step==='card'){ if(!G.picked){ botShop(); const mv = moveList().filter(m=>!m.why && (!['subir','bajar'].includes(m.id) || Math.random()<.1)); if(mv.length && Math.random()<.25) doMove(choice(mv).id); pickCard(botPickCard()); } }
         else if(G.celebrate && (G.step==='signing' || G.step==='yearEnd')) doneSigning();
         else if(G.step==='event'){ botShop(); const v = eventView(); const ok = v.choices.map((c,i)=>i).filter(i=>!choiceBlocked(v,i)); doEvent(v.special ? 0 : choice(ok)); }
         else if(G.step==='eventReply') doReply();

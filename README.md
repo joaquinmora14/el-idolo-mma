@@ -16,7 +16,7 @@ llevado a las artes marciales mixtas.
 Abrí `index.html` en cualquier navegador (en el celular se juega de diez).
 
 - **Arrancar mi carrera**: armás tu peleador (país, categoría, estilo y personalidad).
-- **Desafío del día**: cambia todos los días y todos arrancan con el mismo peleador y la misma suerte. Es un **fenómeno**: arranca un poco mejor, crece un poco más rápido y se cae un poco menos con la edad. Ayuda, pero no gana solo. Al final copiás tu
+- **Desafío del día**: cambia todos los días y todos arrancan con el mismo peleador y la misma suerte. Es un **fenómeno**: arranca mejor, explota de joven y tiene el techo más alto del juego; su pico ronda los 95 de OVR entre los 28 y los 32, y después los años lo bajan como a cualquiera.
   resultado en cuadraditos, como en Wordle, y lo comparás con tus amigos.
 
 Una carrera completa dura **unos 8 minutos**: de los 22 años al retiro, entre 12 y 15 temporadas, y **todas las peleas se juegan**. A los 33 te preguntan si seguís; a los 38 se termina.

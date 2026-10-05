@@ -1649,7 +1649,8 @@ function ovrOf(s){
   return clamp(Math.round(.42*f[0] + .18*f[1] + .10*f[2] + .15*s.cardio + .15*s.chin), 1, 99);
 }
 /* subir cuesta más arriba: cada punto por encima de 86 rinde menos (arriba de 93, casi nada) */
-function statW(x){ return x<86 ? 1 : x<90 ? .6 : x<93 ? .35 : x<96 ? .18 : .08; }
+/* el fenómeno del día tiene el techo más alto: su pico ronda 95 */
+function statW(x){ if(G && G.p && G.p.prodigy) x -= 7; return x<86 ? 1 : x<90 ? .6 : x<93 ? .35 : x<96 ? .18 : .08; }
 function effRaw(cur, v){ let x = cur, g = 0; for(let i=0;i<v;i++){ const w = statW(x); g += w; x += w; } return g; }
 function effGain(cur, v){ return v<=0 ? v : Math.round(effRaw(cur, v)); }
 /* lo que no llega a un punto entero se guarda: cerca del techo, un punto puede llevar dos o tres mejoras */
@@ -1825,7 +1826,7 @@ function newPlayer(cfg){
   if(cfg.style==='sumision') s.wrestling += 4;
   if(cfg.persona==='guerrero') s.chin += 8;
   STAT_KEYS.forEach(k=>s[k] += randi(-1,1));
-  if(cfg.daily) STAT_KEYS.forEach(k=>s[k] += 3);     // el del desafío es un fenómeno: arranca mejor y crece más rápido
+  if(cfg.daily) STAT_KEYS.forEach(k=>s[k] += 5);     // el del desafío es un fenómeno: arranca mejor y crece más rápido
   const p = {
     name:cfg.name, cc:c.c, countryName:c.n, cont:c.cont, wc:cfg.wc, wc0:cfg.wc, style:cfg.style, persona:cfg.persona,
     ...s, age:19, fame:5, tierSince:0, fans:20, money:1000, earned:1000,
@@ -1873,7 +1874,7 @@ function growthPoints(age, persona){
 function applyGrowth(p){
   const u = p.upg || {};
   let pts = growthPoints(p.age, p.persona);
-  if(p.prodigy) pts = pts>0 ? pts+2 : pts===0 ? 1 : pts+1;   // fenómeno: crece un poco más y se cae un poco menos
+  if(p.prodigy) pts = p.age<=27 ? pts+13 : p.age<=30 ? pts+3 : pts-5;   // fenómeno: explota de joven, pico ~95 a los 28-30, después se cae
   if(pts<0) pts = Math.min(0, pts + (u.fisico||0));
   const out = {};
   if(pts>0 && u.coach){ const g = raise(p, p.style, u.coach); if(g) out[p.style] = g; }

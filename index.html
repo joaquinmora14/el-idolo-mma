@@ -1828,7 +1828,7 @@ function newPlayer(cfg){
   if(cfg.daily) STAT_KEYS.forEach(k=>s[k] += 3);     // el del desafío es un fenómeno: arranca mejor y crece más rápido
   const p = {
     name:cfg.name, cc:c.c, countryName:c.n, cont:c.cont, wc:cfg.wc, wc0:cfg.wc, style:cfg.style, persona:cfg.persona,
-    ...s, age:19, fame:5, fans:20, money:1000, earned:1000,
+    ...s, age:19, fame:5, tierSince:0, fans:20, money:1000, earned:1000,
     orgChain:ORG_CHAIN[c.cont], tier:0, rank:null, champ:false,
     record:{w:0,l:0}, ko:0, sub:0, streakL:0,
     titles:[], defenses:0, defByTier:[0,0,0], ufcDef:0, double:false, firstUfcAge:null,
@@ -2277,7 +2277,7 @@ function moveTier(t, rank){
   const p = G.p;
   if(t>p.tier) G.celebrate = {tier:clamp(t,0,2), org:orgShort(p, clamp(t,0,2))};
   if(t>p.tier && p.persona==='cabulero'){ p.amuletos++; if(G.yearLog) G.yearLog.news.push('Cábala nueva para la liga nueva: +1 amuleto.'); }
-  p.tier = clamp(t,0,2); p.champ = false; p.rank = rank || null; p.streakL = 0; p.orgW = 0;
+  p.tier = clamp(t,0,2); p.champ = false; p.rank = rank || null; p.streakL = 0; p.orgW = 0; p.tierSince = G.season;
   if(p.tier===2){ p.flags.ufc = true; if(G.ufcStart===undefined) G.ufcStart = G.season; }
   p.flags.declines = 0;
   syncRival();
@@ -2685,6 +2685,8 @@ function finishSeason(){
   G.step = 'yearEnd';
   save();
 }
+/* años en la misma liga con buen nivel: te terminan llamando de la de arriba (aunque llegues sin ranking) */
+function veteran(p, minOvr){ return p.tierSince!==undefined && G.season - p.tierSince >= 6 && ovrOf(p) >= minOvr && orgWins(p) >= 8; }
 function checkOffers(){
   const p = G.p, ovr = ovrOf(p);
   G.pending = [];
@@ -2695,8 +2697,8 @@ function checkOffers(){
   if(p.tier===0 && top(3) && !p.flags.dwcsDone && p.fame>=32) G.pending.push('dwcs');
   /* para subir de liga: ser campeón, el #1 con muchas victorias, o tener el hype para que te vengan a buscar */
   /* o quedarte sin rivales: si ya tenés el nivel de la liga de arriba, te vienen a buscar igual */
-  else if(p.tier===0 && (((p.champ || (p.rank===1 && ovr>=68 && orgWins(p)>=6)) && p.fame>=10) || (top(5) && p.fame>=25) || (top(5) && ovr>=TIERS[1].r15+2 && orgWins(p)>=3))) G.pending.push('oferta1');
-  else if(p.tier===1 && (((p.champ || (p.rank && p.rank<=2 && ovr>=84 && orgWins(p)>=6)) && p.fame>=28) || (top(5) && ovr>=78 && p.fame>=48) || (top(5) && ovr>=TIERS[2].r15+3 && orgWins(p)>=4))) G.pending.push('oferta2');
+  else if(p.tier===0 && (((p.champ || (p.rank===1 && ovr>=68 && orgWins(p)>=6)) && p.fame>=10) || (top(5) && p.fame>=25) || (top(8) && ovr>=TIERS[1].r15+2 && orgWins(p)>=4) || veteran(p, TIERS[1].r15+1))) G.pending.push('oferta1');
+  else if(p.tier===1 && (((p.champ || (p.rank && p.rank<=2 && ovr>=84 && orgWins(p)>=6)) && p.fame>=28) || (top(5) && ovr>=78 && p.fame>=48) || (top(8) && ovr>=TIERS[2].r15+3 && orgWins(p)>=5) || veteran(p, TIERS[2].r15+1))) G.pending.push('oferta2');
   else if(p.tier===1 && top(5) && !p.flags.dwcsDone && p.fame>=35) G.pending.push('dwcs');
   else if(p.tier===2 && p.champ && p.defenses>=1 && !p.flags.dobleTried && !p.double && WEIGHT_CLASSES[wcIdx(p)+1] && R()<.3) G.pending.push('doble');
   else if(!p.champ && p.rank && p.rank>=3 && p.rank<=7 && R()<.14) G.pending.push('shortnotice');

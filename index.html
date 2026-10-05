@@ -4424,7 +4424,7 @@ function movesHtml(){
       <button class="btn sm ${m.why?'paper':'gold'}" ${m.why?'disabled':''} onclick="doMoveUI('${m.id}')">${m.why ? 'Bloqueada' : 'Hacerla'}</button></div>`).join('')}</div>
     <button class="btn paper" style="margin-top:12px" onclick="closeModal()">Cerrar</button>`;
 }
-function doMoveUI(id){ const res = doMove(id); if(!res){ SFX.buzz(); return; } UI.modal = null; if(res.ok){ SFX.good(); if(!UI.bot) confetti(24, ['#e3a92c','#faf5e9','#1c1915']); } else SFX.buzz(); render(); save(); }
+function doMoveUI(id){ const res = doMove(id); if(!res){ SFX.buzz(); return; } UI.modal = null; if(res.ok){ SFX.good(); if(!UI.bot && !['subir','bajar'].includes(id)) confetti(24, ['#e3a92c','#faf5e9','#1c1915']); } else SFX.buzz(); render(); save(); }
 function doBuy(id){ if(buyItem(id)){ SFX.coin(); render(); save(); } else SFX.buzz(); }
 function confirmRetire(b){
   if(b.dataset.sure){ retireNow(); return; }

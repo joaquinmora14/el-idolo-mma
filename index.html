@@ -3317,38 +3317,62 @@ MG.llave = {icon:'piso', nm:'Cerrá la llave', stat:'sumision', fin:'Sumisión',
 
 /* ---------- 5. CADENA DE LUCHA (memoria) ---------- */
 MG.cadena = {icon:'lucha', nm:'Cadena de lucha', stat:'wrestling', fin:'TKO', hint:'Memorizá la cadena y repetila',
-  how:'Mirá la cadena de movimientos que se ilumina y <b>repetila en el mismo orden</b> (también con las flechas del teclado). Si la hacés rápido, es un slam.',
+  how:'Mirá la cadena de movimientos que se ilumina y <b>repetila en el mismo orden</b> (también con las flechas). Los <b>amagues</b> se ven grises: no los repitas. A veces hay que repetirla <b>al revés</b> o <b>cambia la guardia</b> y los movimientos se mueven de lugar.',
   run(c){
-    const len = Math.max(4, Math.round(byDiff(c.d, 4, 5, 7)) - (c.quick ? 1 : 0)), show = byDiff(c.d, 540, 400, 270), limit = len*byDiff(c.d, 1100, 820, 600);
-    const seq = []; for(let i=0;i<len;i++){ let v; do{ v = randi(0,3); } while(i>0 && v===seq[i-1] && R()<(c.d>.4 ? .2 : .6)); seq.push(v); }
-    /* desde dificultad media, a veces hay que repetirla al revés (se avisa antes de mostrarla) */
-    const rev = c.d>-.1 && R() < byDiff(c.d, 0, .3, .55);
-    const PADS = [{a:0, n:'CAMBIO DE NIVEL', x:0, y:-84, col:C.mustard}, {a:90, n:'DOBLE PIERNA', x:84, y:0, col:C.blue},
-                  {a:180, n:'SPRAWL', x:0, y:84, col:C.red}, {a:270, n:'CLINCH', x:-84, y:0, col:C.green}];
-    let phase = 'show', inp = 0, t0 = 0;
+    const len = Math.max(4, Math.round(byDiff(c.d, 4.6, 5.4, 7.4)) - (c.quick ? 1 : 0)), show = byDiff(c.d, 500, 390, 260);
+    const seq = []; for(let i=0;i<len;i++){ let v; do{ v = randi(0,3); } while(i>0 && v===seq[i-1] && R()<(c.d>.4 ? .15 : .55)); seq.push(v); }
+    /* amagues: destellos grises en el medio de la cadena que NO hay que repetir */
+    const nFake = c.d<-.3 ? 0 : Math.min(c.quick ? 2 : 3, Math.round(byDiff(c.d, 0, .8, 2.6)));
+    const shown = seq.map(v=>({v, fake:false}));
+    for(let f=0; f<nFake; f++) shown.splice(randi(1, shown.length-1), 0, {v:randi(0,3), fake:true});
+    /* una vuelta de tuerca por round: al revés, o cambio de guardia (los movimientos se mueven de lugar) */
+    const tw = R(), rev = c.d>-.1 && tw < byDiff(c.d, 0, .25, .4), rot = !rev && c.d>.2 && tw < byDiff(c.d, 0, .48, .75);
+    const limit = len*byDiff(c.d, 1100, 820, 620) + (rot ? 700 : 0);
+    const PADS = [{n:'CAMBIO DE NIVEL', col:C.mustard}, {n:'DOBLE PIERNA', col:C.blue}, {n:'SPRAWL', col:C.red}, {n:'CLINCH', col:C.green}];
+    const POS = [[0,-84],[84,0],[0,84],[-84,0]];
+    const posOf = [0,1,2,3];
+    let phase = 'show', inp = 0, t0 = 0, slip = false;
     c.stage.innerHTML = `<svg viewBox="-160 -160 320 320">${SVG_DEFS}${octagonBg()}
-      ${PADS.map((p,i)=>`<g id="cP${i}" data-i="${i}" transform="translate(${p.x} ${p.y})" style="cursor:pointer">
-        <rect x="-54" y="-40" width="108" height="80" rx="4" fill="${C.paper}" stroke="${C.ink}" stroke-width="3"/>
+      ${PADS.map((p,i)=>`<g id="cP${i}" data-i="${i}" transform="translate(${POS[i][0]} ${POS[i][1]})" style="cursor:pointer;transition:transform .45s cubic-bezier(.5,0,.3,1)">
+        <rect class="box" x="-54" y="-40" width="108" height="80" rx="4" fill="${C.paper}" stroke="${C.ink}" stroke-width="3"/>
         <rect class="fill" x="-48" y="-34" width="96" height="68" rx="2" fill="${p.col}" opacity=".18"/>
-        <path class="arw" d="${TRI}" transform="translate(0 -6) scale(1.35) rotate(${p.a})" fill="${C.ink}"/>
+        <path class="arw" d="${TRI}" transform="translate(0 -6) scale(1.35) rotate(${i*90})" fill="${C.ink}"/>
         <text y="28" font-size="11" text-anchor="middle" fill="${C.ink}" letter-spacing=".5">${p.n}</text></g>`).join('')}
       ${faceG('cF', -30, -30, 60)}
     </svg>`;
-    c.act.innerHTML = `<div class="mini" id="cInfo">${rev ? 'Mirá bien… <u>después la repetís AL REVÉS</u>' : 'Mirá bien…'}</div>`;
+    const warn = rev ? 'Mirá bien… <u>después la repetís AL REVÉS</u>' : rot ? 'Mirá bien… <u>ojo, que va a cambiar la guardia</u>' : 'Mirá bien…';
+    c.act.innerHTML = `<div class="mini" id="cInfo">${warn}${nFake ? ` <span class="muted">· ${nFake===1 ? 'un amague' : nFake+' amagues'}</span>` : ''}</div>`;
     const info = $('cInfo'), cF = $('cF');
-    c.stage.dataset.rev = rev ? '1' : '0';
+    c.stage.dataset.rev = rev ? '1' : '0'; c.stage.dataset.rot = rot ? '1' : '0';
     c.face(cF, 'smirk');
-    function lit(i, on){ const g = $('cP'+i), r = g.querySelector('.fill'); r.setAttribute('opacity', on?1:.18); g.querySelectorAll('text,.arw').forEach(t=>t.setAttribute('fill', on && i!==0 ? C.paper : C.ink)); g.setAttribute('data-lit', on?1:0); }
+    function lit(i, on, fake){
+      const g = $('cP'+i), r = g.querySelector('.fill'), box = g.querySelector('.box'), tx = g.querySelector('text');
+      r.setAttribute('fill', fake && on ? C.ink3 : PADS[i].col); r.setAttribute('opacity', on ? 1 : .18);
+      box.setAttribute('stroke-dasharray', fake && on ? '7 5' : 'none');
+      tx.textContent = fake && on ? 'AMAGUE' : PADS[i].n;
+      g.querySelectorAll('text,.arw').forEach(t=>t.setAttribute('fill', on && (fake || i!==0) ? C.paper : C.ink));
+      g.setAttribute('data-lit', on ? (fake ? 2 : 1) : 0);
+    }
     function pipsNow(){ c.hud.innerHTML = seq.map((v,i)=>`<span class="pip ${i<inp?'ok':''}"></span>`).join(''); }
     pipsNow();
     let k = 0;
+    function startInput(){ phase = 'input'; t0 = performance.now(); info.innerHTML = rev ? '<b>¡Al revés!</b> De la última a la primera' : rot ? '<b>¡Cambió la guardia!</b> Mismos movimientos, otro lugar' : '<b>¡Tu turno!</b> Repetí la cadena'; c.face(cF,'angry'); }
     function play(){
-      if(k>=seq.length){ phase = 'input'; t0 = performance.now(); info.innerHTML = rev ? '<b>¡Al revés!</b> De la última a la primera' : '<b>¡Tu turno!</b> Repetí la cadena'; c.face(cF,'angry'); return; }
-      const i = seq[k]; lit(i,true); SFX.simon(i);
-      mgAfter(show*.72, ()=>{ lit(i,false); k++; mgAfter(show*.28, play); });
+      if(k>=shown.length){
+        if(rot){ /* cambio de guardia: cada movimiento gira un lugar; la flecha apunta a su nuevo lugar */
+          phase = 'turn'; info.innerHTML = '<u>¡Cambia la guardia!</u> Esperá que se acomoden…'; SFX.whoosh();
+          PADS.forEach((p,i)=>{ posOf[i] = (posOf[i]+1)%4; const g = $('cP'+i); g.setAttribute('transform', `translate(${POS[posOf[i]][0]} ${POS[posOf[i]][1]})`); g.querySelector('.arw').setAttribute('transform', `translate(0 -6) scale(1.35) rotate(${posOf[i]*90})`); });
+          return mgAfter(560, startInput);
+        }
+        return startInput();
+      }
+      const s = shown[k], sp = show * Math.max(.7, 1 - .035*k);      // se acelera a medida que avanza
+      lit(s.v, true, s.fake); if(s.fake) SFX.whoosh(); else SFX.simon(s.v);
+      mgAfter(sp*.72, ()=>{ lit(s.v, false); k++; mgAfter(sp*.28, play); });
     }
-    mgAfter(rev ? 1300 : 650, play);
+    mgAfter(rev||rot ? 1300 : 650, play);
     function press(i){
+      if(phase==='turn'){ c.pop('¡ESPERÁ!','bad', true); return; }    // durante el cambio de guardia no cuenta, pero te avisa
       if(phase!=='input') return;
       lit(i,true); SFX.simon(i); mgAfter(140, ()=>lit(i,false));
       if((rev ? seq[seq.length-1-inp] : seq[inp])===i){
@@ -3361,14 +3385,15 @@ MG.cadena = {icon:'lucha', nm:'Cadena de lucha', stat:'wrestling', fin:'TKO', hi
           return c.done(fast ? 'perfect' : 'win');
         }
       } else {
-        phase = 'done'; SFX.buzz(); c.pop('¡TE LEYÓ!','bad'); c.face(cF,'smirk');
+        phase = 'done'; SFX.buzz(); c.pop(nFake ? '¡TE COMISTE EL AMAGUE!' : '¡TE LEYÓ!','bad'); c.face(cF,'smirk');
         return c.done(inp===0 ? 'zero' : 'lose');
       }
     }
     PADS.forEach((p,i)=>$('cP'+i).addEventListener('pointerdown', e=>{ if(!MGR.alive) return; e.preventDefault(); press(i); }));
-    MGR.key = e=>{ const m = {ArrowUp:0, KeyW:0, ArrowRight:1, KeyD:1, ArrowDown:2, KeyS:2, ArrowLeft:3, KeyA:3}; if(e.code in m){ e.preventDefault(); if(!e.repeat) press(m[e.code]); } };
+    /* las flechas apuntan a un LUGAR: después del cambio de guardia, tocan al movimiento que quedó ahí */
+    MGR.key = e=>{ const m = {ArrowUp:0, KeyW:0, ArrowRight:1, KeyD:1, ArrowDown:2, KeyS:2, ArrowLeft:3, KeyA:3}; if(e.code in m){ e.preventDefault(); if(!e.repeat) press(posOf.indexOf(m[e.code])); } };
     mgLoop(()=>{
-      if(phase!=='input'){ if(phase==='show') c.timer(null); return; }
+      if(phase!=='input'){ if(phase==='show'||phase==='turn') c.timer(null); return; }
       const f = 1 - (performance.now()-t0)/limit; c.timer(f);
       if(f<=0){ phase = 'done'; SFX.buzz(); c.pop('¡TIEMPO!','bad'); return c.done(inp===0 ? 'zero' : 'lose'); }
     });

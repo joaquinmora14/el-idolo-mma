@@ -143,6 +143,9 @@
   .ficha-name .flag{margin-top:3px;}
   .ficha-meta{font-family:var(--f-type);font-size:12.5px;line-height:1.4;margin-top:4px;color:var(--ink-2);}
   .ficha-org{margin-top:5px;font-weight:700;font-size:14px;}
+  .inj-tag{display:inline-flex;align-items:center;gap:5px;margin-top:5px;font-weight:700;font-size:12.5px;color:var(--on-red);background:var(--red);padding:2px 7px 1px;border:1.5px solid var(--ink);}
+  .inj-tag .ico{width:13px;height:13px;}
+  .fixed-warn.soft{background:transparent;color:var(--red-2);border-color:var(--red);}
   .ficha-org .champ{background:var(--mustard);padding:1px 5px;border:1.5px solid var(--ink);}
   .money-line{display:flex;flex-wrap:wrap;gap:4px 14px;margin:14px 16px 0;padding:7px 0;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);font-size:13.5px;}
   .money-line span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;}
@@ -889,7 +892,39 @@ const EVENTS = [
   {id:'robo', who:'👀', wn:'La policía', role:'Robo', text:'Te robaron el auto con todo el equipo de entrenamiento adentro.',
     a:{t:'Comprar todo nuevo', h:'💰', fx:p=>({money:-M(1000), r:'Guantes nuevos, cara de pocos amigos.'})},
     b:{t:'Entrenar con lo que hay', h:'🥊', fx:p=>({striking:-2, r:'Guantes prestados y vendas viejas. Se notó.'})}},
+  /* ---------- lesiones y golpes de la vida ---------- */
+  {id:'sparring_rodilla', who:'🩺', wn:'El médico', role:'Sparring', text:'Te doblaste la rodilla en el sparring, a tres semanas de pelear. Camina, pero cruje.',
+    a:{t:'Seguir el campamento igual', h:'🎲🤼', fx:p=>({injury:['rodilla',1], r:'Vas a pelear con la rodilla vendada. Cada derribo va a doler.'})},
+    b:{t:'Parar y hacer kinesio', h:'💰🤼🫁', fx:p=>({money:-M(900), wrestling:-2, cardio:-2, r:'La rodilla zafó, pero perdiste semanas de campamento.'})}},
+  {id:'mano_rota', who:'🦴', wn:'El traumatólogo', role:'Fractura', text:'Te fracturaste la mano pegándole a la bolsa. Para operarte tenés que bajarte del año.',
+    a:{t:'Pelear con la mano rota', h:'🎲🥊', fx:p=>({injury:['mano',2], r:'Vas a pelear con la mano rota. Si se complica, puede quedar para siempre.'})},
+    b:{t:'Operarte y bajarte del año', h:'⭐🥊', fx:p=>({skipSeason:true, fame:-5, striking:-1, r:'Quirófano y un año afuera. La mano quedó bien; el hype, no tanto.'})}},
+  {id:'conmocion', who:'🩺', wn:'El neurólogo', role:'Después del nocaut', text:'Después del nocaut que te comiste, el neurólogo te pide parar. "La cabeza no es una rodilla".', cond:p=>p.flags.koLoss && p.flags.koLoss>=seasonYear()-1 && !p.injury,
+    a:{t:'Hacerle caso y parar el año', h:'⭐🗿', fx:p=>({skipSeason:true, chin:2, fame:-4, r:'Un año sin golpes. Volvés con la cabeza fresca.'})},
+    b:{t:'"Estoy bien, sigo"', h:'🎲🗿', fx:p=>({injury:['cabeza',1], chin:-2, r:'Seguís, pero el mentón ya no es el de antes.'})}},
+  {id:'rodilla_vieja', who:'🦴', wn:'El traumatólogo', role:'Rodilla vieja', text:'La rodilla que te operaste de pibe se volvió a hinchar. Los años no perdonan.', cond:p=>p.age>=29 && !p.injury,
+    a:{t:'Infiltrarte y seguir', h:'🎲🤼', fx:p=>({injury:['rodilla',1], r:'Una infiltración y a seguir. Por ahora aguanta.'})},
+    b:{t:'Operarte', h:'⭐🤼🫁', fx:p=>({skipSeason:true, wrestling:-2, cardio:-1, fame:-3, r:'Te operaste. Un año afuera, pero la rodilla quedó firme.'})}},
+  {id:'bar', who:'👀', wn:'Un borracho', role:'A la salida del bar', text:'A la salida de un bar, un borracho te provoca y te empuja delante de todos. Hay celulares filmando.',
+    a:{t:'Pegarle una piña', h:'⭐❤️💰🎲', fx:p=>({injury:['mano',1], fame:3, fans:-5, money:-M(1200), r:'Lo dormiste. Te rompiste la mano, pagaste abogado y el video se hizo viral. No para bien.'})},
+    b:{t:'Irte caminando', h:'❤️', fx:p=>({fans:4, r:'Te fuiste sin decir nada. La gente valoró el autocontrol.'})}},
+  {id:'reality', who:'🎬', wn:'Una productora', role:'Reality', text:'Te ofrecen un reality sobre tu vida durante el campamento. Cámaras en el gimnasio, en tu casa, en todos lados.',
+    a:{t:'Hacerlo', h:'💰⭐🥊🤼', fx:p=>({money:M(5000), fame:7, striking:-2, wrestling:-2, cardio:-2, r:'Mucha fama y plata. Entrenaste la mitad.'})},
+    b:{t:'"El campamento es sagrado"', h:'🫁', fx:p=>({cardio:1, r:'Ni una cámara. Entrenaste como nunca.'})}},
+  {id:'coach_rival', who:'🧔', wn:'Tu entrenador de cabecera', role:'Traición', text:'Te avisa que lo llamaron del equipo de {rival} y le ofrecen el doble.', cond:p=>p.upg && p.upg.coach>0 && p.rival && !p.rival.retired,
+    a:{t:'Igualarle la oferta', h:'💰', fx:p=>({money:-M(4000), r:'Se queda. Te costó, pero sigue en tu esquina.'})},
+    b:{t:'"Que se vaya"', h:'🧠😤', fx:p=>({coachDown:true, r:'Se fue con {rival}. Ahora él conoce todos tus secretos.'})}},
+  {id:'reemplazo', who:'🥊', wn:'El matchmaker', role:'Reemplazo', text:'Se cayó un peleador de arriba y te ofrecen reemplazarlo con diez días de aviso. Sin campamento, pero contra alguien bastante mejor rankeado.', cond:p=>!p.champ && p.rank && p.rank>=5,
+    a:{t:'Agarrar sin campamento', h:'🏆🎲', fx:p=>({forced:'reemplazo', fame:2, r:'Diez días para prepararte. Es tu pelea del año: si ganás, pegás un salto enorme.'})},
+    b:{t:'Decir que no', h:'⭐', fx:p=>({fame:-2, r:'Dijiste que no. Alguno te va a decir cagón en redes.'})}},
   /* ---------- tentaciones: plata fácil o atajos, con riesgo ---------- */
+  {id:'vender_cartelera', who:'🕵️', wn:'Un apostador', role:'Una propuesta', text:'Te ofrece plata por perder tu próxima pelea de cartelera. "Es una pelea chica, nadie mira".', cond:p=>!p.champ && !p.flags.fixedReg && !p.flags.fixed,
+    a:{t:'Regalar la pelea', h:'💰🎲', fx:p=>({money:M(5000), fixedReg:true, r:'Tu próxima pelea de cartelera ya tiene dueño. Ojalá nadie mire las apuestas.'})},
+    b:{t:'Mandarlo a la mierda', h:'❤️', fx:p=>({fans:3, r:'Lo sacaste corriendo del gimnasio.'})}},
+  {id:'regalar_round', who:'🕵️', wn:'Un apostador', role:'Apuestas por round', text:'Te ofrece plata por dejarte ganar el primer round de tu pelea grande. "Un round nomás, después hacé lo que quieras".', cond:p=>!p.flags.giveRound && !p.flags.fixed,
+    a:{t:'Regalar el round', h:'💰🎲', fx:p=>({money:M(4000), giveRound:true, r:'El primer round ya está vendido. Vas a tener que remontar.'})},
+    b:{t:'No vendo nada', h:'❤️', fx:p=>({fans:2, r:'Ni un round. Ni una piña.'})}},
+
   {id:'arreglo', who:'🕵️', wn:'Un hombre de traje', role:'Una propuesta', text:'Te ofrece mucha plata por perder tu próxima pelea grande. "Nadie se va a enterar".', cond:p=>!p.champ && !p.flags.fixed,
     a:{t:'Agarrar la plata', h:'💰🎲', fx:p=>({money:M(15000), fixed:true, r:'La plata está en un bolso. Tu próxima pelea grande ya tiene dueño.'})},
     b:{t:'Echarlo y denunciarlo', h:'❤️⭐', fx:p=>({fans:6, fame:4, r:'Saliste en las noticias como ejemplo.'})}},
@@ -1056,6 +1091,7 @@ const SPECIALS = {
   dwcs:{spk:'ufc', role:'Serie de Contendientes', line:'Tengo un lugar para vos en la Serie de Contendientes. Una sola pelea, un martes a la noche en Las Vegas. Si me impresionás, te doy el contrato ahí mismo. Si perdés, se cierra la puerta.'},
   shortnotice:{spk:'match', role:'Urgente', line:'Se lesionó el retador y me quedé sin rival para la pelea por el título. Son dos semanas de aviso, sin campamento. ¿La agarrás?'},
   doble:{spk:'ufc', role:'Superpelea', line:'Sos campeón y la gente quiere más. ¿Te animás a subir de categoría y pelear por un segundo cinturón al mismo tiempo?'},
+  lesion:{spk:'doctor', role:'Parte médico', line:'Las placas no mienten: tenés {lesion}. Podés pelear, pero no vas a estar al cien, cada pelea te va a costar más y se te puede romper del todo. ¿Qué hacemos?'},
   cortado:{spk:'org', role:'Malas noticias', line:'Tres derrotas seguidas. No es personal, pero no te vamos a renovar el contrato. Te va a tocar volver a una liga más chica.'},
 };
 /* quién manda en cada organización (nombres alterados) */
@@ -1848,6 +1884,56 @@ function applyGrowth(p){
   return out;
 }
 
+/* ---------- lesiones: pelear lesionado cuesta, se puede poner peor y dejar secuelas ---------- */
+const INJURIES = {
+  mano:{nm:'la mano fracturada', corto:'la mano', st:'striking'}, rodilla:{nm:'la rodilla tocada', corto:'la rodilla', st:'wrestling'},
+  hombro:{nm:'el hombro lesionado', corto:'el hombro', st:'sumision'}, costillas:{nm:'una costilla fisurada', corto:'las costillas', st:'cardio'},
+  tobillo:{nm:'un esguince de tobillo', corto:'el tobillo', st:'cardio'}, cabeza:{nm:'una conmoción', corto:'la cabeza', st:'chin'},
+};
+const SEV_N = ['', 'leve', 'seria', 'grave'];
+function injuryTxt(i){ i = i || G.p.injury; return i ? `${INJURIES[i.k].nm} (${SEV_N[i.sev]})` : ''; }
+/* te lesionás (o se te agrava lo que ya tenías) */
+function injure(k, sev, why){
+  const p = G.p, cur = p.injury;
+  if(cur && cur.k===k) cur.sev = Math.min(3, cur.sev + Math.max(1, sev-1));
+  else if(cur && cur.sev>=sev) cur.sev = Math.min(3, cur.sev+1);
+  else p.injury = {k, sev:Math.min(3, sev), masked:false};
+  if(why) news(why);
+  return p.injury;
+}
+/* una lesión mal curada deja secuela para siempre */
+function chronic(k){
+  const p = G.p, st = INJURIES[k].st, hit = k==='cabeza' ? 4 : 3;
+  p[st] = clamp(p[st]-hit, 10, 99); if(k==='cabeza') p.cardio = clamp(p.cardio-1, 10, 99);
+  p.chronic = (p.chronic||[]).concat(k);
+  news(`Secuela para siempre: ${INJURIES[k].corto} nunca volvió a ser la misma (−${hit} ${STAT_LABEL[st].toLowerCase()}).`);
+}
+/* después de cada pelea: lesionarse, o agravarse si ya peleabas lesionado */
+function fightInjury(win, method, big, out){
+  const p = G.p, long = F && F.max>=5;
+  if(p.injury){
+    const ch = (p.injury.masked ? .3 : .18)*p.injury.sev + (win ? 0 : .12);
+    if(R() < ch){
+      if(p.injury.sev>=3){ chronic(p.injury.k); out.notes.push({t:`Se te rompió del todo ${INJURIES[p.injury.k].corto}: secuela`, i:'venda', c:'n'}); }
+      else { p.injury.sev++; out.notes.push({t:`Peleaste lesionado y se agravó: ${injuryTxt()}`, i:'venda', c:'n'}); }
+    }
+    return;
+  }
+  let base = big ? .07 : .04, k = choice(['mano','rodilla','hombro','costillas','tobillo']);
+  if(!win && /KO/.test(method)){ base += .2; k = 'cabeza'; }
+  else if(!win && method==='Sumisión'){ base += .12; k = choice(['hombro','rodilla']); }
+  if(long && /Decisi/.test(method)) base += .06;
+  if(R() < base){ const i = injure(k, R()<.7 ? 1 : 2); out.notes.push({t:`Te lesionaste: ${injuryTxt(i)}`, i:'venda', c:'n'}); }
+}
+/* al cerrar el año: si paraste, te curás; si te infiltraste, puede quedar secuela; si no, a veces mejora solo */
+function injuryYearEnd(){
+  const p = G.p, i = p.injury; if(!i) return;
+  if(G.skipSeason){ p.injury = null; G.yearLog.news.push('Paraste y te recuperaste del todo.'); return; }
+  if(i.masked && R()<.45){ chronic(i.k); }
+  i.masked = false;
+  if(R()<.45){ i.sev--; if(i.sev<=0){ p.injury = null; G.yearLog.news.push('La lesión sanó con el tiempo.'); } }
+}
+
 /* ---------- el mundo sigue: rival, campeones, retiros ---------- */
 function news(t){ if(G.yearLog) G.yearLog.news.push(t); }
 function rivalTick(){
@@ -1930,6 +2016,7 @@ function startSeason(first){
   G.suspension = false;
   if(p.flags.suspended){ p.flags.suspended = false; G.suspension = true; G.yearLog.susp = true; }
   G.retireAsk = false;
+  if(p.injury && !G.suspension) G.pending.push('lesion');
   G.step = 'card';
   p.peak = Math.max(p.peak, ovrOf(p));
 }
@@ -2046,7 +2133,7 @@ function drawEvent(){
 }
 function evText(s){
   const p = G.p;
-  return String(s).replace(/\{rival\}/g, p.rival ? p.rival.name : 'Tu rival').replace(/\{org\}/g, orgShort(p, Math.min(2,p.tier+1))).replace(/\{me\}/g, p.name);
+  return String(s).replace(/\{lesion\}/g, injuryTxt() || 'una lesión').replace(/\{rival\}/g, p.rival ? p.rival.name : 'Tu rival').replace(/\{org\}/g, orgShort(p, Math.min(2,p.tier+1))).replace(/\{me\}/g, p.name);
 }
 function specialChoices(kind){
   const p = G.p;
@@ -2062,6 +2149,10 @@ function specialChoices(kind){
     case 'dwcs': return [
       {t:'«Voy. Prepará la lapicera.»', h:'🌟🎲', say:'Me gusta la actitud. Ganá y hablamos de contrato esa misma noche.', fx:()=>{ G.forced='dwcs'; p.flags.dwcsDone = true; return {r:'La pelea grande del año va a ser en la Serie de Contendientes. Todo o nada.'}; }},
       {t:'«Prefiero seguir mi camino.»', h:'📈', say:'Como quieras. Si cambiás de idea, ya sabés dónde encontrarme.', fx:()=>{ p.flags.dwcsDone = true; return {fans:2, r:'Paso a paso. La UFC puede esperar.'}; }}];
+    case 'lesion': { const corto = p.injury ? INJURIES[p.injury.k].corto : 'eso'; return [
+      {t:'«Peleo igual»', h:'🎲', say:'Bueno. Pero si sentís que se rompe, parás. Prometémelo.', fx:()=>({r:`Vas a pelear con ${corto} a media máquina: todo te cuesta más y se puede poner peor.`})},
+      {t:'«Infiltrame, que no se note»', h:'🎲🎲', say:'No me gusta nada. Hoy no lo vas a sentir. Mañana, quién sabe.', fx:()=>({mask:true, r:'Con la infiltración casi no se nota, pero si se complica te puede quedar para siempre.'})},
+      {t:'«Paro el año y me recupero»', h:'⭐📉', say:'Bien. Es la decisión de un profesional. Volvés entero.', fx:()=>({heal:true, skipSeason:true, fame:-6, rankDrop:p.rank ? 3 : 0, r:'Un año afuera. Volvés sano, pero te olvidaron un poco.'})}]; }
     case 'shortnotice': return [
       {t:'«La agarro. Pongan la fecha.»', h:'🏆🎲', say:'Sabía que no me ibas a fallar. Cuidá el peso.', fx:()=>{ G.forced='title'; return {fame:3, r:'Sin campamento, pero con hambre. Vas por el título.'}; }},
       {t:'«Sin campamento no peleo.»', h:'', say:'Entendido. Ya te va a llegar tu chance.', fx:()=>({r:'Prudencia. Ya va a llegar tu chance.'})}];
@@ -2076,6 +2167,7 @@ function specialChoices(kind){
 /* quién te habla en un momento especial */
 function specialSpeaker(s){
   const p = G.p;
+  if(s.spk==='doctor') return {name:'La doctora Ríos', title:'Médica del equipo', role:'doctor'};
   if(s.spk==='match') return {name:p.tier===2 ? 'Mick Máynard' : 'El matchmaker', title:'Matchmaker de '+orgShort(p), role:'producer'};
   const id = s.spk==='ufc' ? 'ufc' : s.spk==='org1' ? orgIdOf(p, Math.min(2, p.tier+1)) : orgIdOf(p);
   const b = ORG_BOSS[id] || ['El presidente', ORGS[id] ? ORGS[id].short : '', 'suit'];
@@ -2099,7 +2191,7 @@ function chooseEvent(i){
   const v = eventView(); if(!v || G.evRes) return;
   const ch = v.choices[i]; if(!ch || choiceBlocked(v, i)) return;
   const d = ch.fx(G.p) || {};
-  G.evRes = {text:d.r || '', chips:applyDelta(d), choice:ch.t, who:v.wn, whoE:v.who, say:ch.say||'', talk:!!v.talk, spk:v.spk||null};
+  G.evRes = {text:evText(d.r || ''), chips:applyDelta(d), choice:ch.t, who:v.wn, whoE:v.who, say:ch.say||'', talk:!!v.talk, spk:v.spk||null};
   if(v.talk){ G.step = 'eventReply'; return; }      // la charla sigue: el otro te contesta
   toPreview();
 }
@@ -2127,6 +2219,14 @@ function applyDelta(d){
   if(d.promise){ p.flags.promise = true; chips.push({t:'Si ganás, vas por el título', i:'trofeo', c:'o'}); }
   if(d.fixed){ p.flags.fixed = true; chips.push({t:'Tu próxima pelea grande está arreglada', i:'cerrar', c:'n'}); }
   if(d.ped){ p.flags.pedRisk = true; chips.push({t:'Riesgo de dar positivo en el antidoping', i:'dados', c:'n'}); }
+  if(d.injury){ const i = injure(d.injury[0], d.injury[1]); chips.push({t:'Lesión: '+injuryTxt(i), i:'venda', c:'n'}); }
+  if(d.heal && p.injury){ p.injury = null; chips.push({t:'Te curaste del todo', i:'venda', c:'p'}); }
+  if(d.mask && p.injury){ p.injury.masked = true; chips.push({t:'Infiltrado: no se nota, pero puede dejar secuela', i:'dados', c:'n'}); }
+  if(d.fixedReg){ p.flags.fixedReg = true; chips.push({t:'Tu próxima pelea de cartelera está vendida', i:'cerrar', c:'n'}); }
+  if(d.giveRound){ p.flags.giveRound = true; chips.push({t:'Regalás el primer round de la pelea grande', i:'cerrar', c:'n'}); }
+  if(d.coachDown && p.upg && p.upg.coach){ p.upg.coach--; chips.push({t:'Perdiste a tu entrenador de cabecera', i:'ajedrez', c:'n'}); if(p.rival) p.rival.ovr = Math.min(96, p.rival.ovr+2); }
+  if(d.forced){ G.forced = d.forced; chips.push({t:d.forced==='reemplazo' ? 'Peleás de reemplazo, sin campamento' : 'Pelea pactada', i:'reloj', c:'o'}); }
+  if(d.rankDrop && p.rank){ p.rank = Math.min(15, p.rank + d.rankDrop); chips.push({t:`Bajás al #${p.rank}`, i:'abajo', c:'n'}); }
   if(d.scar && p.look){ const l = lookObj(p.look); if(!l.ex.includes('scar')){ l.ex.push('scar'); p.look = lookStr(l); } chips.push({t:'Te quedó una cicatriz', i:'venda', c:'o'}); }
   if(STAT_KEYS.some(k=>d[k])) G.statFlash = Object.fromEntries(STAT_KEYS.filter(k=>d[k]).map(k=>[k,d[k]]));
   p.peak = Math.max(p.peak, ovrOf(p));
@@ -2301,6 +2401,12 @@ function setupBig(){
   const forced = G.forced; G.forced = null;
   if(forced==='dwcs'){
     type = 'dwcs'; opp = {...makeOpp(randi(70,74), genPerson()), dispRank:null};
+  } else if(forced==='reemplazo'){
+    /* reemplazo de último momento contra alguien bastante más arriba tuyo */
+    const lo = p.rank ? Math.max(0, p.rank-7) : 4, hi = p.rank ? Math.max(0, p.rank-4) : 8;
+    const f = pickFresh(lst, range(lo, hi)) || pickFresh(lst, range(0, 9)) || newContender(lst, 5);
+    const i = lst.L.indexOf(f);
+    opp = {...f, dispRank:dispRank(i)<=15?dispRank(i):null}; type = (opp.dispRank && opp.dispRank<=5) ? 'contender' : 'estelar';
   } else if(forced==='doble'){
     const i = WEIGHT_CLASSES.findIndex(w=>w.id===p.wc);
     const other = WEIGHT_CLASSES[i<WEIGHT_CLASSES.length-1 ? i+1 : i-1];
@@ -2335,7 +2441,7 @@ function setupBig(){
       else if((p.rank && p.rank<=6) || (opp.dispRank && opp.dispRank<=5)) type = 'contender';
     }
   }
-  G.big = {type, opp, rounds:1, shortNotice:forced==='title'};
+  G.big = {type, opp, rounds:1, shortNotice:forced==='title' || forced==='reemplazo', sub:forced==='reemplazo'};
   G.big.slot = slotFor(G.big);
   /* los títulos se pelean a 5 rounds; las del top 5, los eventos principales y co-estelares, los clásicos y la Serie, a 3.
      Así las importantes no se definen en un solo juego, salvo que lo hagas perfecto (nocaut) */
@@ -2453,7 +2559,7 @@ function applyResult(opp, win, method, kind, mk){
       lst.champ = null; p.champ = true; p.rank = null;
       p.titles.push({tier:p.tier, org:orgShort(p), year:seasonYear(), age:p.age});
       if(p.tier===2 && !p.firstUfcAge) p.firstUfcAge = p.age;
-      if(F && F.hist && F.hist[0] && F.hist[0].res==='l') p.flags.remontada = true;
+      if(F && F.hist && F.hist[0] && F.hist[0].res==='l' && !F.soldRound) p.flags.remontada = true;
       out.notes.push({t:`¡Campeón de ${orgShort(p)}!`, i:'cinturon', c:'o'});
       if(p.persona==='cabulero'){ p.amuletos++; out.notes.push({t:'+1 amuleto: esta cábala funciona', i:'trebol', c:'p'}); }
       out.belt = true;
@@ -2510,6 +2616,9 @@ function applyResult(opp, win, method, kind, mk){
     if(big) p.flags.promise = false;
     out.rank = {from:before, to:p.rank};
   }
+  /* lesiones */
+  if(F && !F.fixedFight) fightInjury(win, method, big, out);
+  if(!win && /KO/.test(method)) p.flags.koLoss = seasonYear();
   /* rival */
   if(opp.isRival && p.rival){ if(win) p.rival.h2hW++; else p.rival.h2hL++; }
   if(win && p.age>=37) p.flags.lobo = true;
@@ -2548,14 +2657,16 @@ function scandalCheck(){
       y.scandal = 'doping'; y.news.unshift('Diste positivo en el control antidoping: un año de suspensión.'); }
     else y.news.push('Pasaste el control antidoping. Por ahora.');
   }
-  if(p.flags.fixRisk){
-    p.flags.fixRisk = false;
-    if(R()<.3){ p.flags.suspended = true; p.fame = clamp(p.fame-20,0,100); p.fans = clamp(p.fans-15,0,100); y.scandal = 'arreglo'; y.news.unshift('Investigaron tu pelea arreglada: un año de suspensión.'); }
+  if(p.flags.fixRisk || p.flags.fixRiskLow){
+    const ch = p.flags.fixRisk ? .3 : .12;
+    p.flags.fixRisk = false; p.flags.fixRiskLow = false;
+    if(R()<ch){ p.flags.suspended = true; p.fame = clamp(p.fame-20,0,100); p.fans = clamp(p.fans-15,0,100); y.scandal = 'arreglo'; y.news.unshift('Investigaron tu pelea arreglada: un año de suspensión.'); }
   }
 }
 function finishSeason(){
   const p = G.p, y = G.yearLog;
   scandalCheck();
+  injuryYearEnd();
   y.ovr1 = ovrOf(p); y.rank1 = rankLabel(p); y.headline = makeHeadline(); y.paper = choice(NEWSPAPERS);
   y.money = p.money - y.money0; y.org = orgShort(p);
   y.gold = !!(G.lastBig && G.lastBig.win && TITLE_KINDS.includes(G.lastBig.kind) && G.lastBig.kind!=='dwcs');
@@ -2679,6 +2790,10 @@ function startBig(useArenga, mode){
     p.flags.fixed = false; p.flags.fixRisk = true; F.fixedFight = true;
     return finishBig(false, 'Decisión unánime');
   }
+  if(p.flags.giveRound){                  // vendiste el primer round
+    p.flags.giveRound = false; p.flags.fixRiskLow = true;
+    if(b.rounds>1){ F.opW = 1; F.hist.push({g:'vendido', tier:'lose', res:'l'}); F.round = 1; F.soldRound = true; }
+  }
   if(useArenga && p.arenga>0 && !TITLE_KINDS.includes(b.type)){
     p.arenga--; F.arenga = true; SFX.crowd();
     return finishBig(true, R()<.45 ? (p.style==='sumision' ? 'Sumisión' : 'KO') : 'Decisión unánime');
@@ -2696,6 +2811,10 @@ function startRegular(opp, mk){
   const rd = isTop5Fight(opp) ? 3 : 1;   // contra el top 5 no se define en un solo juego
   F = {mode:fixedMode() || 'skill', type:'regular', quick:true, opp, mk, need:Math.floor(rd/2)+1, max:rd, round:0, meW:0, opW:0, hist:[], used:[], hype:0,
        game:null, phase:null, num:n-G.regLeft+1, of:n};
+  if(p.flags.fixedReg){                    // la vendiste: salís a perder
+    p.flags.fixedReg = false; p.flags.fixRisk = true; F.fixedFight = true;
+    return finishRegular(false, 'Decisión unánime');
+  }
   UI.screen = 'fight';
   nextRound();
 }
@@ -2777,6 +2896,7 @@ function roundDiff(gid){
   if(F.round===0) d -= F.hype;                               // bocón: el cara a cara
   if(p.persona==='guerrero' && F.opW > F.meW) d -= .45;      // guerrero: se agranda cuando va abajo
   if(F.shortNotice) d += .3;
+  if(p.injury) d += (p.injury.masked ? .1 : .22) * p.injury.sev;   // peleás lesionado
   if(F.scouted) d -= .3;
   if(wcOf(p).fast && ['bloqueo','zona','patada','duelo'].includes(gid)) d -= .12;
   const floor = titleF ? -.1 : top ? -.4 : F.type==='regular' ? -.8 : -.7;    // una pelea por el título nunca es fácil
@@ -3798,6 +3918,7 @@ function estD(o, big){
   if(titleF) d += .55; else if(top) d += .35;
   if(big && G.bigCount<2) d -= .55; if(!big && G.season===0) d -= .35;
   if(b && b.shortNotice) d += .3; if(big && p.flags.scouted) d -= .3;
+  if(p.injury) d += (p.injury.masked ? .1 : .22) * p.injury.sev;
   const floor = titleF ? -.1 : top ? -.4 : big ? -.7 : -.8;
   return clamp(d, floor, 1.5);
 }
@@ -3950,6 +4071,7 @@ function ficha(showStats){
       <div class="ficha-name">${flag(p.cc,'lg')}<span>${escapeHtml(p.name)}</span></div>
       <div class="ficha-meta">${p.age} años · ${wcOf(p).n}${sizeGap(p) ? ` (natural: ${WEIGHT_CLASSES[natIdx(p)].n.toLowerCase()})` : ''} · ${st.nm.charAt(0)+st.nm.slice(1).toLowerCase()} · ${ps.nm.charAt(0)+ps.nm.slice(1).toLowerCase()}${G.daily ? ` · Fenómeno · Desafío N.º ${dailyNo(G.daily)}` : ''}</div>
       <div class="ficha-org">${p.champ ? `<span class="champ">Campeón de ${orgShort(p)}</span>` : `${orgShort(p)} · ${rankLabel(p)}`}</div>
+      ${p.injury ? `<div class="inj-tag">${ico('venda')}Lesionado: ${escapeHtml(injuryTxt())}${p.injury.masked ? ' · infiltrado' : ''}</div>` : ''}
     </div>
   </div>
   <div class="money-line">
@@ -4070,6 +4192,8 @@ function panelMatch(){
     <div class="step-k"><span>Cartelera ${seasonYear()}</span><span>${orgShort(p)} · ${rankLabel(p)}</span></div>
     <h2 class="step-t">¿Con quién peleás?</h2>
     <p class="step-s">Ganarle a alguien de más arriba te sube de golpe en el ranking. Perder con alguien de más abajo te hunde.</p>
+    ${p.flags.fixedReg ? '<p class="fixed-warn">Esta pelea la vendiste: elijas a quien elijas, salís a perder. Si se enteran, te suspenden.</p>' : ''}
+    ${p.injury ? `<p class="fixed-warn soft">Peleás lesionado (${escapeHtml(injuryTxt())}): todo cuesta más y se puede agravar.</p>` : ''}
     <div class="match">${opts.map((o,i)=>o.k==='wait' ? '' : `<button class="mcard k-${o.k}" data-k="${i+1}" onclick="pickMatch(${i})">
       <div class="mk">${MATCH_LAB[o.k][0]}</div>${oppFace(o.opp, o.k==='up' ? 'angry' : o.k==='safe' ? 'neutral' : 'smirk')}
       <div class="nm">${flag(o.opp.cc)} ${escapeHtml(o.opp.name)}</div><div class="mt">${o.opp.dispRank ? '#'+o.opp.dispRank : 'Sin ranking'} · OVR ${o.opp.ovr}</div>
@@ -4139,7 +4263,7 @@ function panelPreview(){
       <div class="tape">${STAT_KEYS.map(k=>`<div class="tape-row"><span class="a ${p[k]>o[k]?'hi':''}">${p[k]}</span><div class="tbar me"><i style="width:${p[k]}%"></i></div><span class="l">${STAT_LABEL[k]}</span><div class="tbar op"><i style="width:${o[k]}%"></i></div><span class="b ${o[k]>p[k]?'hi':''}">${o[k]}</span></div>`).join('')}</div>
       <div class="odds"><span>Vos ${pw}%</span><div class="odds-bar"><i style="width:${pw}%"></i></div><span>${100-pw}%</span></div>
       <div class="dline"><span>Dificultad</span>${diffMeter(estD(o, true))}<span class="rds">${b.rounds} ${b.rounds===1?'round':'rounds'}</span></div>
-      <p class="how">${how}${p.persona==='bocon' ? ' Antes, el cara a cara.' : ''}${b.shortNotice ? ' <b class="r">Sin campamento: todo un poco más difícil.</b>' : ''}${p.flags.scouted ? ' <b class="g">Lo estudiaste: todo un poco más fácil.</b>' : ''}${sizeGap(p)>0 ? ` <b class="r">Peleás ${sizeGap(p)>1 ? sizeGap(p)+' categorías' : 'una categoría'} arriba de tu peso natural: son más grandes y todo cuesta más.</b>` : sizeGap(p)<0 ? ' <b class="r">El corte de peso te pasa factura: un poco más difícil.</b>' : ''}</p>
+      <p class="how">${how}${p.persona==='bocon' ? ' Antes, el cara a cara.' : ''}${b.shortNotice ? ' <b class="r">Sin campamento: todo un poco más difícil.</b>' : ''}${p.flags.scouted ? ' <b class="g">Lo estudiaste: todo un poco más fácil.</b>' : ''}${p.injury ? ` <b class="r">Peleás lesionado (${escapeHtml(injuryTxt())}): todo cuesta más y se puede agravar.</b>` : ''}${p.flags.giveRound && b.rounds>1 ? ' <b class="r">Vendiste el primer round: arrancás perdiendo 0-1.</b>' : ''}${sizeGap(p)>0 ? ` <b class="r">Peleás ${sizeGap(p)>1 ? sizeGap(p)+' categorías' : 'una categoría'} arriba de tu peso natural: son más grandes y todo cuesta más.</b>` : sizeGap(p)<0 ? ' <b class="r">El corte de peso te pasa factura: un poco más difícil.</b>' : ''}</p>
       ${p.flags.fixed ? `<button class="btn" data-k="enter" onclick="goFight(false)">Salir y dejarse ganar</button>`
         : fm ? `<button class="btn ${titleish?'gold':''}" data-k="enter" onclick="goFight(false)">¡A pelear!</button>`
         : `<div class="row2"><button class="btn" data-k="1" onclick="goFight(false,'skill')">Con técnica</button><button class="btn gold" data-k="2" onclick="goFight(false,'luck')">Al instinto</button></div>`}
@@ -4490,7 +4614,7 @@ function botStep(){
       if(UI.screen==='career'){
         if(G.step==='card'){ if(!G.picked){ botShop(); const mv = moveList().filter(m=>!m.why && (!['subir','bajar'].includes(m.id) || Math.random()<.1)); if(mv.length && Math.random()<.25) doMove(choice(mv).id); pickCard(botPickCard()); } }
         else if(G.celebrate && (G.step==='signing' || G.step==='yearEnd')) doneSigning();
-        else if(G.step==='event'){ botShop(); const v = eventView(); const ok = v.choices.map((c,i)=>i).filter(i=>!choiceBlocked(v,i)); doEvent(v.special ? 0 : choice(ok)); }
+        else if(G.step==='event'){ botShop(); const v = eventView(); const ok = v.choices.map((c,i)=>i).filter(i=>!choiceBlocked(v,i)); doEvent(v.special ? (G.event.special==='lesion' ? randi(0,2) : 0) : choice(ok)); }
         else if(G.step==='eventReply') doReply();
         else if(G.step==='match'){ const o = G.matchOpts||[], w = o.findIndex(x=>x.k==='wait'); const r = Math.random(); const pick = w>=0 && r<.5 ? w : o.findIndex(x=>x.k===(r<.25 ? 'up' : r<.8 ? 'mid' : 'safe')); pickMatch(pick>=0 ? pick : 0); }
         else if(G.step==='fights') startRegular();

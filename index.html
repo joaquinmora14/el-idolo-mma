@@ -3329,15 +3329,15 @@ MG.llave = {icon:'piso', nm:'Cerrá la llave', stat:'sumision', fin:'Sumisión',
 MG.cadena = {icon:'lucha', nm:'Cadena de lucha', stat:'wrestling', fin:'TKO', hint:'Memorizá la cadena y repetila',
   how:'Mirá la cadena de movimientos que se ilumina y <b>repetila en el mismo orden</b> (también con las flechas). Los <b>amagues</b> se ven grises: no los repitas. A veces hay que repetirla <b>al revés</b> o <b>cambia la guardia</b> y los movimientos se mueven de lugar.',
   run(c){
-    const len = Math.max(4, Math.round(byDiff(c.d, 4.6, 5.4, 7.4)) - (c.quick ? 1 : 0)), show = byDiff(c.d, 500, 390, 260);
+    const len = Math.max(4, Math.round(byDiff(c.d, 4, 5, 6.4)) - (c.quick ? 1 : 0)), show = byDiff(c.d, 580, 470, 350);
     const seq = []; for(let i=0;i<len;i++){ let v; do{ v = randi(0,3); } while(i>0 && v===seq[i-1] && R()<(c.d>.4 ? .15 : .55)); seq.push(v); }
     /* amagues: destellos grises en el medio de la cadena que NO hay que repetir */
-    const nFake = c.d<-.3 ? 0 : Math.min(c.quick ? 2 : 3, Math.round(byDiff(c.d, 0, .8, 2.6)));
+    const nFake = c.d<0 ? 0 : Math.min(c.quick ? 1 : 2, Math.round(byDiff(c.d, 0, .5, 1.7)));
     const shown = seq.map(v=>({v, fake:false}));
     for(let f=0; f<nFake; f++) shown.splice(randi(1, shown.length-1), 0, {v:randi(0,3), fake:true});
     /* una vuelta de tuerca por round: al revés, o cambio de guardia (los movimientos se mueven de lugar) */
-    const tw = R(), rev = c.d>-.1 && tw < byDiff(c.d, 0, .25, .4), rot = !rev && c.d>.2 && tw < byDiff(c.d, 0, .48, .75);
-    const limit = len*byDiff(c.d, 1100, 820, 620) + (rot ? 700 : 0);
+    const tw = R(), rev = c.d>0 && tw < byDiff(c.d, 0, .18, .3), rot = !rev && c.d>.6 && tw < byDiff(c.d, 0, .3, .45);
+    const limit = len*byDiff(c.d, 1350, 1050, 820) + (rot ? 900 : 0) + (rev ? 600 : 0);
     const PADS = [{n:'CAMBIO DE NIVEL', col:C.mustard}, {n:'DOBLE PIERNA', col:C.blue}, {n:'SPRAWL', col:C.red}, {n:'CLINCH', col:C.green}];
     const POS = [[0,-84],[84,0],[0,84],[-84,0]];
     const posOf = [0,1,2,3];
@@ -3376,7 +3376,7 @@ MG.cadena = {icon:'lucha', nm:'Cadena de lucha', stat:'wrestling', fin:'TKO', hi
         }
         return startInput();
       }
-      const s = shown[k], sp = show * Math.max(.7, 1 - .035*k);      // se acelera a medida que avanza
+      const s = shown[k], sp = show * Math.max(.85, 1 - .02*k);      // se acelera un poco a medida que avanza
       lit(s.v, true, s.fake); if(s.fake) SFX.whoosh(); else SFX.simon(s.v);
       mgAfter(sp*.72, ()=>{ lit(s.v, false); k++; mgAfter(sp*.28, play); });
     }

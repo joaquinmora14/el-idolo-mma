@@ -135,7 +135,7 @@ Del circuito regional (LUX, LFA, Cage Warriors, FFC) al nivel mundial (PFL, Bell
 | **Patada a la cabeza** | La mira va y viene sobre un rival que se mueve: tocá en el centro del blanco. |
 | **Bloqueá** | Golpes por tres carriles: tocá el del guante rojo. Los rayados son amagues. |
 | **Cerrá la llave** | Mantené apretado y soltá cuando la aguja esté en lo amarillo. Si llegás a lo rayado, se escapa. |
-| **Cadena de lucha** | Memorizá la cadena de movimientos y repetila (5 a 8, cada vez más rápido). Ojo con los **amagues** grises, que no se repiten; a veces va **al revés** o **cambia la guardia** y los movimientos se mueven de lugar. |
+| **Cadena de lucha** | Memorizá la cadena de movimientos y repetila (4 a 6). Ojo con los **amagues** grises, que no se repiten; a veces va **al revés** o **cambia la guardia** y los movimientos se mueven de lugar. |
 | **Ta-te-ti de la jaula** | Tres en línea contra un rival que juega mejor o peor según su nivel. |
 | **El duelo** *(nuevo)* | Cara a cara y quietos: cuando aparece ¡YA!, pegá antes que él. Si te adelantás en un amague, perdés el cruce. |
 | **Combo** *(nuevo)* | De ritmo: jab, cross y gancho bajan por tres carriles; tocá cada uno cuando cruza la línea roja. |

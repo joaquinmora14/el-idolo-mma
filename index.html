@@ -139,7 +139,9 @@
   .ovr-stamp b{font-family:var(--f-cond);font-weight:900;font-size:25px;line-height:.8;}
   .ovr-stamp span{font-family:var(--f-type);font-size:9px;line-height:1;}
   .ovr-stamp.t1{background:var(--silver);} .ovr-stamp.t2{background:var(--mustard);} .ovr-stamp.t3{background:var(--red);color:var(--on-red);} .ovr-stamp.t4{background:var(--ink);color:var(--mustard);}
-  .ficha-name{font-family:var(--f-slab);font-size:22px;line-height:1.02;display:flex;align-items:flex-start;gap:7px;overflow-wrap:anywhere;}
+  .ficha-name{font-family:var(--f-slab);font-size:22px;line-height:1.02;display:flex;align-items:flex-start;gap:7px;overflow-wrap:break-word;hyphens:auto;}
+  .ficha-name.long{font-size:18px;}
+  @media (max-width:359px){ .brand{font-size:18px;gap:5px;white-space:nowrap;} .brand i{font-size:12px;padding:2px 4px 1px;} .ficha-name.long{font-size:16px;} }
   .ficha-name .flag{margin-top:3px;}
   .ficha-meta{font-family:var(--f-type);font-size:12.5px;line-height:1.4;margin-top:4px;color:var(--ink-2);}
   .ficha-org{margin-top:5px;font-weight:700;font-size:14px;}
@@ -2643,10 +2645,15 @@ function makeHeadline(){
   if(lb.kind==='dwcs') return lb.win ? `${ln} brilló en la Serie de Contendientes y firmó con la UFC` : `${ln} dejó pasar el tren de la UFC`;
   if(lb.kind==='doble') return `${ln} fue por el segundo cinturón y se quemó`;
   if(lb.opp && lb.opp.isRival) return lb.win ? `${ln} ganó el clásico ante ${on}` : `${on} se quedó con el clásico ante ${ln}`;
-  if(lb.win && lb.finish) return `${ln} ${lb.method==='Sumisión'?'hizo rendir':'noqueó'} a ${on} y pide pista`;
-  if(lb.win) return `${ln} le ganó a ${on} y sigue subiendo`;
-  if(lb.kind==='title') return `${ln} se quedó en la puerta del título`;
-  return `Golpe duro para ${ln}: cayó ante ${on}`;
+  /* titulares variados, según cómo fue y contra quién; nunca el mismo molde dos años seguidos */
+  const top = lb.opp && typeof lb.opp.dispRank==='number' && lb.opp.dispRank<=5, rk = p.rank ? `#${p.rank}` : '';
+  const sub = lb.method==='Sumisión', inj = p.injury, pick = arr=>{ const ok = arr.filter(h=>h.split(' ').slice(1,3).join(' ')!==(G.lastHead||'')); const h = choice(ok.length ? ok : arr); G.lastHead = h.split(' ').slice(1,3).join(' '); return h; };
+  if(lb.win && lb.finish) return pick(sub ? [`${ln} hizo rendir a ${on} y pide pista`, `¡Tapping! ${ln} se lo llevó por sumisión ante ${on}`, `${ln} estranguló las dudas: sumisión a ${on}`, `Llave y a casa: ${ln} sometió a ${on}`]
+    : [`${ln} noqueó a ${on} y pide pista`, `¡A dormir! ${ln} apagó a ${on}`, `Una mano y se terminó: ${ln} liquidó a ${on}`, `${ln} no dejó dudas: nocaut a ${on}`, top ? `${ln} noqueó a un top 5 y golpea la puerta` : `${ln} sigue rompiendo: nocaut ante ${on}`]);
+  if(lb.win) return pick([`${ln} le ganó a ${on} y sigue subiendo`, `Trabajo de oficio: ${ln} superó a ${on} en las tarjetas`, `${ln} se impuso ante ${on}${rk ? ' y ya es '+rk : ''}`, top ? `${ln} le ganó a un top 5 y se mete en la pelea grande` : `Paso a paso: ${ln} venció a ${on}`,
+    inj ? `${ln} ganó lesionado y con el corazón` : `${ln} pasó la prueba de ${on}`]);
+  if(lb.kind==='title') return pick([`${ln} se quedó en la puerta del título`, `El cinturón se le escapó a ${ln}`, `${on} retuvo y ${ln} vuelve a empezar`]);
+  return pick([`Golpe duro para ${ln}: cayó ante ${on}`, `${on} frenó a ${ln}`, `Noche para olvidar: ${ln} perdió con ${on}`, inj ? `${ln} peleó roto y lo pagó ante ${on}` : `${ln} tropezó ante ${on} y tendrá que reconstruirse`]);
 }
 /* lo que hiciste por debajo de la mesa puede salir a la luz */
 function scandalCheck(){
@@ -4093,7 +4100,7 @@ function ficha(showStats){
   return `<div class="ficha">
     <div class="ficha-photo" role="button" tabindex="0" title="Cambiar tu look" onclick="openModal('look')">${meFace(expr)}<div class="ovr-stamp ${ovrClass(o)}"><b>${o}</b><span>OVR</span></div></div>
     <div style="min-width:0">
-      <div class="ficha-name">${flag(p.cc,'lg')}<span>${escapeHtml(p.name)}</span></div>
+      <div class="ficha-name ${p.name.length>16 || p.name.split(' ').some(w=>w.length>10) ? 'long' : ''}">${flag(p.cc,'lg')}<span>${escapeHtml(p.name)}</span></div>
       <div class="ficha-meta">${p.age} años · ${wcOf(p).n}${sizeGap(p) ? ` (natural: ${WEIGHT_CLASSES[natIdx(p)].n.toLowerCase()})` : ''} · ${st.nm.charAt(0)+st.nm.slice(1).toLowerCase()} · ${ps.nm.charAt(0)+ps.nm.slice(1).toLowerCase()}${G.daily ? ` · Fenómeno · Desafío N.º ${dailyNo(G.daily)}` : ''}</div>
       <div class="ficha-org">${p.champ ? `<span class="champ">Campeón de ${orgShort(p)}</span>` : `${orgShort(p)} · ${rankLabel(p)}`}</div>
       ${p.injury ? `<div class="inj-tag">${ico('venda')}Lesionado: ${escapeHtml(injuryTxt())}${p.injury.masked ? ' · infiltrado' : ''}</div>` : ''}
@@ -4218,7 +4225,7 @@ function panelMatch(){
     <h2 class="step-t">¿Con quién peleás?</h2>
     <p class="step-s">Ganarle a alguien de más arriba te sube de golpe en el ranking. Perder con alguien de más abajo te hunde.</p>
     ${p.flags.fixedReg ? '<p class="fixed-warn">Esta pelea la vendiste: elijas a quien elijas, salís a perder. Si se enteran, te suspenden.</p>' : ''}
-    ${p.injury ? `<p class="fixed-warn soft">Peleás lesionado (${escapeHtml(injuryTxt())}): todo cuesta más y se puede agravar.</p>` : ''}
+    ${p.injury ? `<p class="fixed-warn soft">Peleás lesionado, con ${escapeHtml(injuryTxt())}: todo cuesta más y se puede agravar.</p>` : ''}
     <div class="match">${opts.map((o,i)=>o.k==='wait' ? '' : `<button class="mcard k-${o.k}" data-k="${i+1}" onclick="pickMatch(${i})">
       <div class="mk">${MATCH_LAB[o.k][0]}</div>${oppFace(o.opp, o.k==='up' ? 'angry' : o.k==='safe' ? 'neutral' : 'smirk')}
       <div class="nm">${flag(o.opp.cc)} ${escapeHtml(o.opp.name)}</div><div class="mt">${o.opp.dispRank ? '#'+o.opp.dispRank : 'Sin ranking'} · OVR ${o.opp.ovr}</div>
@@ -4288,7 +4295,7 @@ function panelPreview(){
       <div class="tape">${STAT_KEYS.map(k=>`<div class="tape-row"><span class="a ${p[k]>o[k]?'hi':''}">${p[k]}</span><div class="tbar me"><i style="width:${p[k]}%"></i></div><span class="l">${STAT_LABEL[k]}</span><div class="tbar op"><i style="width:${o[k]}%"></i></div><span class="b ${o[k]>p[k]?'hi':''}">${o[k]}</span></div>`).join('')}</div>
       <div class="odds"><span>Vos ${pw}%</span><div class="odds-bar"><i style="width:${pw}%"></i></div><span>${100-pw}%</span></div>
       <div class="dline"><span>Dificultad</span>${diffMeter(estD(o, true))}<span class="rds">${b.rounds} ${b.rounds===1?'round':'rounds'}</span></div>
-      <p class="how">${how}${p.persona==='bocon' ? ' Antes, el cara a cara.' : ''}${b.shortNotice ? ' <b class="r">Sin campamento: todo un poco más difícil.</b>' : ''}${p.flags.scouted ? ' <b class="g">Lo estudiaste: todo un poco más fácil.</b>' : ''}${p.injury ? ` <b class="r">Peleás lesionado (${escapeHtml(injuryTxt())}): todo cuesta más y se puede agravar.</b>` : ''}${p.flags.giveRound && b.rounds>1 ? ' <b class="r">Vendiste el primer round: arrancás perdiendo 0-1.</b>' : ''}${sizeGap(p)>0 ? ` <b class="r">Peleás ${sizeGap(p)>1 ? sizeGap(p)+' categorías' : 'una categoría'} arriba de tu peso natural: son más grandes y todo cuesta más.</b>` : sizeGap(p)<0 ? ' <b class="r">El corte de peso te pasa factura: un poco más difícil.</b>' : ''}</p>
+      <p class="how">${how}${p.persona==='bocon' ? ' Antes, el cara a cara.' : ''}${b.shortNotice ? ' <b class="r">Sin campamento: todo un poco más difícil.</b>' : ''}${p.flags.scouted ? ' <b class="g">Lo estudiaste: todo un poco más fácil.</b>' : ''}${p.injury ? ` <b class="r">Peleás lesionado, con ${escapeHtml(injuryTxt())}: todo cuesta más y se puede agravar.</b>` : ''}${p.flags.giveRound && b.rounds>1 ? ' <b class="r">Vendiste el primer round: arrancás perdiendo 0-1.</b>' : ''}${sizeGap(p)>0 ? ` <b class="r">Peleás ${sizeGap(p)>1 ? sizeGap(p)+' categorías' : 'una categoría'} arriba de tu peso natural: son más grandes y todo cuesta más.</b>` : sizeGap(p)<0 ? ' <b class="r">El corte de peso te pasa factura: un poco más difícil.</b>' : ''}</p>
       ${p.flags.fixed ? `<button class="btn" data-k="enter" onclick="goFight(false)">Salir y dejarse ganar</button>`
         : fm ? `<button class="btn ${titleish?'gold':''}" data-k="enter" onclick="goFight(false)">¡A pelear!</button>`
         : `<div class="row2"><button class="btn" data-k="1" onclick="goFight(false,'skill')">Con técnica</button><button class="btn gold" data-k="2" onclick="goFight(false,'luck')">Al instinto</button></div>`}

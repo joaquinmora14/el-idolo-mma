@@ -145,6 +145,7 @@
   .ficha-name .flag{margin-top:3px;}
   .ficha-meta{font-family:var(--f-type);font-size:12.5px;line-height:1.4;margin-top:4px;color:var(--ink-2);}
   .ficha-org{margin-top:5px;font-weight:700;font-size:14px;}
+  .btn .bsub{display:block;font-family:var(--f-body);font-weight:500;font-size:12.5px;letter-spacing:0;text-transform:none;margin-top:3px;opacity:.85;}
   .inj-tag{display:inline-flex;align-items:center;gap:5px;margin-top:5px;font-weight:700;font-size:12.5px;color:var(--on-red);background:var(--red);padding:2px 7px 1px;border:1.5px solid var(--ink);}
   .inj-tag .ico{width:13px;height:13px;}
   .fixed-warn.soft{background:transparent;color:var(--red-2);border-color:var(--red);}
@@ -2761,7 +2762,7 @@ function careerRank(sc, c){
 function legendOf(c){ return LEGENDS.find(l=>l.t(c)); }
 function endCareer(reason){
   const c = careerSummary(), achs = achievementsOf(c), sc = careerScore(c, achs), rk = careerRank(sc, c), lg = legendOf(c);
-  G.final = {c, achs, sc, rk, lg, reason, marks:(G.marks||[]).slice(), daily:G.daily};
+  G.final = {c, achs, sc, rk, lg, reason, marks:(G.marks||[]).slice(), daily:G.daily, mode:G.modePref||null};
   if(G.daily){
     const dl = LS.get('idolo_mma_daily', {});
     if(dl.date!==G.daily) { dl.date = G.daily; dl.tries = 0; dl.best = null; dl.first = null; }
@@ -2787,7 +2788,8 @@ function save(){ if(G && G.step!=='end' && !UI.bot){ G.rng = RNGS.seeded ? RNGS.
    4. PELEA GRANDE: rounds que se definen con minijuegos
    ========================================================= */
 /* cómo encarás la pelea: el cabulero siempre al instinto, el habilidoso siempre con técnica, el resto elige */
-function fixedMode(){ const p = G.p; return p.persona==='cabulero' ? 'luck' : p.persona==='habilidoso' ? 'skill' : null; }
+/* en el desafío del día elegís vos cómo jugar; si no, lo decide la personalidad */
+function fixedMode(){ const p = G.p; if(G.modePref) return G.modePref; return p.persona==='cabulero' ? 'luck' : p.persona==='habilidoso' ? 'skill' : null; }
 function isLuck(){ return F && F.mode ? F.mode==='luck' : fixedMode()==='luck'; }
 function startBig(useArenga, mode){
   const b = G.big, p = G.p;
@@ -3994,7 +3996,7 @@ function scrMenu(){
     <p class="poster-sub">Del gimnasio del barrio al cinturón de la UFC <b>en seis minutos</b>. Una carta por año, decisiones sin vuelta atrás y peleas que se ganan jugando.</p>
     ${saved ? `<button class="ticket ink" data-k="enter" onclick="resumeGame()"><div class="main"><b>Seguir la carrera</b><span>${escapeHtml(saved.p.name)}, ${saved.p.age} años</span></div><div class="stub">Año<b>${saved.season+1}</b></div></button>` : ''}
     <button class="ticket" ${saved?'':'data-k="enter"'} onclick="goCreate()"><div class="main"><b>${saved ? 'Carrera nueva' : 'Arrancar mi carrera'}</b><span>Armá tu peleador</span></div><div class="stub">Platea<b>1</b></div></button>
-    <button class="ticket alt" onclick="startDaily()"><div class="main"><b>Desafío del día</b><span>${played ? `Tu mejor: ${dl.best} pts · ${dl.tries} ${dl.tries===1?'intento':'intentos'}` : 'Un fenómeno, el mismo para todos'}</span></div><div class="stub">N.º<b>${dailyNo(key)}</b></div></button>
+    <button class="ticket alt" onclick="openModal('dailyMode')"><div class="main"><b>Desafío del día</b><span>${played ? `Tu mejor: ${dl.best} pts · ${dl.tries} ${dl.tries===1?'intento':'intentos'}` : 'Un fenómeno, el mismo para todos'}</span></div><div class="stub">N.º<b>${dailyNo(key)}</b></div></button>
     <div class="daily-who">${portrait(dc.name, 'me', 'idle', {cont:countryOf(dc.cc).cont, look:dc.look})}
       <p>Hoy te toca <b>${escapeHtml(dc.name)}</b> ${flag(dc.cc)}, ${STYLES.find(s=>s.id===dc.style).nm.toLowerCase()} ${PERSONAS[dc.persona].nm.toLowerCase()} de peso ${WEIGHT_CLASSES.find(w=>w.id===dc.wc).n.toLowerCase()}. Misma suerte para todos: compará el puntaje con tus amigos.</p></div>
     </div></div>
@@ -4014,10 +4016,11 @@ function resumeGame(){
   if(G.step==='preview' && !G.big) setupBig();
   UI.screen = 'career'; render();
 }
-function startDaily(){
+function startDaily(mode){
   const cfg = dailyCfg(todayKey());
   SFX.unlock(); SFX.bell();
   newGame(cfg);
+  if(mode==='skill' || mode==='luck') G.modePref = mode;
   F = null; UI.screen = 'career'; UI.modal = null;
   render(); save();
 }
@@ -4269,8 +4272,8 @@ function panelPreview(){
   const pw = Math.round(clamp(sigmoid(-1.9*estD(o, true)), .03, .97)*100);   // la misma cuenta que el medidor de dificultad
   const titleish = TITLE_KINDS.includes(b.type);
   const canArenga = p.arenga>0 && !titleish;
-  const fm = fixedMode(), fmt = b.rounds>1 ? `A ${b.rounds} rounds: ganás con ${Math.floor(b.rounds/2)+1}. Cada round es un minijuego y uno perfecto es nocaut: la termina antes.` : 'Se define en un minijuego: si lo hacés perfecto, es nocaut.';
-  const how = fm==='luck' ? 'Sos cabulero: va al instinto, con juegos de suerte. Tus stats deciden el tamaño de tus chances.'
+  const fm = fixedMode(), fmt = b.rounds>1 ? `A ${b.rounds} rounds: ganás con ${Math.floor(b.rounds/2)+1}. Cada round es un minijuego; un juego de golpe o de llave hecho perfecto la termina antes.` : 'Se define en un minijuego: un golpe o una llave perfecta es nocaut.';
+  const how = fm==='luck' ? (G.modePref ? 'Elegiste jugar al instinto: juegos de suerte. Tus stats deciden el tamaño de tus chances.' : 'Sos cabulero: va al instinto, con juegos de suerte. Tus stats deciden el tamaño de tus chances.')
     : fm==='skill' ? fmt : fmt+' ¿Cómo la encarás? <b>Con técnica</b> son minijuegos de habilidad; <b>al instinto</b>, juegos de suerte donde tus stats deciden tus chances.';
   const oRank = o.dispRank==='C' ? 'Campeón' : (o.dispRank ? '#'+o.dispRank : 'Sin ranking');
   const card = b.card || {name:bigLabel(b), date:'', city:'', co:[], pre:[]}, slot = card.slot || 'main';
@@ -4513,7 +4516,7 @@ function scrEnd(){
     <div class="wrap" style="padding-bottom:0"><div class="sec-h"><h2>Logros</h2><small>${nAch} de ${ACHIEVEMENTS.length}</small></div></div>
     <div class="medals">${ACHIEVEMENTS.map(a=>`<div class="medal ${f.achs[a.id]?'on':''}">${ico(a.icon)}<div class="t">${a.t}</div></div>`).join('')}</div>
     <div class="wrap stack">
-      ${f.daily && f.daily===todayKey() ? `<button class="btn" onclick="startDaily()">Reintentar el desafío</button>` : `<button class="btn" onclick="playAgain()">Otra carrera con el mismo peleador</button>`}
+      ${f.daily && f.daily===todayKey() ? `<button class="btn" onclick="openModal('dailyMode')">Reintentar el desafío</button>` : `<button class="btn" onclick="playAgain()">Otra carrera con el mismo peleador</button>`}
       <button class="btn paper" onclick="UI.draft=null;goCreate()">Crear otro peleador</button>
       <button class="btn txt" style="width:100%" onclick="UI.screen='menu';render()">Volver al afiche</button>
     </div>
@@ -4546,7 +4549,7 @@ function shareText(){
   const f = G.final, c = f.c;
   const SQ = {w:'🟩', l:'🟥', t:'🟨', x:'⬛'};
   const marks = (f.marks||[]).map(m=>SQ[m]||'⬛').join('');
-  return [f.daily ? `El Ídolo: MMA · Desafío N.º ${dailyNo(f.daily)}` : 'El Ídolo: MMA',
+  return [f.daily ? `El Ídolo: MMA · Desafío N.º ${dailyNo(f.daily)}${f.mode ? (f.mode==='luck' ? ' · al instinto' : ' · con técnica') : ''}` : 'El Ídolo: MMA',
     `${f.rk.t} · ${f.sc} pts`,
     marks,
     `${c.w}-${c.l} · ${c.ko} KO · ${c.sub} SUB${c.titles.length ? ' · '+c.titles.length+(c.titles.length===1?' cinturón':' cinturones') : ''}`,
@@ -4599,6 +4602,13 @@ function modalHtml(){
     <p>En el <b>desafío del día</b> todos arrancan con el mismo peleador y la misma suerte.</p>
     <button class="btn paper" onclick="closeModal()">Entendido</button>`;
   if(UI.modal==='shop' && G && G.p) inner = shopHtml();
+  if(UI.modal==='dailyMode'){ const dc = dailyCfg(todayKey());
+    inner = `<h3>¿Cómo lo jugás?</h3><p>Hoy te toca <b>${escapeHtml(dc.name)}</b>. Elegí cómo se definen tus peleas en toda la carrera.</p>
+    <div class="stack">
+      <button class="btn" onclick="startDaily('skill')"><b>Con técnica</b><small class="bsub">Minijuegos de habilidad: depende de tus manos.</small></button>
+      <button class="btn gold" onclick="startDaily('luck')"><b>Al instinto</b><small class="bsub">Juegos de suerte: tus stats deciden tus chances.</small></button>
+      <button class="btn paper" onclick="closeModal()">Volver</button>
+    </div>`; }
   if(UI.modal==='moves' && G && G.p) inner = movesHtml();
   if(UI.modal==='look' && G && G.p) inner = `<h3>Tu look</h3><p>Cambialo cuando quieras: pelo, barba, marcas.</p>${lookEditor('p')}<button class="btn" style="margin-top:12px" onclick="closeModal()">Listo</button>`;
   if(UI.modal==='menu') inner = `<h3>Pausa</h3>

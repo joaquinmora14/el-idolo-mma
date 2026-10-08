@@ -2289,8 +2289,15 @@ function moveTier(t, rank){
 function wcIdx(p){ return WEIGHT_CLASSES.findIndex(w=>w.id===p.wc); }
 /* subir de categoría te hace pelota: son más grandes, pegan más y te cansan; bajar cuesta el corte de peso */
 const WC_UP = {striking:-3, wrestling:-3, sumision:-2, chin:-5, cardio:-4}, WC_DOWN = {cardio:-4, chin:-3, striking:-2};
-function natIdx(p){ if(!p.wc0) p.wc0 = p.wc; return WEIGHT_CLASSES.findIndex(w=>w.id===p.wc0); }
+/* el peso natural: el de tu primera liga (para partidas viejas lo sacamos de ahí) */
+function natIdx(p){
+  if(!p.wc0){ const k = Object.keys((G && G.lists) || {}).find(k=>k.startsWith(p.orgChain[0]+'_')); p.wc0 = k ? k.slice(p.orgChain[0].length+1) : p.wc; }
+  return WEIGHT_CLASSES.findIndex(w=>w.id===p.wc0);
+}
 function sizeGap(p){ return wcIdx(p) - natIdx(p); }      // >0: peleás más pesado que tu peso natural
+/* el tamaño en una pelea: lo que subiste, y +1 si vas por el cinturón de la categoría de arriba */
+function fightSize(p, type){ return sizeGap(p) + (type==='doble' ? 1 : 0); }
+const SIZE_PTS = 5;   // cada categoría de diferencia: el rival "vale" 5 puntos más en todo
 function bardeoChance(p){ return clamp(.08 + (p.fame-20)/60 + (p.persona==='bocon' ? .15 : 0), .05, .9); }
 function moveList(){
   const p = G.p, i = wcIdx(p), up = WEIGHT_CLASSES[i+1], dn = WEIGHT_CLASSES[i-1];
@@ -2896,9 +2903,11 @@ function roundDiff(gid){
   const [mine, his] = statPair(gid);
   /* el rating pesa de verdad: contra alguien mejor cuesta mucho más */
   /* el rating pesa de verdad: si el rival es mejor, cuesta el doble que si sos mejor vos */
-  const gap = (o.ovr||his) - ovrOf(p);
-  let d = (his - mine)/10 + (gap>0 ? gap/11 : gap/20);
-  const sg = sizeGap(p); if(sg>0) d += .3*sg; else if(sg<0) d += .12*(-sg);   // más grandes que vos / el corte de peso
+  /* si peleás arriba de tu peso, ellos son más grandes: pegan más, pesan más, te cansan */
+  const sg = fightSize(p, F.type), big = sg>0 ? SIZE_PTS*sg : 0;
+  const gap = (o.ovr||his) + big - ovrOf(p);
+  let d = (his + big - mine)/10 + (gap>0 ? gap/11 : gap/20);
+  if(sg>0) d += .25*sg; else if(sg<0) d += .12*(-sg);   // más grandes que vos / el corte de peso
   if(F.round>0) d += (o.cardio - p.cardio)/55 * (1 + F.round*.3);   // el cardio pesa más en los rounds de campeonato
   /* las peleas importantes son difíciles de verdad: el top 5 y los títulos suman, y los rounds de campeonato más */
   const titleF = ['title','defense','doble'].includes(F.type), top = titleF || F.type==='contender' || isTop5Fight(o);
@@ -3952,9 +3961,9 @@ function diffLevel(d){ return d<-.5 ? 1 : d<-.15 ? 2 : d<.25 ? 3 : d<.7 ? 4 : d<
 function diffMeter(d){ const n = diffLevel(d); return `<span class="dm lv${n}" title="Dificultad">${Array.from({length:6},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}<b>${diffLabel(d)}</b></span>`; }
 /* lo mismo que va a pasar en la pelea (roundDiff), estimado antes: rating, tamaño, importancia y el piso */
 function estD(o, big){
-  const p = G.p, gap = o.ovr - ovrOf(p), b = big ? G.big : null;
+  const p = G.p, b = big ? G.big : null, sg = fightSize(p, b ? b.type : null), gap = o.ovr + (sg>0 ? SIZE_PTS*sg : 0) - ovrOf(p);
   let d = gap/10 + (gap>0 ? gap/11 : gap/20);
-  const sg = sizeGap(p); if(sg>0) d += .3*sg; else if(sg<0) d += .12*(-sg);
+  if(sg>0) d += .25*sg; else if(sg<0) d += .12*(-sg);
   const titleF = b && ['title','defense','doble'].includes(b.type), top = titleF || (b && b.type==='contender') || isTop5Fight(o);
   if(titleF) d += .55; else if(top) d += .35;
   if(big && G.bigCount<2) d -= .55; if(!big && G.season===0) d -= .35;
@@ -4305,7 +4314,7 @@ function panelPreview(){
       <div class="tape">${STAT_KEYS.map(k=>`<div class="tape-row"><span class="a ${p[k]>o[k]?'hi':''}">${p[k]}</span><div class="tbar me"><i style="width:${p[k]}%"></i></div><span class="l">${STAT_LABEL[k]}</span><div class="tbar op"><i style="width:${o[k]}%"></i></div><span class="b ${o[k]>p[k]?'hi':''}">${o[k]}</span></div>`).join('')}</div>
       <div class="odds"><span>Vos ${pw}%</span><div class="odds-bar"><i style="width:${pw}%"></i></div><span>${100-pw}%</span></div>
       <div class="dline"><span>Dificultad</span>${diffMeter(estD(o, true))}<span class="rds">${b.rounds} ${b.rounds===1?'round':'rounds'}</span></div>
-      <p class="how">${how}${p.persona==='bocon' ? ' Antes, el cara a cara.' : ''}${b.shortNotice ? ' <b class="r">Sin campamento: todo un poco más difícil.</b>' : ''}${p.flags.scouted ? ' <b class="g">Lo estudiaste: todo un poco más fácil.</b>' : ''}${p.injury ? ` <b class="r">Peleás lesionado, con ${escapeHtml(injuryTxt())}: todo cuesta más y se puede agravar.</b>` : ''}${p.flags.giveRound && b.rounds>1 ? ' <b class="r">Vendiste el primer round: arrancás perdiendo 0-1.</b>' : ''}${sizeGap(p)>0 ? ` <b class="r">Peleás ${sizeGap(p)>1 ? sizeGap(p)+' categorías' : 'una categoría'} arriba de tu peso natural: son más grandes y todo cuesta más.</b>` : sizeGap(p)<0 ? ' <b class="r">El corte de peso te pasa factura: un poco más difícil.</b>' : ''}</p>
+      <p class="how">${how}${p.persona==='bocon' ? ' Antes, el cara a cara.' : ''}${b.shortNotice ? ' <b class="r">Sin campamento: todo un poco más difícil.</b>' : ''}${p.flags.scouted ? ' <b class="g">Lo estudiaste: todo un poco más fácil.</b>' : ''}${p.injury ? ` <b class="r">Peleás lesionado, con ${escapeHtml(injuryTxt())}: todo cuesta más y se puede agravar.</b>` : ''}${p.flags.giveRound && b.rounds>1 ? ' <b class="r">Vendiste el primer round: arrancás perdiendo 0-1.</b>' : ''}${b.type==='doble' ? ` <b class="r">Él es de la categoría de arriba: más grande y más pesado (como si tuviera ${SIZE_PTS*fightSize(p,'doble')} puntos más en todo).</b>` : sizeGap(p)>0 ? ` <b class="r">Peleás ${sizeGap(p)>1 ? sizeGap(p)+' categorías' : 'una categoría'} arriba de tu peso natural: son más grandes y es como si tuvieran ${SIZE_PTS*sizeGap(p)} puntos más en todo.</b>` : sizeGap(p)<0 ? ' <b class="r">El corte de peso te pasa factura: un poco más difícil.</b>' : ''}</p>
       ${p.flags.fixed ? `<button class="btn" data-k="enter" onclick="goFight(false)">Salir y dejarse ganar</button>`
         : fm ? `<button class="btn ${titleish?'gold':''}" data-k="enter" onclick="goFight(false)">¡A pelear!</button>`
         : `<div class="row2"><button class="btn" data-k="1" onclick="goFight(false,'skill')">Con técnica</button><button class="btn gold" data-k="2" onclick="goFight(false,'luck')">Al instinto</button></div>`}

@@ -2939,12 +2939,12 @@ function beginRound(){
 /* solo los juegos de golpe y de llave pueden terminar la pelea; contra los mejores, ni siquiera siempre */
 const FINISH_GAMES = {zona:'KO', patada:'KO', combo:'KO', gnp:'TKO', llave:'Sumisión'};
 function bigFightNow(){ return F.type!=='regular' && (TITLE_KINDS.includes(F.type) || F.type==='contender' || isTop5Fight(F.opp)); }
-/* termina la pelea solo un juego ofensivo hecho perfecto (pegarle a la cabeza, timear el golpe, la llave, el combo, el ground & pound).
-   Los de suerte pueden terminar peleas cortas, nunca una de 5 rounds */
+/* termina la pelea un juego ofensivo hecho perfecto (pegarle a la cabeza, timear el golpe, la llave, el combo, el ground & pound),
+   o un juego de suerte que te da el nocaut (la porción NOCAUT de la ruleta, doble seis, 3 puntos en las cartas): eso es nocaut siempre */
 function finishOn(gid){
   const g = MG[gid];
   if(FINISH_GAMES[gid]) return FINISH_GAMES[gid];
-  if(g.luck && F.max<5) return choice(['KO','KO','TKO','Sumisión']);
+  if(g.luck) return (gid==='ruleta' || gid==='dados') ? 'KO' : choice(['KO','KO','TKO']);
   return null;
 }
 function roundDone(tier){
@@ -3623,7 +3623,8 @@ MG.cartas = {icon:'cartas', nm:'Las cartas', stat:'ovr', luck:true, hint:'Seguí
         <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[ic]}</svg>
         <b style="font-family:var(--f-cond);font-weight:900;font-size:30px;line-height:1">${lab}</b></div>`;
     };
-    const swaps = Math.round(byDiff(c.d, 3, 5, 8)) - (c.quick ? 1 : 0), swapMs = byDiff(c.d, 560, 430, 290);
+    /* más mezclas, más rápidas, y en las difíciles se cruzan dos pares a la vez: seguirlas cuesta de verdad */
+    const swaps = Math.round(byDiff(c.d, 5, 8, 12)) - (c.quick ? 1 : 0), swapMs = byDiff(c.d, 480, 330, 210), doubleSw = c.d>-.2;
     const slot = i=>({x:(i%3)*33.33+16.66, y:Math.floor(i/3)*50+25});
     const pos = deck.map((_,i)=>i);
     let phase = 'show', picks = [], total = 0;
@@ -3639,12 +3640,15 @@ MG.cartas = {icon:'cartas', nm:'Las cartas', stat:'ovr', luck:true, hint:'Seguí
     c.act.innerHTML = `<div class="mini" id="kInfo">Memorizá dónde están las buenas…</div>`;
     const info = $('kInfo');
     c.hud.innerHTML = `Puntos: <b id="kPts" style="font-size:18px">0</b>`;
-    mgAfter(c.quick ? 1100 : 1400, ()=>{ deck.forEach((_,i)=>flip(i,true)); SFX.card(); info.textContent = 'Se mezclan… no les saques los ojos';
+    mgAfter(byDiff(c.d, 1600, 1100, 800) - (c.quick ? 150 : 0), ()=>{ deck.forEach((_,i)=>flip(i,true)); SFX.card(); info.textContent = 'Se mezclan… no les saques los ojos';
       let s = 0;
       const doSwap = ()=>{
         if(s>=swaps){ phase = 'pick'; info.innerHTML = '<b>Elegí dos cartas</b>'; return; }
-        const a = randi(0,5); let b = randi(0,5); while(b===a) b = randi(0,5);
-        const pa = pos[a]; pos[a] = pos[b]; pos[b] = pa; place(a); place(b); SFX.whoosh(); s++;
+        const swap = (a, b)=>{ const pa = pos[a]; pos[a] = pos[b]; pos[b] = pa; place(a); place(b); };
+        const ids = shuffle([0,1,2,3,4,5]);
+        swap(ids[0], ids[1]);
+        if(doubleSw && R() < byDiff(c.d, 0, .5, .85)) swap(ids[2], ids[3]);    // dos pares a la vez
+        SFX.whoosh(); s++;
         mgAfter(swapMs+60, doSwap);
       };
       mgAfter(520, doSwap);
